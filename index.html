@@ -590,28 +590,29 @@
             </style>
 
             <div class="snake-game-container">
-                <h3 class="snake-game-title">🐍 Snake Game</h3>
+                <h3 class="snake-game-title">Chơi game con rắn nhe</h3>
                 
                 <div class="snake-game-info">
                     <div class="snake-score">Score: <span id="snakeScore">0</span></div>
                     <div class="snake-high-score">High Score: <span id="snakeHighScore">0</span></div>
+                    <div class="">Ai trên 60 điểm có quà</span></div>
                 </div>
 
                 <div class="snake-canvas-wrapper">
                     <canvas id="snakeCanvas" width="400" height="400"></canvas>
                     <div class="game-over-overlay" id="gameOverOverlay">
-                        <div class="game-over-text">GAME OVER!</div>
+                        <div class="game-over-text">Thua!</div>
                         <div class="final-score">Final Score: <span id="finalScore">0</span></div>
                         <button class="snake-btn" onclick="slot6RestartSnakeGame()">Play Again</button>
                     </div>
                 </div>
 
                 <div class="snake-controls">
-                    <button class="snake-btn" id="snakeStartBtn" onclick="slot6StartSnakeGame()">Start Game</button>
+                    <button class="snake-btn" id="snakeStartBtn" onclick="slot6StartSnakeGame()">Chơi Luôn</button>
                 </div>
 
                 <div class="snake-instructions">
-                    Use Arrow Keys (↑ ↓ ← →) or WASD to control the snake
+                    Bấm mấy phím mũi tên để chơi nha mấy anh em
                 </div>
             </div>
 
@@ -843,336 +844,6 @@
                 })();
             </script>
 
-            <style>
-                #slot-6 .memory-game-container {
-                    margin-top: 3em;
-                    padding: 20px;
-                    background: rgba(20, 10, 30, 0.6);
-                    border-radius: 12px;
-                    border: 2px solid #9d4edd;
-                    position: relative;
-                    z-index: 2;
-                }
-
-                #slot-6 .memory-game-title {
-                    text-align: center;
-                    font-size: 1.8rem;
-                    font-weight: 700;
-                    color: #c77dff;
-                    margin-bottom: 0.5em;
-                    text-shadow: 0 0 10px #9d4edd;
-                }
-
-                #slot-6 .memory-slogan {
-                    text-align: center;
-                    font-size: 1.1rem;
-                    color: #e0aaff;
-                    margin-bottom: 1.5em;
-                    font-style: italic;
-                }
-
-                #slot-6 .memory-stats {
-                    display: flex;
-                    justify-content: space-around;
-                    margin-bottom: 1.5em;
-                    flex-wrap: wrap;
-                    gap: 15px;
-                }
-
-                #slot-6 .memory-stat {
-                    font-size: 1.2rem;
-                    color: #c77dff;
-                    font-weight: 600;
-                }
-
-                #slot-6 .memory-grid {
-                    display: grid;
-                    grid-template-columns: repeat(4, 1fr);
-                    gap: 10px;
-                    max-width: 500px;
-                    margin: 0 auto 1.5em;
-                }
-
-                #slot-6 .memory-card {
-                    aspect-ratio: 1;
-                    background: linear-gradient(135deg, #7209b7 0%, #560bad 100%);
-                    border: 2px solid #9d4edd;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 2rem;
-                    font-weight: bold;
-                    color: transparent;
-                    transition: all 0.3s;
-                    box-shadow: 0 4px 8px rgba(157, 78, 221, 0.2);
-                }
-
-                #slot-6 .memory-card:hover:not(.flipped):not(.matched) {
-                    transform: scale(1.05);
-                    box-shadow: 0 6px 12px rgba(157, 78, 221, 0.4);
-                }
-
-                #slot-6 .memory-card.flipped,
-                #slot-6 .memory-card.matched {
-                    background: linear-gradient(135deg, #e0aaff 0%, #c77dff 100%);
-                    color: #3c096c;
-                    transform: rotateY(180deg);
-                }
-
-                #slot-6 .memory-card.matched {
-                    opacity: 0.6;
-                    cursor: default;
-                }
-
-                #slot-6 .memory-btn {
-                    background: linear-gradient(135deg, #9d4edd 0%, #7209b7 100%);
-                    color: #fff;
-                    border: none;
-                    padding: 12px 30px;
-                    border-radius: 8px;
-                    font-size: 1.1rem;
-                    font-weight: 700;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                    box-shadow: 0 4px 15px rgba(157, 78, 221, 0.3);
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                    display: block;
-                    margin: 0 auto;
-                }
-
-                #slot-6 .memory-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(157, 78, 221, 0.5);
-                }
-
-                #slot-6 .tictactoe-container {
-                    margin-top: 3em;
-                    padding: 20px;
-                    background: rgba(30, 20, 10, 0.6);
-                    border-radius: 12px;
-                    border: 2px solid #ff6b35;
-                    position: relative;
-                    z-index: 2;
-                }
-
-                #slot-6 .tictactoe-title {
-                    text-align: center;
-                    font-size: 1.8rem;
-                    font-weight: 700;
-                    color: #ff8c42;
-                    margin-bottom: 0.5em;
-                    text-shadow: 0 0 10px #ff6b35;
-                }
-
-                #slot-6 .tictactoe-slogan {
-                    text-align: center;
-                    font-size: 1.1rem;
-                    color: #ffaa5a;
-                    margin-bottom: 1.5em;
-                    font-style: italic;
-                }
-
-                #slot-6 .tictactoe-status {
-                    text-align: center;
-                    font-size: 1.3rem;
-                    color: #ff8c42;
-                    margin-bottom: 1.5em;
-                    font-weight: 600;
-                    min-height: 30px;
-                }
-
-                #slot-6 .tictactoe-board {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 10px;
-                    max-width: 350px;
-                    margin: 0 auto 1.5em;
-                }
-
-                #slot-6 .tictactoe-cell {
-                    aspect-ratio: 1;
-                    background: linear-gradient(135deg, #2d1b00 0%, #5a3600 100%);
-                    border: 3px solid #ff6b35;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 3rem;
-                    font-weight: bold;
-                    color: #ff8c42;
-                    transition: all 0.2s;
-                    box-shadow: 0 4px 8px rgba(255, 107, 53, 0.2);
-                }
-
-                #slot-6 .tictactoe-cell:hover:not(.taken) {
-                    background: linear-gradient(135deg, #3d2b10 0%, #6a4610 100%);
-                    transform: scale(1.05);
-                    box-shadow: 0 6px 12px rgba(255, 107, 53, 0.4);
-                }
-
-                #slot-6 .tictactoe-cell.taken {
-                    cursor: default;
-                }
-
-                #slot-6 .tictactoe-cell.winning {
-                    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
-                    animation: slot6-tictactoe-pulse 0.5s ease;
-                }
-
-                @keyframes slot6-tictactoe-pulse {
-                    0%, 100% { transform: scale(1); }
-                    50% { transform: scale(1.1); }
-                }
-
-                #slot-6 .tictactoe-btn {
-                    background: linear-gradient(135deg, #ff6b35 0%, #ff4500 100%);
-                    color: #fff;
-                    border: none;
-                    padding: 12px 30px;
-                    border-radius: 8px;
-                    font-size: 1.1rem;
-                    font-weight: 700;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                    display: block;
-                    margin: 0 auto;
-                }
-
-                #slot-6 .tictactoe-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
-                }
-            </style>
-
-            <div class="memory-game-container">
-                <h3 class="memory-game-title">Lat Hinh Nho - Memory Cards</h3>
-                <p class="memory-slogan">Hoang Anh thu thach ban nho duoc bao nhieu cap :&gt;&gt;</p>
-                
-                <div class="memory-stats">
-                    <div class="memory-stat">Moves: <span id="memoryMoves">0</span></div>
-                    <div class="memory-stat">Pairs: <span id="memoryPairs">0</span>/8</div>
-                    <div class="memory-stat">Time: <span id="memoryTime">0</span>s</div>
-                </div>
-
-                <div class="memory-grid" id="memoryGrid"></div>
-
-                <button class="memory-btn" onclick="slot6StartMemoryGame()">New Game</button>
-            </div>
-
-            <script>
-                (function() {
-                    const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-                    let cards = [];
-                    let flippedCards = [];
-                    let matchedPairs = 0;
-                    let moves = 0;
-                    let gameTime = 0;
-                    let timerInterval = null;
-                    let canFlip = true;
-
-                    function slot6InitMemoryGame() {
-                        const doubledSymbols = [...symbols, ...symbols];
-                        cards = doubledSymbols.sort(() => Math.random() - 0.5);
-                        flippedCards = [];
-                        matchedPairs = 0;
-                        moves = 0;
-                        gameTime = 0;
-                        canFlip = true;
-
-                        document.getElementById('memoryMoves').textContent = moves;
-                        document.getElementById('memoryPairs').textContent = matchedPairs;
-                        document.getElementById('memoryTime').textContent = gameTime;
-
-                        const grid = document.getElementById('memoryGrid');
-                        grid.innerHTML = '';
-
-                        cards.forEach((symbol, index) => {
-                            const card = document.createElement('div');
-                            card.className = 'memory-card';
-                            card.dataset.symbol = symbol;
-                            card.dataset.index = index;
-                            card.textContent = symbol;
-                            card.addEventListener('click', () => slot6FlipCard(card));
-                            grid.appendChild(card);
-                        });
-
-                        if (timerInterval) clearInterval(timerInterval);
-                        timerInterval = setInterval(() => {
-                            gameTime++;
-                            document.getElementById('memoryTime').textContent = gameTime;
-                        }, 1000);
-                    }
-
-                    function slot6FlipCard(card) {
-                        if (!canFlip || card.classList.contains('flipped') || 
-                            card.classList.contains('matched') || flippedCards.length >= 2) {
-                            return;
-                        }
-
-                        card.classList.add('flipped');
-                        flippedCards.push(card);
-
-                        if (flippedCards.length === 2) {
-                            moves++;
-                            document.getElementById('memoryMoves').textContent = moves;
-                            canFlip = false;
-
-                            setTimeout(() => {
-                                slot6CheckMatch();
-                            }, 800);
-                        }
-                    }
-
-                    function slot6CheckMatch() {
-                        const [card1, card2] = flippedCards;
-
-                        if (card1.dataset.symbol === card2.dataset.symbol) {
-                            card1.classList.add('matched');
-                            card2.classList.add('matched');
-                            matchedPairs++;
-                            document.getElementById('memoryPairs').textContent = matchedPairs;
-
-                            if (matchedPairs === 8) {
-                                clearInterval(timerInterval);
-                                setTimeout(() => {
-                                    alert(`Chuc mung! Ban hoan thanh trong ${moves} nuoc va ${gameTime} giay!`);
-                                }, 500);
-                            }
-                        } else {
-                            card1.classList.remove('flipped');
-                            card2.classList.remove('flipped');
-                        }
-
-                        flippedCards = [];
-                        canFlip = true;
-                    }
-
-                    window.slot6StartMemoryGame = function() {
-                        slot6InitMemoryGame();
-                    };
-
-                    slot6InitMemoryGame();
-                })();
-            </script>
-
-            <div class="tictactoe-container">
-                <h3 class="tictactoe-title">Tic-Tac-Toe</h3>
-                <p class="tictactoe-slogan">Chien voi AI cua Hoang Anh xem ai gioi hon nao :&gt;&gt;</p>
-                
-                <div class="tictactoe-status" id="tictactoeStatus">Your turn (X)</div>
-
-                <div class="tictactoe-board" id="tictactoeBoard"></div>
-
-                <button class="tictactoe-btn" onclick="slot6StartTicTacToe()">New Game</button>
-            </div>
-
             <script>
                 (function() {
                     let board = Array(9).fill(null);
@@ -1309,9 +980,9 @@
                 #slot-6 .bmi-container {
                     margin-top: 3em;
                     padding: 20px;
-                    background: rgba(10, 30, 20, 0.6);
-                    border-radius: 12px;
-                    border: 2px solid #00d9ff;
+                    background: rgba(30, 30, 30, 0.7);
+                    border-radius: 8px;
+                    border: 2px solid #666;
                     position: relative;
                     z-index: 2;
                 }
@@ -1320,15 +991,14 @@
                     text-align: center;
                     font-size: 1.8rem;
                     font-weight: 700;
-                    color: #00f5ff;
+                    color: #ddd;
                     margin-bottom: 0.5em;
-                    text-shadow: 0 0 10px #00d9ff;
                 }
 
                 #slot-6 .bmi-slogan {
                     text-align: center;
                     font-size: 1.1rem;
-                    color: #7df9ff;
+                    color: #aaa;
                     margin-bottom: 1.5em;
                     font-style: italic;
                 }
@@ -1344,7 +1014,7 @@
 
                 #slot-6 .bmi-label {
                     display: block;
-                    color: #7df9ff;
+                    color: #ccc;
                     font-size: 1.1rem;
                     font-weight: 600;
                     margin-bottom: 0.5em;
@@ -1353,10 +1023,10 @@
                 #slot-6 .bmi-input {
                     width: 100%;
                     padding: 12px 15px;
-                    background: rgba(0, 20, 40, 0.8);
-                    border: 2px solid #00d9ff;
-                    border-radius: 8px;
-                    color: #00f5ff;
+                    background: rgba(0, 0, 0, 0.5);
+                    border: 2px solid #555;
+                    border-radius: 6px;
+                    color: #fff;
                     font-size: 1.1rem;
                     font-weight: 600;
                     box-sizing: border-box;
@@ -1365,25 +1035,23 @@
 
                 #slot-6 .bmi-input:focus {
                     outline: none;
-                    border-color: #7df9ff;
-                    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+                    border-color: #888;
                 }
 
                 #slot-6 .bmi-input::placeholder {
-                    color: rgba(125, 249, 255, 0.5);
+                    color: rgba(255, 255, 255, 0.3);
                 }
 
                 #slot-6 .bmi-btn {
-                    background: linear-gradient(135deg, #00d9ff 0%, #00a0cc 100%);
-                    color: #000;
+                    background: #555;
+                    color: #fff;
                     border: none;
                     padding: 12px 30px;
-                    border-radius: 8px;
-                    font-size: 1.2rem;
+                    border-radius: 6px;
+                    font-size: 1.1rem;
                     font-weight: 700;
                     cursor: pointer;
                     transition: all 0.3s;
-                    box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
                     text-transform: uppercase;
                     letter-spacing: 1px;
                     display: block;
@@ -1392,71 +1060,91 @@
                 }
 
                 #slot-6 .bmi-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(0, 217, 255, 0.5);
+                    background: #666;
+                }
+
+                #slot-6 .bmi-categories {
+                    margin-top: 1.5em;
+                    padding: 15px;
+                    background: rgba(0, 0, 0, 0.3);
+                    border-radius: 6px;
+                    color: #ccc;
+                    font-size: 0.95rem;
+                    line-height: 1.8;
+                }
+
+                #slot-6 .bmi-categories-title {
+                    font-weight: 700;
+                    color: #fff;
+                    margin-bottom: 0.5em;
                 }
 
                 #slot-6 .bmi-result {
-                    margin-top: 2em;
+                    margin-top: 1.5em;
                     padding: 20px;
-                    background: rgba(0, 245, 255, 0.1);
-                    border: 2px solid #00f5ff;
-                    border-radius: 8px;
+                    background: rgba(50, 50, 50, 0.8);
+                    border: 2px solid #777;
+                    border-radius: 6px;
                     text-align: center;
-                    min-height: 60px;
                     display: none;
                 }
 
                 #slot-6 .bmi-result.show {
                     display: block;
-                    animation: slot6-bmi-show 0.5s ease;
-                }
-
-                @keyframes slot6-bmi-show {
-                    from {
-                        opacity: 0;
-                        transform: scale(0.8);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: scale(1);
-                    }
                 }
 
                 #slot-6 .bmi-result-text {
-                    font-size: 2.5rem;
+                    font-size: 1.8rem;
                     font-weight: 700;
-                    color: #00f5ff;
-                    text-shadow: 0 0 20px #00d9ff;
-                    animation: slot6-bmi-glow 1.5s ease infinite;
+                    color: #fff;
+                    margin-bottom: 0.5em;
                 }
 
-                @keyframes slot6-bmi-glow {
-                    0%, 100% {
-                        text-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff;
-                    }
-                    50% {
-                        text-shadow: 0 0 20px #00d9ff, 0 0 40px #00d9ff, 0 0 60px #00d9ff;
-                    }
+                #slot-6 .bmi-category {
+                    font-size: 1.2rem;
+                    color: #ddd;
+                    margin-bottom: 1em;
+                }
+
+                #slot-6 .bmi-note {
+                    margin-bottom: 1.5em;
+                    padding: 12px;
+                    background: rgba(255, 100, 100, 0.2);
+                    border-left: 4px solid #ff6b6b;
+                    border-radius: 4px;
+                    color: #ffaaaa;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    font-style: italic;
                 }
             </style>
 
             <div class="bmi-container">
-                <h3 class="bmi-title">May Tinh Chi So Khoi Co The</h3>
-                <p class="bmi-slogan">Hoang Anh giup ban tinh BMI cuc ky chinh xac day :&gt;&gt;</p>
+                <h3 class="bmi-title">Máy tính BMI</h3>
+                <p class="bmi-slogan">Để Hoàng Anh giúp anh em tính BMI nhé :&gt;&gt;</p>
                 
+                <div class="bmi-note">Mấy anh em vào tính BMI rồi lo mà tập thể dục đi nhé, rượu bia ít thôi!</div>
+
                 <div class="bmi-form">
                     <div class="bmi-input-group">
-                        <label class="bmi-label">Can nang (kg):</label>
-                        <input type="number" class="bmi-input" id="bmiWeight" placeholder="Nhap can nang cua ban..." step="0.1">
+                        <label class="bmi-label">Câng nặng (kg):</label>
+                        <input type="number" class="bmi-input" id="bmiWeight" placeholder="Nhập cân nặng của bạn..." step="0.1">
                     </div>
                     
                     <div class="bmi-input-group">
-                        <label class="bmi-label">Chieu cao (cm):</label>
-                        <input type="number" class="bmi-input" id="bmiHeight" placeholder="Nhap chieu cao cua ban..." step="0.1">
+                        <label class="bmi-label">Chiều cao (cm):</label>
+                        <input type="number" class="bmi-input" id="bmiHeight" placeholder="Nhập chiều cao của bạn..." step="0.1">
                     </div>
                     
-                    <button class="bmi-btn" onclick="slot6CalculateBMI()">Tinh BMI</button>
+                    <button class="bmi-btn" onclick="slot6CalculateBMI()">Tính BMI</button>
+
+                    <div class="bmi-categories">
+                        <div class="bmi-categories-title">Phân loại BMI:</div>
+                        <div>Thiếu cân: BMI dưới 18,5</div>
+                        <div>Bình thường: BMI từ 18,5 - 22,9</div>
+                        <div>Thừa cân: BMI từ 23 - 24,9</div>
+                        <div>Béo phì: BMI từ 25 trở lên</div>
+                    </div>
                 </div>
 
                 <div class="bmi-result" id="bmiResult">
