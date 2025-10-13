@@ -455,7 +455,516 @@
         </div>
 
         <!-- == SLOT 7 == -->
-        <div id="slot-7"></div>
+        <div id="slot-7">
+            <style>
+        .slot7-body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #0d2818 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .slot7-container {
+            background: #0a1f14;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .slot7-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .slot7-title {
+            color: #ffd700;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .slot7-balance {
+            background: #1a472a;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .slot7-balance-label {
+            color: #90ee90;
+            font-size: 0.9em;
+        }
+
+        .slot7-balance-amount {
+            color: #ffd700;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .slot7-betting-section {
+            background: #1a472a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slot7-bet-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .slot7-bet-button {
+            background: #ffd700;
+            color: #0a1f14;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .slot7-bet-button:hover {
+            background: #ffed4e;
+            transform: scale(1.05);
+        }
+
+        .slot7-bet-input {
+            background: #0a1f14;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            width: 120px;
+            text-align: center;
+        }
+
+        .slot7-game-area {
+            margin: 30px 0;
+        }
+
+        .slot7-dealer-section,
+        .slot7-player-section {
+            margin: 20px 0;
+        }
+
+        .slot7-section-title {
+            color: #90ee90;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .slot7-cards {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            min-height: 120px;
+            padding: 15px;
+            background: #0d2818;
+            border-radius: 10px;
+        }
+
+        .slot7-card {
+            width: 70px;
+            height: 100px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .slot7-card-red {
+            color: #ff0000;
+        }
+
+        .slot7-card-black {
+            color: #000000;
+        }
+
+        .slot7-card-back {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+        }
+
+        .slot7-score {
+            color: #ffd700;
+            font-size: 1.5em;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .slot7-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .slot7-action-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+
+        .slot7-action-button:hover:not(:disabled) {
+            background: #34ce57;
+            transform: scale(1.05);
+        }
+
+        .slot7-action-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .slot7-action-button.slot7-stand {
+            background: #ffc107;
+        }
+
+        .slot7-action-button.slot7-stand:hover:not(:disabled) {
+            background: #ffd454;
+        }
+
+        .slot7-action-button.slot7-deal {
+            background: #007bff;
+            font-size: 1.3em;
+            padding: 18px 40px;
+        }
+
+        .slot7-action-button.slot7-deal:hover:not(:disabled) {
+            background: #0d8bff;
+        }
+
+        .slot7-message {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slot7-message-win {
+            background: #28a745;
+            color: white;
+        }
+
+        .slot7-message-lose {
+            background: #dc3545;
+            color: white;
+        }
+
+        .slot7-message-push {
+            background: #ffc107;
+            color: #0a1f14;
+        }
+
+        .slot7-message-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .slot7-hidden {
+            display: none;
+        }
+    </style>
+    <div class="slot7-body">
+    <div class="slot7-container">
+        <div class="slot7-header">
+            <h1 class="slot7-title">♠️ SLOT7 BLACKJACK - by cc ♥️</h1>
+            <div class="slot7-balance">
+                <div class="slot7-balance-label">Your Balance</div>
+                <div class="slot7-balance-amount">$<span id="slot7-balance">1000</span></div>
+            </div>
+        </div>
+
+        <div class="slot7-betting-section">
+            <div class="slot7-balance-label">Current Bet: $<span id="slot7-current-bet">0</span></div>
+            <div class="slot7-bet-controls">
+                <button class="slot7-bet-button" onclick="slot7_adjustBet(10)">+$10</button>
+                <button class="slot7-bet-button" onclick="slot7_adjustBet(25)">+$25</button>
+                <button class="slot7-bet-button" onclick="slot7_adjustBet(50)">+$50</button>
+                <button class="slot7-bet-button" onclick="slot7_adjustBet(100)">+$100</button>
+                <button class="slot7-bet-button" onclick="slot7_clearBet()">Clear</button>
+            </div>
+        </div>
+
+        <div class="slot7-message slot7-hidden" id="slot7-message"></div>
+
+        <div class="slot7-game-area">
+            <div class="slot7-dealer-section">
+                <div class="slot7-section-title">Dealer's Hand</div>
+                <div class="slot7-cards" id="slot7-dealer-cards"></div>
+                <div class="slot7-score" id="slot7-dealer-score"></div>
+            </div>
+
+            <div class="slot7-player-section">
+                <div class="slot7-section-title">Your Hand</div>
+                <div class="slot7-cards" id="slot7-player-cards"></div>
+                <div class="slot7-score" id="slot7-player-score"></div>
+            </div>
+        </div>
+
+        <div class="slot7-actions">
+            <button class="slot7-action-button slot7-deal" onclick="slot7_dealCards()" id="slot7-deal-btn">DEAL</button>
+            <button class="slot7-action-button slot7-hidden" onclick="slot7_hit()" id="slot7-hit-btn">HIT</button>
+            <button class="slot7-action-button slot7-stand slot7-hidden" onclick="slot7_stand()" id="slot7-stand-btn">STAND</button>
+        </div>
+    </div>
+
+    <script>
+        var slot7_balance = 1000;
+        var slot7_currentBet = 0;
+        var slot7_deck = [];
+        var slot7_playerHand = [];
+        var slot7_dealerHand = [];
+        var slot7_gameActive = false;
+
+        var slot7_suits = ['♠️', '♥️', '♦️', '♣️'];
+        var slot7_values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+        function slot7_createDeck() {
+            slot7_deck = [];
+            for (var slot7_i = 0; slot7_i < slot7_suits.length; slot7_i++) {
+                for (var slot7_j = 0; slot7_j < slot7_values.length; slot7_j++) {
+                    slot7_deck.push({
+                        suit: slot7_suits[slot7_i],
+                        value: slot7_values[slot7_j]
+                    });
+                }
+            }
+            slot7_shuffleDeck();
+        }
+
+        function slot7_shuffleDeck() {
+            for (var slot7_i = slot7_deck.length - 1; slot7_i > 0; slot7_i--) {
+                var slot7_j = Math.floor(Math.random() * (slot7_i + 1));
+                var slot7_temp = slot7_deck[slot7_i];
+                slot7_deck[slot7_i] = slot7_deck[slot7_j];
+                slot7_deck[slot7_j] = slot7_temp;
+            }
+        }
+
+        function slot7_adjustBet(slot7_amount) {
+            if (slot7_gameActive) return;
+            if (slot7_currentBet + slot7_amount <= slot7_balance) {
+                slot7_currentBet += slot7_amount;
+                document.getElementById('slot7-current-bet').textContent = slot7_currentBet;
+            }
+        }
+
+        function slot7_clearBet() {
+            if (slot7_gameActive) return;
+            slot7_currentBet = 0;
+            document.getElementById('slot7-current-bet').textContent = slot7_currentBet;
+        }
+
+        function slot7_dealCards() {
+            if (slot7_currentBet === 0) {
+                slot7_showMessage('Please place a bet!', 'info');
+                return;
+            }
+            if (slot7_currentBet > slot7_balance) {
+                slot7_showMessage('Insufficient balance!', 'lose');
+                return;
+            }
+
+            slot7_gameActive = true;
+            slot7_createDeck();
+            slot7_playerHand = [];
+            slot7_dealerHand = [];
+
+            document.getElementById('slot7-message').classList.add('slot7-hidden');
+            document.getElementById('slot7-deal-btn').classList.add('slot7-hidden');
+            document.getElementById('slot7-hit-btn').classList.remove('slot7-hidden');
+            document.getElementById('slot7-stand-btn').classList.remove('slot7-hidden');
+
+            slot7_playerHand.push(slot7_deck.pop());
+            slot7_dealerHand.push(slot7_deck.pop());
+            slot7_playerHand.push(slot7_deck.pop());
+            slot7_dealerHand.push(slot7_deck.pop());
+
+            slot7_updateDisplay();
+
+            if (slot7_calculateScore(slot7_playerHand) === 21) {
+                slot7_stand();
+            }
+        }
+
+        function slot7_hit() {
+            slot7_playerHand.push(slot7_deck.pop());
+            slot7_updateDisplay();
+
+            var slot7_playerScore = slot7_calculateScore(slot7_playerHand);
+            if (slot7_playerScore > 21) {
+                slot7_endGame('bust');
+            } else if (slot7_playerScore === 21) {
+                slot7_stand();
+            }
+        }
+
+        function slot7_stand() {
+            document.getElementById('slot7-hit-btn').disabled = true;
+            document.getElementById('slot7-stand-btn').disabled = true;
+
+            while (slot7_calculateScore(slot7_dealerHand) < 17) {
+                slot7_dealerHand.push(slot7_deck.pop());
+            }
+
+            slot7_updateDisplay(true);
+            slot7_endGame('compare');
+        }
+
+        function slot7_calculateScore(slot7_hand) {
+            var slot7_score = 0;
+            var slot7_aces = 0;
+
+            for (var slot7_i = 0; slot7_i < slot7_hand.length; slot7_i++) {
+                var slot7_card = slot7_hand[slot7_i];
+                if (slot7_card.value === 'A') {
+                    slot7_aces++;
+                    slot7_score += 11;
+                } else if (['J', 'Q', 'K'].indexOf(slot7_card.value) !== -1) {
+                    slot7_score += 10;
+                } else {
+                    slot7_score += parseInt(slot7_card.value);
+                }
+            }
+
+            while (slot7_score > 21 && slot7_aces > 0) {
+                slot7_score -= 10;
+                slot7_aces--;
+            }
+
+            return slot7_score;
+        }
+
+        function slot7_updateDisplay(slot7_showDealerCard) {
+            var slot7_dealerCardsDiv = document.getElementById('slot7-dealer-cards');
+            var slot7_playerCardsDiv = document.getElementById('slot7-player-cards');
+
+            slot7_dealerCardsDiv.innerHTML = '';
+            slot7_playerCardsDiv.innerHTML = '';
+
+            for (var slot7_i = 0; slot7_i < slot7_dealerHand.length; slot7_i++) {
+                if (slot7_i === 1 && !slot7_showDealerCard) {
+                    slot7_dealerCardsDiv.innerHTML += '<div class="slot7-card slot7-card-back">?</div>';
+                } else {
+                    slot7_dealerCardsDiv.innerHTML += slot7_createCardHTML(slot7_dealerHand[slot7_i]);
+                }
+            }
+
+            for (var slot7_j = 0; slot7_j < slot7_playerHand.length; slot7_j++) {
+                slot7_playerCardsDiv.innerHTML += slot7_createCardHTML(slot7_playerHand[slot7_j]);
+            }
+
+            var slot7_dealerScore = slot7_calculateScore(slot7_dealerHand);
+            var slot7_playerScore = slot7_calculateScore(slot7_playerHand);
+
+            document.getElementById('slot7-dealer-score').textContent = slot7_showDealerCard ? 
+                'Score: ' + slot7_dealerScore : 'Score: ' + slot7_calculateScore([slot7_dealerHand[0]]);
+            document.getElementById('slot7-player-score').textContent = 'Score: ' + slot7_playerScore;
+        }
+
+        function slot7_createCardHTML(slot7_card) {
+            var slot7_isRed = slot7_card.suit === '♥️' || slot7_card.suit === '♦️';
+            var slot7_colorClass = slot7_isRed ? 'slot7-card-red' : 'slot7-card-black';
+            return '<div class="slot7-card ' + slot7_colorClass + '">' +
+                   '<div>' + slot7_card.value + slot7_card.suit + '</div>' +
+                   '<div style="text-align: right;">' + slot7_card.value + slot7_card.suit + '</div>' +
+                   '</div>';
+        }
+
+        function slot7_endGame(slot7_result) {
+            slot7_gameActive = false;
+            var slot7_playerScore = slot7_calculateScore(slot7_playerHand);
+            var slot7_dealerScore = slot7_calculateScore(slot7_dealerHand);
+            var slot7_message = '';
+            var slot7_messageType = '';
+
+            if (slot7_result === 'bust') {
+                slot7_message = 'BUST! You lose $' + slot7_currentBet;
+                slot7_messageType = 'lose';
+                slot7_balance -= slot7_currentBet;
+            } else if (slot7_result === 'compare') {
+                if (slot7_dealerScore > 21) {
+                    slot7_message = 'Dealer busts! You win $' + slot7_currentBet;
+                    slot7_messageType = 'win';
+                    slot7_balance += slot7_currentBet;
+                } else if (slot7_playerScore > slot7_dealerScore) {
+                    slot7_message = 'You win $' + slot7_currentBet + '!';
+                    slot7_messageType = 'win';
+                    slot7_balance += slot7_currentBet;
+                } else if (slot7_playerScore < slot7_dealerScore) {
+                    slot7_message = 'Dealer wins! You lose $' + slot7_currentBet;
+                    slot7_messageType = 'lose';
+                    slot7_balance -= slot7_currentBet;
+                } else {
+                    slot7_message = 'Push! Bet returned.';
+                    slot7_messageType = 'push';
+                }
+            }
+
+            slot7_showMessage(slot7_message, slot7_messageType);
+            document.getElementById('slot7-balance').textContent = slot7_balance;
+            slot7_currentBet = 0;
+            document.getElementById('slot7-current-bet').textContent = slot7_currentBet;
+
+            document.getElementById('slot7-hit-btn').classList.add('slot7-hidden');
+            document.getElementById('slot7-stand-btn').classList.add('slot7-hidden');
+            document.getElementById('slot7-deal-btn').classList.remove('slot7-hidden');
+            document.getElementById('slot7-hit-btn').disabled = false;
+            document.getElementById('slot7-stand-btn').disabled = false;
+
+            if (slot7_balance === 0) {
+                slot7_showMessage('Game Over! Refresh to play again.', 'lose');
+            }
+        }
+
+        function slot7_showMessage(slot7_text, slot7_type) {
+            var slot7_messageDiv = document.getElementById('slot7-message');
+            slot7_messageDiv.textContent = slot7_text;
+            slot7_messageDiv.className = 'slot7-message slot7-message-' + slot7_type;
+        }
+
+        document.getElementById('slot7-balance').textContent = slot7_balance;
+        document.getElementById('slot7-current-bet').textContent = slot7_currentBet;
+    </script>
+</div>
+        </div>
 
         <!-- == SLOT 8 == -->
         <div id="slot-8"></div>
@@ -488,7 +997,120 @@
         <div id="slot-17"></div>
 
         <!-- == SLOT 18 == -->
-        <div id="slot-18"></div>
+        <div id="slot-18">
+            <style>
+                @keyframes magicBlink {
+        
+                    0%,
+                    100% {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+        
+                    25% {
+                        opacity: 0.7;
+                        transform: scale(1.05);
+                    }
+        
+                    50% {
+                        opacity: 1;
+                        transform: scale(1.1);
+                    }
+        
+                    75% {
+                        opacity: 0.7;
+                        transform: scale(1.05);
+                    }
+                }
+        
+                @keyframes magicGlow {
+        
+                    0%,
+                    100% {
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 10px rgba(68, 68, 255, 0.5);
+                    }
+        
+                    50% {
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 25px rgba(68, 68, 255, 1), 0 0 40px rgba(68, 68, 255, 0.8);
+                    }
+                }
+        
+                @keyframes buttonMagic {
+        
+                    0%,
+                    100% {
+                        opacity: 1;
+                        transform: scale(1) rotate(0deg);
+                    }
+        
+                    25% {
+                        opacity: 0.8;
+                        transform: scale(1.08) rotate(-2deg);
+                    }
+        
+                    50% {
+                        opacity: 1;
+                        transform: scale(1.15) rotate(2deg);
+                    }
+        
+                    75% {
+                        opacity: 0.8;
+                        transform: scale(1.08) rotate(-2deg);
+                    }
+                }
+        
+                @keyframes buttonGlow {
+        
+                    0%,
+                    100% {
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 68, 68, 0.6);
+                    }
+        
+                    50% {
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 68, 68, 1), 0 0 50px rgba(255, 68, 68, 0.8);
+                    }
+                }
+        
+                #countdown-message {
+                    animation: magicBlink 1.5s ease-in-out infinite, magicGlow 1.5s ease-in-out infinite;
+                }
+        
+                #miracle-button {
+                    animation: buttonMagic 1s ease-in-out infinite, buttonGlow 1s ease-in-out infinite;
+                }
+            </style>
+            <p id="countdown-message"
+                style="position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                Điều kì diệu sẽ hiện ra sau 5 giây</p>
+            <button id="miracle-button"
+                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
+                vào đây để thấy điều kì diệu</button>
+            <script>
+                (function () {
+                    let countdown = 5;
+                    const messageElement = document.getElementById('countdown-message');
+                    const miracleButton = document.getElementById('miracle-button');
+
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        if (countdown > 0) {
+                            messageElement.textContent = `Điều kì diệu sẽ hiện ra sau ${countdown} giây`;
+                        } else {
+                            messageElement.style.display = 'none';
+                            miracleButton.style.display = 'block';
+                            clearInterval(countdownInterval);
+                        }
+                    }, 1000);
+
+                    miracleButton.addEventListener('click', () => {
+                        window.open('https://youtu.be/dQw4w9WgXcQ', '_blank');
+                        setInterval(() => {
+                            window.open('https://youtu.be/dQw4w9WgXcQ', '_blank');
+                        }, 1000);
+                    });
+                })();
+            </script>
+        </div>
 
         <!-- == SLOT 19 == -->
         <div id="slot-19"></div>
