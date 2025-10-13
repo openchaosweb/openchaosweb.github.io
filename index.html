@@ -489,22 +489,40 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      max-width: 650px;
             }
             #slot-4 canvas {
-            border: 1px solid black;
+            border: 2px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
                 }
-
+            #slot-4 #slot4_btn {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 15px;
+            }
             #slot-4 button {
-                padding: 8px 16px;
-                background-color: #4CAF50;
+                padding: 10px 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white;
                 border: none;
-                border-radius: 4px;
+                border-radius: 6px;
                 cursor: pointer;
                 font-size: 14px;
+                font-weight: bold;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             }
             #slot-4 button:hover {
-                background-color: #45a049;
+                background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             }
             </style>
         <div id="slot4_gameoflife">
@@ -517,27 +535,29 @@
     <button id="slot4_startbtn">Start</button>
     <button id="slot4_pausebtn">Pause</button>
     <button id="slot4_restartbtn">Restart</button>
+    <button id="slot4_zoombtn">Zoom</button>
+    </div>
+    <div id="slot4_cursors">  
+
     </div>
     <script>
         // Initialize canvas and context
-        const canvas = document.getElementById('slot4_canvas');
-        const ctx = canvas.getContext('2d');
-
-
+        const slot_4_canvas = document.getElementById('slot4_canvas');
+        const slot4_ctx = slot_4_canvas.getContext('2d');
 
         // Define cell size and grid dimensions
-        const cellSize = 5;
-        const numRows = Math.floor(canvas.height / cellSize);
-        const numCols = Math.floor(canvas.width / cellSize);
+        let slot4CellSize = 4;
+        let slot4NumRows = Math.floor(slot_4_canvas.height / slot4CellSize);
+        let slot4NumCols = Math.floor(slot_4_canvas.width / slot4CellSize);
+        let slot4Zoomed = false;
 
         // Function to initialize the grid
         function slot4_1() {
             const grid = [];
-            for (let i = 0; i < numRows; i++) {
+            for (let i = 0; i < slot4NumRows; i++) {
                 grid[i] = [];
-                for (let j = 0; j < numCols; j++) {
-                    grid[i][j] = Math.
-                    random() > 0.7 ? 1 : 0; // Random initialization
+                for (let j = 0; j < slot4NumCols; j++) {
+                    grid[i][j] = Math.random() > 0.7 ? 1 : 0; // Random initialization
                 }
             }
             return grid;
@@ -547,15 +567,25 @@
         let isRunning = false;
         let animationId = null;
 
+        // Colors for cells that change with each iteration
+        let slot4Colors = ['#00bcd4', '#4caf50', '#ff9800', '#e91e63', '#9c27b0', '#3f51b5','#ff5722','#d50000', '#000000'];
+        let slot4CurrentColorIndex = 0;
+        let slot4BackgroundColor = '#ffffff'; // Initial background color
+
         // Function to draw the grid
         function slot4_2() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < numRows; i++) {
-                for (let j = 0; j < numCols; j++) {
+            // Fill canvas with random background color
+            slot4_ctx.fillStyle = slot4BackgroundColor;
+            slot4_ctx.fillRect(0, 0, slot_4_canvas.width, slot_4_canvas.height);
+            for (let i = 0; i < slot4NumRows; i++) {
+                for (let j = 0; j < slot4NumCols; j++) {
                     if (grid[i][j] === 1) {
-                        ctx.fillStyle = 'black';
-                        ctx.fillRect(j * cellSize, i *
-                                     cellSize, cellSize, cellSize);
+                        // Style the live cells with current color
+                        slot4_ctx.fillStyle = slot4Colors[slot4CurrentColorIndex];
+                        slot4_ctx.fillRect(j * slot4CellSize + 1, i * slot4CellSize + 1, slot4CellSize - 2, slot4CellSize - 2);
+                        slot4_ctx.strokeStyle = '#333'; // Dark border
+                        slot4_ctx.lineWidth = 1;
+                        slot4_ctx.strokeRect(j * slot4CellSize + 1, i * slot4CellSize + 1, slot4CellSize - 2, slot4CellSize - 2);
                     }
                 }
             }
@@ -564,31 +594,32 @@
         // Function to update the grid based on Conway's rules
         function slot4_3() {
             const newGrid = [];
-            for (let i = 0; i < numRows; i++) {
+            for (let i = 0; i < slot4NumRows; i++) {
                 newGrid[i] = [];
-                for (let j = 0; j < numCols; j++) {
+                for (let j = 0; j < slot4NumCols; j++) {
                     const neighbors = slot4_4(i, j);
                     if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
-                        newGrid[i][j] = 0;
+                        newGrid[i][j] = 0; 
                     } else if (grid[i][j] === 0 && neighbors === 3) {
-                        newGrid[i][j] = 1;
+                        newGrid[i][j] = 1; 
                     } else {
-                        newGrid[i][j] = grid[i][j];
+                        newGrid[i][j] = grid[i][j]; 
                     }
                 }
             }
             grid = newGrid;
-        }
-
-        // Function to count live neighbors of a cell
+            // Change color for next iteration
+            slot4CurrentColorIndex = (slot4CurrentColorIndex + 1) % slot4Colors.length;
+            // Change background color randomly
+            slot4BackgroundColor = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        }        // Function to count live neighbors of a cell
         function slot4_4(row, col) {
             let count = 0;
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
                     const r = row + i;
                     const c = col + j;
-                    if (r >= 0 && r < numRows && c >= 0 &&
-                        c < numCols && !(i === 0 && j === 0)) {
+                    if (r >= 0 && r < slot4NumRows && c >= 0 && c < slot4NumCols && !(i === 0 && j === 0)) {
                         count += grid[r][c];
                     }
                 }
@@ -624,6 +655,17 @@
             function () {
             isRunning = false;
             cancelAnimationFrame(animationId);
+            grid = slot4_1();
+            slot4_2();
+        });
+
+        document.getElementById('slot4_zoombtn')
+                  .addEventListener('click',
+            function () {
+            slot4Zoomed = !slot4Zoomed;
+            slot4CellSize = slot4Zoomed ? 8 : 4;
+            slot4NumRows = Math.floor(slot_4_canvas.height / slot4CellSize);
+            slot4NumCols = Math.floor(slot_4_canvas.width / slot4CellSize);
             grid = slot4_1();
             slot4_2();
         });
