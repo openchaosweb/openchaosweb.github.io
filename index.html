@@ -1304,6 +1304,199 @@
                     slot6InitTicTacToe();
                 })();
             </script>
+
+            <style>
+                #slot-6 .bmi-container {
+                    margin-top: 3em;
+                    padding: 20px;
+                    background: rgba(10, 30, 20, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #00d9ff;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .bmi-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #00f5ff;
+                    margin-bottom: 0.5em;
+                    text-shadow: 0 0 10px #00d9ff;
+                }
+
+                #slot-6 .bmi-slogan {
+                    text-align: center;
+                    font-size: 1.1rem;
+                    color: #7df9ff;
+                    margin-bottom: 1.5em;
+                    font-style: italic;
+                }
+
+                #slot-6 .bmi-form {
+                    max-width: 400px;
+                    margin: 0 auto;
+                }
+
+                #slot-6 .bmi-input-group {
+                    margin-bottom: 1.5em;
+                }
+
+                #slot-6 .bmi-label {
+                    display: block;
+                    color: #7df9ff;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    margin-bottom: 0.5em;
+                }
+
+                #slot-6 .bmi-input {
+                    width: 100%;
+                    padding: 12px 15px;
+                    background: rgba(0, 20, 40, 0.8);
+                    border: 2px solid #00d9ff;
+                    border-radius: 8px;
+                    color: #00f5ff;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    box-sizing: border-box;
+                    transition: all 0.3s;
+                }
+
+                #slot-6 .bmi-input:focus {
+                    outline: none;
+                    border-color: #7df9ff;
+                    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+                }
+
+                #slot-6 .bmi-input::placeholder {
+                    color: rgba(125, 249, 255, 0.5);
+                }
+
+                #slot-6 .bmi-btn {
+                    background: linear-gradient(135deg, #00d9ff 0%, #00a0cc 100%);
+                    color: #000;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    display: block;
+                    margin: 0 auto;
+                    width: 100%;
+                }
+
+                #slot-6 .bmi-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(0, 217, 255, 0.5);
+                }
+
+                #slot-6 .bmi-result {
+                    margin-top: 2em;
+                    padding: 20px;
+                    background: rgba(0, 245, 255, 0.1);
+                    border: 2px solid #00f5ff;
+                    border-radius: 8px;
+                    text-align: center;
+                    min-height: 60px;
+                    display: none;
+                }
+
+                #slot-6 .bmi-result.show {
+                    display: block;
+                    animation: slot6-bmi-show 0.5s ease;
+                }
+
+                @keyframes slot6-bmi-show {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.8);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+
+                #slot-6 .bmi-result-text {
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    color: #00f5ff;
+                    text-shadow: 0 0 20px #00d9ff;
+                    animation: slot6-bmi-glow 1.5s ease infinite;
+                }
+
+                @keyframes slot6-bmi-glow {
+                    0%, 100% {
+                        text-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff;
+                    }
+                    50% {
+                        text-shadow: 0 0 20px #00d9ff, 0 0 40px #00d9ff, 0 0 60px #00d9ff;
+                    }
+                }
+            </style>
+
+            <div class="bmi-container">
+                <h3 class="bmi-title">May Tinh Chi So Khoi Co The</h3>
+                <p class="bmi-slogan">Hoang Anh giup ban tinh BMI cuc ky chinh xac day :&gt;&gt;</p>
+                
+                <div class="bmi-form">
+                    <div class="bmi-input-group">
+                        <label class="bmi-label">Can nang (kg):</label>
+                        <input type="number" class="bmi-input" id="bmiWeight" placeholder="Nhap can nang cua ban..." step="0.1">
+                    </div>
+                    
+                    <div class="bmi-input-group">
+                        <label class="bmi-label">Chieu cao (cm):</label>
+                        <input type="number" class="bmi-input" id="bmiHeight" placeholder="Nhap chieu cao cua ban..." step="0.1">
+                    </div>
+                    
+                    <button class="bmi-btn" onclick="slot6CalculateBMI()">Tinh BMI</button>
+                </div>
+
+                <div class="bmi-result" id="bmiResult">
+                    <div class="bmi-result-text">Hello World!</div>
+                </div>
+            </div>
+
+            <script>
+                (function() {
+                    window.slot6CalculateBMI = function() {
+                        const weight = document.getElementById('bmiWeight').value;
+                        const height = document.getElementById('bmiHeight').value;
+                        const resultDiv = document.getElementById('bmiResult');
+
+                        if (!weight || !height) {
+                            alert('Vui long nhap day du thong tin!');
+                            return;
+                        }
+
+                        if (weight <= 0 || height <= 0) {
+                            alert('Vui long nhap gia tri hop le!');
+                            return;
+                        }
+
+                        resultDiv.classList.add('show');
+                    };
+
+                    document.getElementById('bmiWeight').addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            slot6CalculateBMI();
+                        }
+                    });
+
+                    document.getElementById('bmiHeight').addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            slot6CalculateBMI();
+                        }
+                    });
+                })();
+            </script>
         </div>
 
         <!-- == SLOT 7 == -->
