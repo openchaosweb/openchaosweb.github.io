@@ -189,7 +189,245 @@
         <div id="slot-27"></div>
 
         <!-- == SLOT 28 == -->
-        <div id="slot-28"></div>
+        <div id="slot-28">
+            <style>
+                #slot-28 {
+                    position: relative;
+                    height: 300px;
+                    background: #000;
+                    overflow: hidden;
+                    border: 2px solid #00ff00;
+                    border-radius: 8px;
+                    cursor: crosshair;
+                    font-family: 'Courier New', monospace;
+                }
+                
+                #slot-28 .rain-drop {
+                    position: absolute;
+                    color: #00ff00;
+                    font-size: 14px;
+                    line-height: 1;
+                    opacity: 0.8;
+                    text-shadow: 0 0 5px #00ff00;
+                    user-select: none;
+                    pointer-events: none;
+                }
+                
+                #slot-28 .rain-drop.bright {
+                    color: #ffffff;
+                    text-shadow: 0 0 10px #ffffff, 0 0 20px #00ff00;
+                    opacity: 1;
+                }
+                
+                #slot-28 .rain-drop.red {
+                    color: #ff0000;
+                    text-shadow: 0 0 5px #ff0000;
+                }
+                
+                #slot-28 .rain-drop.blue {
+                    color: #0088ff;
+                    text-shadow: 0 0 5px #0088ff;
+                }
+                
+                #slot-28 .rain-drop.purple {
+                    color: #8800ff;
+                    text-shadow: 0 0 5px #8800ff;
+                }
+                
+                #slot-28 .controls {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    z-index: 10;
+                    background: rgba(0, 0, 0, 0.8);
+                    padding: 10px;
+                    border-radius: 5px;
+                    border: 1px solid #00ff00;
+                }
+                
+                #slot-28 .controls button {
+                    background: #00ff00;
+                    color: #000;
+                    border: none;
+                    padding: 5px 10px;
+                    margin: 2px;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    font-family: inherit;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+                
+                #slot-28 .controls button:hover {
+                    background: #ffffff;
+                    box-shadow: 0 0 10px #00ff00;
+                }
+                
+                #slot-28 .info {
+                    position: absolute;
+                    bottom: 10px;
+                    right: 10px;
+                    color: #00ff00;
+                    font-size: 12px;
+                    text-shadow: 0 0 5px #00ff00;
+                }
+            </style>
+            
+            <div class="controls">
+                <button onclick="slot28ChangeColor('green')">Green</button>
+                <button onclick="slot28ChangeColor('red')">Red</button>
+                <button onclick="slot28ChangeColor('blue')">Blue</button>
+                <button onclick="slot28ChangeColor('purple')">Purple</button>
+                <button onclick="slot28ToggleSpeed()">Speed</button>
+            </div>
+            
+            <div class="info">
+                Move mouse to interact
+            </div>
+            
+            <script>
+                (function() {
+                    const slot28 = document.getElementById('slot-28');
+                    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?';
+                    let drops = [];
+                    let currentColor = 'green';
+                    let speed = 1;
+                    let isRunning = true;
+                    
+                    function slot28CreateDrop() {
+                        const drop = document.createElement('div');
+                        drop.className = 'rain-drop';
+                        drop.style.left = Math.random() * slot28.offsetWidth + 'px';
+                        drop.style.top = '-20px';
+                        drop.textContent = chars[Math.floor(Math.random() * chars.length)];
+                        slot28.appendChild(drop);
+                        
+                        const dropObj = {
+                            element: drop,
+                            x: parseInt(drop.style.left),
+                            y: -20,
+                            speed: 0.5 + Math.random() * 2,
+                            chars: []
+                        };
+                        
+                        // Tạo chuỗi ký tự cho drop
+                        for (let i = 0; i < 10 + Math.random() * 20; i++) {
+                            dropObj.chars.push(chars[Math.floor(Math.random() * chars.length)]);
+                        }
+                        
+                        drops.push(dropObj);
+                    }
+                    
+                    function slot28UpdateDrops() {
+                        if (!isRunning) return;
+                        
+                        drops.forEach((drop, index) => {
+                            drop.y += drop.speed * speed;
+                            drop.element.style.top = drop.y + 'px';
+                            
+                            // Cập nhật ký tự hiện tại
+                            const charIndex = Math.floor(drop.y / 20) % drop.chars.length;
+                            drop.element.textContent = drop.chars[charIndex];
+                            
+                            // Làm sáng ký tự cuối
+                            if (charIndex === drop.chars.length - 1) {
+                                drop.element.classList.add('bright');
+                            } else {
+                                drop.element.classList.remove('bright');
+                            }
+                            
+                            // Xóa drop khi ra khỏi màn hình
+                            if (drop.y > slot28.offsetHeight + 50) {
+                                drop.element.remove();
+                                drops.splice(index, 1);
+                            }
+                        });
+                        
+                        // Tạo drop mới
+                        if (Math.random() < 0.3) {
+                            slot28CreateDrop();
+                        }
+                        
+                        requestAnimationFrame(slot28UpdateDrops);
+                    }
+                    
+                    function slot28ChangeColor(color) {
+                        currentColor = color;
+                        drops.forEach(drop => {
+                            drop.element.className = 'rain-drop ' + color;
+                        });
+                    }
+                    
+                    function slot28ToggleSpeed() {
+                        speed = speed === 1 ? 2 : speed === 2 ? 0.5 : 1;
+                    }
+                    
+                    // Tương tác với chuột
+                    slot28.addEventListener('mousemove', function(e) {
+                        const rect = slot28.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        // Tạo hiệu ứng xung quanh chuột
+                        drops.forEach(drop => {
+                            const dx = drop.x - x;
+                            const dy = drop.y - y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            
+                            if (distance < 100) {
+                                const force = (100 - distance) / 100;
+                                drop.x += dx * force * 0.1;
+                                drop.element.style.left = drop.x + 'px';
+                                drop.element.style.transform = `scale(${1 + force * 0.5})`;
+                            }
+                        });
+                    });
+                    
+                    // Click để tạo burst
+                    slot28.addEventListener('click', function(e) {
+                        const rect = slot28.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        // Tạo nhiều drop từ vị trí click
+                        for (let i = 0; i < 10; i++) {
+                            const drop = document.createElement('div');
+                            drop.className = 'rain-drop ' + currentColor;
+                            drop.style.left = (x + (Math.random() - 0.5) * 100) + 'px';
+                            drop.style.top = y + 'px';
+                            drop.textContent = chars[Math.floor(Math.random() * chars.length)];
+                            drop.style.transform = `rotate(${(Math.random() - 0.5) * 360}deg)`;
+                            slot28.appendChild(drop);
+                            
+                            const dropObj = {
+                                element: drop,
+                                x: parseInt(drop.style.left),
+                                y: y,
+                                speed: 1 + Math.random() * 3,
+                                chars: []
+                            };
+                            
+                            for (let j = 0; j < 5; j++) {
+                                dropObj.chars.push(chars[Math.floor(Math.random() * chars.length)]);
+                            }
+                            
+                            drops.push(dropObj);
+                        }
+                    });
+                    
+                    // Khởi tạo
+                    for (let i = 0; i < 20; i++) {
+                        setTimeout(() => slot28CreateDrop(), i * 100);
+                    }
+                    
+                    slot28UpdateDrops();
+                    
+                    // Expose functions globally
+                    window.slot28ChangeColor = slot28ChangeColor;
+                    window.slot28ToggleSpeed = slot28ToggleSpeed;
+                })();
+            </script>
+        </div>
 
         <!-- == SLOT 29 == -->
         <div id="slot-29"></div>
