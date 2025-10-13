@@ -3608,7 +3608,256 @@
         <div id="slot-98"></div>
 
         <!-- == SLOT 99 == -->
-        <div id="slot-99"></div>
+        <div id="slot-99">
+          <div class="ocw99-wrap">
+            <div class="ocw99-hero">
+              <div class="ocw99-badge">Slot 99</div>
+              <h2 class="ocw99-title">Cảm ơn anh đã tạo ra trang web này</h2>
+              <p class="ocw99-subtitle">
+                <a href="https://www.facebook.com/Fidoublenn" target="_blank" rel="noopener" class="ocw99-link">
+                  Hải Phúc
+                </a>
+                tự hào là một phần trong anh :)) &lt;3
+              </p>
+        
+              <!-- Loading 99% -->
+              <div class="ocw99-progress">
+                <div class="ocw99-progress-track">
+                  <div class="ocw99-progress-bar" style="--p: 99;"></div>
+                </div>
+                <div class="ocw99-progress-label">Đang yêu đời… 99%</div>
+              </div>
+            </div>
+        
+            <!-- QR APP -->
+            <div class="ocw99-card">
+              <h3 class="ocw99-card-title">Tạo mã QR từ liên kết</h3>
+              <p class="ocw99-hint">Dán URL vào ô bên dưới, nhấn <strong>Tạo QR</strong> và tải về PNG.</p>
+        
+              <div class="ocw99-form">
+                <input
+                  id="ocw99-input"
+                  class="ocw99-input"
+                  type="url"
+                  placeholder="https://ví-dụ.com/đường-dẫn-của-bạn"
+                  inputmode="url"
+                  aria-label="Nhập liên kết để tạo QR"
+                />
+                <div class="ocw99-actions">
+                  <button id="ocw99-generate" class="ocw99-btn">Tạo QR</button>
+                  <button id="ocw99-download" class="ocw99-btn ocw99-btn-ghost" disabled>Tải PNG</button>
+                </div>
+              </div>
+        
+              <div class="ocw99-preview">
+                <div id="ocw99-qrcode" class="ocw99-qrcode" aria-live="polite" aria-label="Kết quả mã QR sẽ xuất hiện tại đây"></div>
+              </div>
+              <p class="ocw99-footnote">Tip: dùng link ngắn để QR sắc nét hơn.</p>
+            </div>
+          </div>
+        
+          <!-- Toast (nội bộ slot) -->
+          <div class="ocw99-toast" id="ocw99-toast" role="status" aria-live="polite"></div>
+        
+          <!-- Styles (scoped) -->
+          <style>
+            /* ===== SLOT 99 STYLES ===== */
+            #slot-99 {
+              --ocw99-bg: radial-gradient(1200px 800px at 10% 10%, #e8f0ff 0%, #f7f9ff 40%, #ffffff 65%);
+              --ocw99-primary-600: #4f46e5;
+              --ocw99-primary-700: #4338ca;
+              --ocw99-ring: rgba(79, 70, 229, 0.25);
+              --ocw99-text: #0f172a;
+              --ocw99-muted: #475569;
+              --ocw99-border: #e2e8f0;
+              --ocw99-card: rgba(255,255,255,0.7);
+              --ocw99-shadow: 0 8px 30px rgba(2, 6, 23, 0.08);
+        
+              font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+              color: var(--ocw99-text);
+              position: relative;
+              margin: 48px auto;
+              padding: 24px;
+              max-width: 980px;
+              border-radius: 20px;
+              background: var(--ocw99-bg);
+              border: 1px solid var(--ocw99-border);
+              box-shadow: var(--ocw99-shadow);
+              overflow: clip;
+              isolation: isolate;
+            }
+            #slot-99 .ocw99-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; }
+            @media (max-width: 900px) { #slot-99 .ocw99-wrap { grid-template-columns: 1fr; } }
+        
+            /* Hero */
+            #slot-99 .ocw99-hero { padding: 24px 12px 12px; position: relative; }
+            #slot-99 .ocw99-badge {
+              display: inline-block; padding: 6px 10px; font-size: 12px; font-weight: 700; letter-spacing: .04em;
+              text-transform: uppercase; color: #0f172a; background: #e0e7ff; border: 1px dashed #c7d2fe; border-radius: 999px;
+            }
+            #slot-99 .ocw99-title {
+              margin: 14px 0 6px; font-family: "Nunito", ui-rounded, system-ui, -apple-system, Segoe UI;
+              font-weight: 900; font-size: clamp(24px, 3.2vw, 40px); letter-spacing: -0.02em; line-height: 1.12;
+            }
+            #slot-99 .ocw99-subtitle { margin: 0 0 16px; color: var(--ocw99-muted); font-size: 15px; }
+            #slot-99 .ocw99-link {
+              color: var(--ocw99-primary-600); text-decoration: none; border-bottom: 2px solid transparent;
+              transition: border-color .2s, color .2s, background .2s; padding: 0 4px; border-radius: 6px;
+              background: rgba(79, 70, 229, 0.06);
+            }
+            #slot-99 .ocw99-link:hover { color: var(--ocw99-primary-700); border-color: var(--ocw99-primary-600); background: rgba(79, 70, 229, 0.12); }
+        
+            /* Progress 99% */
+            #slot-99 .ocw99-progress { margin-top: 18px; }
+            #slot-99 .ocw99-progress-track {
+              width: 100%; height: 12px; background: #eef2ff; border: 1px solid #e0e7ff; border-radius: 999px;
+              overflow: hidden; position: relative; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+            }
+            #slot-99 .ocw99-progress-bar {
+              --p: 99; height: 100%; width: calc(var(--p) * 1%);
+              background: linear-gradient(90deg, #818cf8, #4f46e5 55%, #312e81); border-right: 1px solid rgba(255,255,255,0.6);
+              position: relative; animation: ocw99-sheen 2.5s linear infinite;
+            }
+            #slot-99 .ocw99-progress-bar::after {
+              content: ""; position: absolute; inset: 0 -80% 0 -40%;
+              background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.35) 20%, transparent 40%);
+              transform: translateX(-60%); animation: ocw99-gloss 2.6s ease-in-out infinite; pointer-events: none;
+            }
+            #slot-99 .ocw99-progress-label { margin-top: 8px; font-size: 13px; color: #334155; font-weight: 600; }
+            @keyframes ocw99-sheen { 0% { filter: brightness(1); } 50% { filter: brightness(1.04); } 100% { filter: brightness(1); } }
+            @keyframes ocw99-gloss { 0% { transform: translateX(-65%); opacity: .7; } 60% { transform: translateX(10%); opacity: .95; } 100% { transform: translateX(40%); opacity: 0; } }
+        
+            /* Card */
+            #slot-99 .ocw99-card {
+              background: var(--ocw99-card); backdrop-filter: saturate(140%) blur(8px); border: 1px solid var(--ocw99-border);
+              border-radius: 18px; padding: 20px; box-shadow: var(--ocw99-shadow);
+            }
+            #slot-99 .ocw99-card-title { margin: 0 0 8px; font-weight: 800; font-size: 18px; letter-spacing: -.01em; }
+            #slot-99 .ocw99-hint { margin: 0 0 14px; font-size: 13px; color: var(--ocw99-muted); }
+        
+            /* Form */
+            #slot-99 .ocw99-form { display: grid; gap: 10px; }
+            #slot-99 .ocw99-input {
+              width: 100%; height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--ocw99-border); background: #ffffff;
+              font-size: 14px; color: var(--ocw99-text); outline: none; box-shadow: 0 1px 0 rgba(2,6,23,0.02), 0 1px 8px rgba(2,6,23,0.04) inset;
+              transition: box-shadow .2s, border-color .2s;
+            }
+            #slot-99 .ocw99-input:focus { border-color: var(--ocw99-primary-600); box-shadow: 0 0 0 6px var(--ocw99-ring); }
+            #slot-99 .ocw99-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+            #slot-99 .ocw99-btn {
+              appearance: none; border: 1px solid var(--ocw99-primary-600);
+              background: linear-gradient(180deg, #6366f1, #4f46e5); color: #fff; font-weight: 700; letter-spacing: .01em;
+              padding: 10px 14px; border-radius: 12px; cursor: pointer; transition: transform .06s ease, box-shadow .2s ease, filter .2s ease;
+              box-shadow: 0 6px 20px rgba(79,70,229,0.25), inset 0 -2px 0 rgba(0,0,0,0.15);
+            }
+            #slot-99 .ocw99-btn:hover { filter: brightness(1.05); }
+            #slot-99 .ocw99-btn:active { transform: translateY(1px); }
+            #slot-99 .ocw99-btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; filter: grayscale(.1); }
+            #slot-99 .ocw99-btn-ghost {
+              background: #fff; border: 1px solid var(--ocw99-border); color: var(--ocw99-primary-700);
+              box-shadow: 0 6px 20px rgba(2,6,23,0.06), inset 0 -2px 0 rgba(0,0,0,0.04);
+            }
+            #slot-99 .ocw99-btn-ghost:hover { background: #f8fafc; border-color: #dbeafe; }
+        
+            /* Preview */
+            #slot-99 .ocw99-preview {
+              margin-top: 14px; display: grid; place-items: center; min-height: 220px; border: 1px dashed #cbd5e1;
+              border-radius: 14px; background: linear-gradient(180deg, #ffffff 20%, #f8fafc);
+            }
+            #slot-99 .ocw99-qrcode canvas, #slot-99 .ocw99-qrcode img {
+              image-rendering: pixelated; border-radius: 10px; box-shadow: 0 8px 28px rgba(2, 6, 23, 0.08);
+            }
+            #slot-99 .ocw99-footnote { margin: 10px 0 0; font-size: 12px; color: var(--ocw99-muted); text-align: center; }
+        
+            /* Toast */
+            #slot-99 .ocw99-toast {
+              position: fixed; inset: auto 16px 16px auto; z-index: 1;
+              max-width: 92vw; background: #111827; color: #fff; border: 1px solid #111827; border-radius: 12px;
+              padding: 10px 14px; font-size: 14px; box-shadow: 0 10px 30px rgba(2,6,23,.25);
+              opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .2s, transform .2s;
+            }
+            #slot-99 .ocw99-toast--show { opacity: 1; transform: translateY(0); }
+          </style>
+        
+          <!-- QRCode library (không ảnh hưởng slot khác) -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+        
+          <!-- Logic (scoped) -->
+          <script>
+            (function ocw99App() {
+              const ready = () => {
+                const input  = document.getElementById("ocw99-input");
+                const genBtn = document.getElementById("ocw99-generate");
+                const dlBtn  = document.getElementById("ocw99-download");
+                const box    = document.getElementById("ocw99-qrcode");
+                const toast  = document.getElementById("ocw99-toast");
+        
+                function ocw99IsValidUrl(str) {
+                  try { const u = new URL(str); return !!u.protocol && !!u.hostname; }
+                  catch { return false; }
+                }
+                function ocw99Toast(msg, ms = 2200) {
+                  console.log("[slot-99]", msg);
+                  toast.textContent = msg;
+                  toast.classList.add("ocw99-toast--show");
+                  clearTimeout(ocw99Toast._t);
+                  ocw99Toast._t = setTimeout(() => toast.classList.remove("ocw99-toast--show"), ms);
+                }
+                function ocw99ClearQR() {
+                  box.innerHTML = "";
+                  dlBtn.disabled = true;
+                }
+                function ocw99Generate() {
+                  const url = input.value.trim();
+                  if (!ocw99IsValidUrl(url)) {
+                    input.focus();
+                    input.setSelectionRange(0, input.value.length);
+                    ocw99Toast("Vui lòng nhập đúng URL (ví dụ: https://example.com).");
+                    return;
+                  }
+                  ocw99ClearQR();
+                  new QRCode(box, {
+                    text: url, width: 240, height: 240, colorDark: "#111827", colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                  });
+                  setTimeout(() => { dlBtn.disabled = false; }, 120);
+                }
+                function ocw99DownloadPNG() {
+                  const canvas = box.querySelector("canvas");
+                  const img = box.querySelector("img");
+                  let dataURL;
+                  if (canvas) {
+                    dataURL = canvas.toDataURL("image/png");
+                  } else if (img) {
+                    const c = document.createElement("canvas");
+                    const s = Math.max(img.naturalWidth || 240, img.width || 240);
+                    c.width = s; c.height = s;
+                    const ctx = c.getContext("2d");
+                    ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, s, s);
+                    ctx.drawImage(img, 0, 0, s, s);
+                    dataURL = c.toDataURL("image/png");
+                  } else {
+                    ocw99Toast("Chưa có mã QR để tải.");
+                    return;
+                  }
+                  const a = document.createElement("a");
+                  a.href = dataURL; a.download = "openchaosweb-qr.png";
+                  document.body.appendChild(a); a.click(); a.remove();
+                }
+        
+                genBtn.addEventListener("click", ocw99Generate);
+                dlBtn.addEventListener("click", ocw99DownloadPNG);
+                input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); ocw99Generate(); } });
+        
+                if (!input.value) { input.value = "https://www.facebook.com/Fidoublenn"; }
+              };
+        
+              if (document.readyState === "complete" || document.readyState === "interactive") { setTimeout(ready, 0); }
+              else { document.addEventListener("DOMContentLoaded", ready); }
+            })();
+          </script>
+        </div>
+
 
         <!-- == SLOT 100 == -->
         <div id="slot-100"></div>
