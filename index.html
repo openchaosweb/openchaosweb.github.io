@@ -842,6 +842,468 @@
                     slot6DrawGame();
                 })();
             </script>
+
+            <style>
+                #slot-6 .memory-game-container {
+                    margin-top: 3em;
+                    padding: 20px;
+                    background: rgba(20, 10, 30, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #9d4edd;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .memory-game-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #c77dff;
+                    margin-bottom: 0.5em;
+                    text-shadow: 0 0 10px #9d4edd;
+                }
+
+                #slot-6 .memory-slogan {
+                    text-align: center;
+                    font-size: 1.1rem;
+                    color: #e0aaff;
+                    margin-bottom: 1.5em;
+                    font-style: italic;
+                }
+
+                #slot-6 .memory-stats {
+                    display: flex;
+                    justify-content: space-around;
+                    margin-bottom: 1.5em;
+                    flex-wrap: wrap;
+                    gap: 15px;
+                }
+
+                #slot-6 .memory-stat {
+                    font-size: 1.2rem;
+                    color: #c77dff;
+                    font-weight: 600;
+                }
+
+                #slot-6 .memory-grid {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 10px;
+                    max-width: 500px;
+                    margin: 0 auto 1.5em;
+                }
+
+                #slot-6 .memory-card {
+                    aspect-ratio: 1;
+                    background: linear-gradient(135deg, #7209b7 0%, #560bad 100%);
+                    border: 2px solid #9d4edd;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 2rem;
+                    font-weight: bold;
+                    color: transparent;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 8px rgba(157, 78, 221, 0.2);
+                }
+
+                #slot-6 .memory-card:hover:not(.flipped):not(.matched) {
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 12px rgba(157, 78, 221, 0.4);
+                }
+
+                #slot-6 .memory-card.flipped,
+                #slot-6 .memory-card.matched {
+                    background: linear-gradient(135deg, #e0aaff 0%, #c77dff 100%);
+                    color: #3c096c;
+                    transform: rotateY(180deg);
+                }
+
+                #slot-6 .memory-card.matched {
+                    opacity: 0.6;
+                    cursor: default;
+                }
+
+                #slot-6 .memory-btn {
+                    background: linear-gradient(135deg, #9d4edd 0%, #7209b7 100%);
+                    color: #fff;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(157, 78, 221, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    display: block;
+                    margin: 0 auto;
+                }
+
+                #slot-6 .memory-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(157, 78, 221, 0.5);
+                }
+
+                #slot-6 .tictactoe-container {
+                    margin-top: 3em;
+                    padding: 20px;
+                    background: rgba(30, 20, 10, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #ff6b35;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .tictactoe-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #ff8c42;
+                    margin-bottom: 0.5em;
+                    text-shadow: 0 0 10px #ff6b35;
+                }
+
+                #slot-6 .tictactoe-slogan {
+                    text-align: center;
+                    font-size: 1.1rem;
+                    color: #ffaa5a;
+                    margin-bottom: 1.5em;
+                    font-style: italic;
+                }
+
+                #slot-6 .tictactoe-status {
+                    text-align: center;
+                    font-size: 1.3rem;
+                    color: #ff8c42;
+                    margin-bottom: 1.5em;
+                    font-weight: 600;
+                    min-height: 30px;
+                }
+
+                #slot-6 .tictactoe-board {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 10px;
+                    max-width: 350px;
+                    margin: 0 auto 1.5em;
+                }
+
+                #slot-6 .tictactoe-cell {
+                    aspect-ratio: 1;
+                    background: linear-gradient(135deg, #2d1b00 0%, #5a3600 100%);
+                    border: 3px solid #ff6b35;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 3rem;
+                    font-weight: bold;
+                    color: #ff8c42;
+                    transition: all 0.2s;
+                    box-shadow: 0 4px 8px rgba(255, 107, 53, 0.2);
+                }
+
+                #slot-6 .tictactoe-cell:hover:not(.taken) {
+                    background: linear-gradient(135deg, #3d2b10 0%, #6a4610 100%);
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 12px rgba(255, 107, 53, 0.4);
+                }
+
+                #slot-6 .tictactoe-cell.taken {
+                    cursor: default;
+                }
+
+                #slot-6 .tictactoe-cell.winning {
+                    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+                    animation: slot6-tictactoe-pulse 0.5s ease;
+                }
+
+                @keyframes slot6-tictactoe-pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+
+                #slot-6 .tictactoe-btn {
+                    background: linear-gradient(135deg, #ff6b35 0%, #ff4500 100%);
+                    color: #fff;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    display: block;
+                    margin: 0 auto;
+                }
+
+                #slot-6 .tictactoe-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+                }
+            </style>
+
+            <div class="memory-game-container">
+                <h3 class="memory-game-title">Lat Hinh Nho - Memory Cards</h3>
+                <p class="memory-slogan">Hoang Anh thu thach ban nho duoc bao nhieu cap :&gt;&gt;</p>
+                
+                <div class="memory-stats">
+                    <div class="memory-stat">Moves: <span id="memoryMoves">0</span></div>
+                    <div class="memory-stat">Pairs: <span id="memoryPairs">0</span>/8</div>
+                    <div class="memory-stat">Time: <span id="memoryTime">0</span>s</div>
+                </div>
+
+                <div class="memory-grid" id="memoryGrid"></div>
+
+                <button class="memory-btn" onclick="slot6StartMemoryGame()">New Game</button>
+            </div>
+
+            <script>
+                (function() {
+                    const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+                    let cards = [];
+                    let flippedCards = [];
+                    let matchedPairs = 0;
+                    let moves = 0;
+                    let gameTime = 0;
+                    let timerInterval = null;
+                    let canFlip = true;
+
+                    function slot6InitMemoryGame() {
+                        const doubledSymbols = [...symbols, ...symbols];
+                        cards = doubledSymbols.sort(() => Math.random() - 0.5);
+                        flippedCards = [];
+                        matchedPairs = 0;
+                        moves = 0;
+                        gameTime = 0;
+                        canFlip = true;
+
+                        document.getElementById('memoryMoves').textContent = moves;
+                        document.getElementById('memoryPairs').textContent = matchedPairs;
+                        document.getElementById('memoryTime').textContent = gameTime;
+
+                        const grid = document.getElementById('memoryGrid');
+                        grid.innerHTML = '';
+
+                        cards.forEach((symbol, index) => {
+                            const card = document.createElement('div');
+                            card.className = 'memory-card';
+                            card.dataset.symbol = symbol;
+                            card.dataset.index = index;
+                            card.textContent = symbol;
+                            card.addEventListener('click', () => slot6FlipCard(card));
+                            grid.appendChild(card);
+                        });
+
+                        if (timerInterval) clearInterval(timerInterval);
+                        timerInterval = setInterval(() => {
+                            gameTime++;
+                            document.getElementById('memoryTime').textContent = gameTime;
+                        }, 1000);
+                    }
+
+                    function slot6FlipCard(card) {
+                        if (!canFlip || card.classList.contains('flipped') || 
+                            card.classList.contains('matched') || flippedCards.length >= 2) {
+                            return;
+                        }
+
+                        card.classList.add('flipped');
+                        flippedCards.push(card);
+
+                        if (flippedCards.length === 2) {
+                            moves++;
+                            document.getElementById('memoryMoves').textContent = moves;
+                            canFlip = false;
+
+                            setTimeout(() => {
+                                slot6CheckMatch();
+                            }, 800);
+                        }
+                    }
+
+                    function slot6CheckMatch() {
+                        const [card1, card2] = flippedCards;
+
+                        if (card1.dataset.symbol === card2.dataset.symbol) {
+                            card1.classList.add('matched');
+                            card2.classList.add('matched');
+                            matchedPairs++;
+                            document.getElementById('memoryPairs').textContent = matchedPairs;
+
+                            if (matchedPairs === 8) {
+                                clearInterval(timerInterval);
+                                setTimeout(() => {
+                                    alert(`Chuc mung! Ban hoan thanh trong ${moves} nuoc va ${gameTime} giay!`);
+                                }, 500);
+                            }
+                        } else {
+                            card1.classList.remove('flipped');
+                            card2.classList.remove('flipped');
+                        }
+
+                        flippedCards = [];
+                        canFlip = true;
+                    }
+
+                    window.slot6StartMemoryGame = function() {
+                        slot6InitMemoryGame();
+                    };
+
+                    slot6InitMemoryGame();
+                })();
+            </script>
+
+            <div class="tictactoe-container">
+                <h3 class="tictactoe-title">Tic-Tac-Toe</h3>
+                <p class="tictactoe-slogan">Chien voi AI cua Hoang Anh xem ai gioi hon nao :&gt;&gt;</p>
+                
+                <div class="tictactoe-status" id="tictactoeStatus">Your turn (X)</div>
+
+                <div class="tictactoe-board" id="tictactoeBoard"></div>
+
+                <button class="tictactoe-btn" onclick="slot6StartTicTacToe()">New Game</button>
+            </div>
+
+            <script>
+                (function() {
+                    let board = Array(9).fill(null);
+                    let currentPlayer = 'X';
+                    let gameActive = true;
+                    const winPatterns = [
+                        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                        [0, 4, 8], [2, 4, 6]
+                    ];
+
+                    function slot6InitTicTacToe() {
+                        board = Array(9).fill(null);
+                        currentPlayer = 'X';
+                        gameActive = true;
+                        document.getElementById('tictactoeStatus').textContent = 'Your turn (X)';
+
+                        const boardElement = document.getElementById('tictactoeBoard');
+                        boardElement.innerHTML = '';
+
+                        for (let i = 0; i < 9; i++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'tictactoe-cell';
+                            cell.dataset.index = i;
+                            cell.addEventListener('click', () => slot6TicTacToeMove(i, cell));
+                            boardElement.appendChild(cell);
+                        }
+                    }
+
+                    function slot6TicTacToeMove(index, cell) {
+                        if (!gameActive || board[index] || currentPlayer !== 'X') return;
+
+                        board[index] = 'X';
+                        cell.textContent = 'X';
+                        cell.classList.add('taken');
+
+                        if (slot6CheckWinner('X')) {
+                            slot6EndGame('Ban thang roi! Gioi qua di!');
+                            return;
+                        }
+
+                        if (board.every(cell => cell !== null)) {
+                            slot6EndGame('Hoa roi! Choi lai nao!');
+                            return;
+                        }
+
+                        currentPlayer = 'O';
+                        document.getElementById('tictactoeStatus').textContent = 'AI dang suy nghi...';
+                        
+                        setTimeout(() => {
+                            slot6AIMove();
+                        }, 500);
+                    }
+
+                    function slot6AIMove() {
+                        if (!gameActive) return;
+
+                        let move = slot6FindBestMove();
+                        board[move] = 'O';
+                        
+                        const cells = document.querySelectorAll('#tictactoeBoard .tictactoe-cell');
+                        cells[move].textContent = 'O';
+                        cells[move].classList.add('taken');
+
+                        if (slot6CheckWinner('O')) {
+                            slot6EndGame('AI thang roi! Thu lai nhe!');
+                            return;
+                        }
+
+                        if (board.every(cell => cell !== null)) {
+                            slot6EndGame('Hoa roi! Choi lai nao!');
+                            return;
+                        }
+
+                        currentPlayer = 'X';
+                        document.getElementById('tictactoeStatus').textContent = 'Your turn (X)';
+                    }
+
+                    function slot6FindBestMove() {
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === 'O' && board[b] === 'O' && board[c] === null) return c;
+                            if (board[a] === 'O' && board[c] === 'O' && board[b] === null) return b;
+                            if (board[b] === 'O' && board[c] === 'O' && board[a] === null) return a;
+                        }
+
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === 'X' && board[b] === 'X' && board[c] === null) return c;
+                            if (board[a] === 'X' && board[c] === 'X' && board[b] === null) return b;
+                            if (board[b] === 'X' && board[c] === 'X' && board[a] === null) return a;
+                        }
+
+                        if (board[4] === null) return 4;
+
+                        const corners = [0, 2, 6, 8];
+                        const availableCorners = corners.filter(i => board[i] === null);
+                        if (availableCorners.length > 0) {
+                            return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+                        }
+
+                        const availableMoves = board.map((cell, i) => cell === null ? i : null).filter(i => i !== null);
+                        return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                    }
+
+                    function slot6CheckWinner(player) {
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === player && board[b] === player && board[c] === player) {
+                                const cells = document.querySelectorAll('#tictactoeBoard .tictactoe-cell');
+                                cells[a].classList.add('winning');
+                                cells[b].classList.add('winning');
+                                cells[c].classList.add('winning');
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+
+                    function slot6EndGame(message) {
+                        gameActive = false;
+                        document.getElementById('tictactoeStatus').textContent = message;
+                    }
+
+                    window.slot6StartTicTacToe = function() {
+                        slot6InitTicTacToe();
+                    };
+
+                    slot6InitTicTacToe();
+                })();
+            </script>
         </div>
 
         <!-- == SLOT 7 == -->
