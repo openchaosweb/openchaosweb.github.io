@@ -123,10 +123,24 @@
             display: flex;
       justify-content: center;
       align-items: center;  
+      flex-direction: column;
             }
             #slot-4 canvas {
             border: 1px solid black;
                 }
+
+            #slot-4 button {
+                padding: 8px 16px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            #slot-4 button:hover {
+                background-color: #45a049;
+            }
             </style>
         <div id="slot4_gameoflife">
         <canvas id="slot4_canvas"
@@ -134,9 +148,11 @@
             height="400"></canvas>
     <br />
     <br />
+        <div id="slot4_btn">
     <button id="slot4_startbtn">Start</button>
     <button id="slot4_pausebtn">Pause</button>
     <button id="slot4_restartbtn">Restart</button>
+    </div>
     <script>
         // Initialize canvas and context
         const canvas = document.getElementById('slot4_canvas');
@@ -145,7 +161,7 @@
 
 
         // Define cell size and grid dimensions
-        const cellSize = 10;
+        const cellSize = 5;
         const numRows = Math.floor(canvas.height / cellSize);
         const numCols = Math.floor(canvas.width / cellSize);
 
