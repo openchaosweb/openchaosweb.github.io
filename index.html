@@ -4,10 +4,29 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>OpenChaosWeb - The world’s most unpredictable homepage</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
         <h1>Welcome to OpenChaosWeb</h1>
+        <!-- 
+            Each element should have its own <style> tag right ?
+        -->
+        <style>
+            h1 {
+                font-family: "Nunito", sans-serif;
+            }
+        </style>
         <h3>The world’s most unpredictable homepage</h3>
+        <style>
+            h3 {
+                font-family: "Nunito", sans-serif;
+                font-size: 1rem;
+                font-weight: 500;
+            }
+        </style>
 
         <!-- == SLOT 1 == -->
         <div id="slot-1">
@@ -19,16 +38,29 @@
 
         <!-- == SLOT 2 == -->
         <div id="slot-2">
+            <p>
+                Chao xìn. Một trang web thật tuyệt vời. Nếu đọc tới dòng này thì
+                xin chúc mừng, mời bác phát âm "cache" giống "cash" giúp tôi.
+            </p>
+            <style>
+                #slot-2 {
+                    font-family: "Inter", sans-serif;
+                    font-size: 1rem;
+                   padding: 2px;
+                   
+                }
+            </style>
             <script>
                 const slot_2 = document.querySelector("#slot-2");
-                slot_2.innerHTML = "Xin chào bro this is Vượng";
                 slot_2.style.color = `red`;
-                slot_2.height = `10px`;
-                slot_2.style.width = `100px`;
-
+                slot_2.height = `5px`;
+                slot_2.style.maxWidth = `25px`;
                 setTimeout(() => {
                     const slot_1 = document.querySelector("#slot-1");
-                    slot_1.innerHTML = `Chào bác rể Thái Bềnh`;
+                    slot_1.innerHTML = `Trang web này tôi để làm kỷ niệm.`;
+                    console.log(
+                        "Tôi định defaced với một dòng trạng thái hấp dẫn hơn ai bảo quá yêu vợ :-))",
+                    );
                 }, 2000);
             </script>
         </div>
