@@ -1230,7 +1230,102 @@
         <div id="slot-10"></div>
 
         <!-- == SLOT 11 == -->
-        <div id="slot-11"></div>
+        <div id="slot-11">
+            <style>
+                #slot-11 {
+                    font-family: "Courier New", monospace;
+                    background-color: #000;
+                    color: #0f0;
+                    padding: 10px;
+                    border-radius: 8px;
+                    border: 2px solid #0f0;
+                    max-width: 600px;
+                    margin: 20px auto;
+                    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+                }
+
+                #slot-11 .line {
+                    display: flex;
+                    align-items: center;
+                }
+
+                #slot-11 .prompt {
+                    margin-right: 10px;
+                }
+
+                #slot-11 .input {
+                    flex-grow: 1;
+                    background: transparent;
+                    border: none;
+                    color: #0f0;
+                    outline: none;
+                    font-family: inherit;
+                    font-size: inherit;
+                }
+
+                #slot-11 .output {
+                    margin-top: 10px;
+                }
+            </style>
+            <div id="terminal">
+                <div class="line">
+                    <span class="prompt">C:\User\DevVietnam&gt;</span>
+                    <input
+                        type="text"
+                        class="input"
+                        id="commandInput"
+                        placeholder="Type to become a hacker hehe..."
+                        autofocus
+                    />
+                </div>
+                <div class="output" id="output"></div>
+            </div>
+            <script>
+                console.log("baolng hehe");
+                const commandInput = document.getElementById("commandInput");
+                const output = document.getElementById("output");
+
+                commandInput.addEventListener("keydown", function (e) {
+                    if (e.key === "Enter") {
+                        const command = commandInput.value.trim();
+                        if (command) {
+                            processCommand(command);
+                            commandInput.value = "";
+                        }
+                    }
+                });
+
+                function processCommand(command) {
+                    const line = document.createElement("div");
+                    line.className = "line";
+                    line.innerHTML = `<span class="prompt">C:\\User\\DevVietnam&gt;</span> ${command}`;
+                    output.appendChild(line);
+
+                    let response = "";
+                    switch (command.toLowerCase()) {
+                        case "help":
+                            response =
+                                "Available commands: help, about, clear, echo [text]";
+                            break;
+                        case "about":
+                            response =
+                                "Have a good day! - DevVietnam";
+                            break;
+                        case "clear":
+                            output.innerHTML = "";
+                            return;
+                        case "echo":
+                            response = command.slice(5);
+                            break;
+                    }
+
+                    const responseLine = document.createElement("div");
+                    responseLine.className = "line";
+                    responseLine.innerHTML = `<span class="prompt">C:\\User\\DevVietnam&gt;</span> ${response}`;
+                    output.appendChild(responseLine);
+                }
+            </script>
+        </div>
 
         <!-- == SLOT 12 == -->
         <div id="slot-12"></div>
