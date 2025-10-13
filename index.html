@@ -1841,7 +1841,15 @@
         <div id="slot-65"></div>
 
         <!-- == SLOT 66 == -->
-        <div id="slot-66"></div>
+        <div id="slot-66">
+            <button onclick="slot66Click()">Open Dialog Button</button>
+            <div id="back-66" style="display: none; background: black; z-index: 9999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh"></div>
+            <script>
+                function slot66Click() {
+                    document.getElementById('back-66').style.display = 'block';
+                }
+            </script>
+        </div>
 
         <!-- == SLOT 67 == -->
         <div id="slot-67"></div>
