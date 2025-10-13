@@ -1743,7 +1743,188 @@
         </div>
 
         <!-- == SLOT 29 == -->
-        <div id="slot-29"></div>
+        <div id="slot-29">
+            <style>
+                #slot-29 {
+                    width: 100%;
+                    max-width: 500px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+
+                #slot-29 .centered {
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(10px);
+                    border-radius: 24px;
+                    padding: 40px;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    text-align: center;
+                    animation: fadeIn 0.6s ease-out;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                #mtttm {
+                    font-size: 32px;
+                    font-weight: 700;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    margin-bottom: 12px;
+                    letter-spacing: -0.5px;
+                }
+
+                #slot-29 .centered > p {
+                    color: #64748b;
+                    font-size: 16px;
+                    margin-bottom: 24px;
+                    font-weight: 500;
+                }
+
+                #age_e {
+                    margin-bottom: 20px;
+                    width: 250px;
+                    padding: 16px 20px;
+                    font-size: 18px;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 12px;
+                    outline: none;
+                    transition: all 0.3s ease;
+                    font-family: inherit;
+                    text-align: center;
+                    background: #f8fafc;
+                }
+
+                #age_e:focus {
+                    border-color: #667eea;
+                    background: white;
+                    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+                    transform: translateY(-2px);
+                }
+
+                #age_e:hover {
+                    border-color: #cbd5e1;
+                }
+
+                #age_a {
+                    min-height: 60px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 20px 0;
+                    padding: 16px;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #1e293b;
+                    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                    border-radius: 12px;
+                    border-left: 4px solid #f59e0b;
+                    animation: slideIn 0.4s ease-out;
+                    line-height: 1.6;
+                }
+
+                #age_a:empty {
+                    display: none;
+                }
+
+                @keyframes slideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+
+                #nut_adawdawdawdawdawd {
+                    width: 100%;
+                    padding: 16px 32px;
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: white;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border: none;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                #nut_adawdawdawdawdawd:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+                }
+
+                #nut_adawdawdawdawdawd:active {
+                    transform: translateY(0);
+                    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+                }
+
+                @media (max-width: 600px) {
+                    #slot-29 .centered {
+                        padding: 30px 20px;
+                    }
+
+                    #mtttm {
+                        font-size: 26px;
+                    }
+
+                    #age_e, #nut_adawdawdawdawdawd {
+                        font-size: 16px;
+                    }
+
+                    #age_a {
+                        font-size: 16px;
+                    }
+                }
+            </style>
+           <div class="centered">
+            <h2 id="mtttm">Máy tính tuổi thông minh</h2>
+            <p>Nhập tuổi của bạn</p>
+            <input type="text" onfocus="this.value=''" onchange="mod();" id="age_e">
+            <p id="age_a"></p>
+            <button id="nut_adawdawdawdawdawd" onclick="age()">Tính tuổi của bạn</button>
+            </div>
+            <script>
+               var inc = 0, inb = 0; 
+                function age() { 
+                    var n = document.getElementById("age_e").value, 
+                        e = n + " là tuổi clgt???"; 
+                    if (0 == document.getElementById("age_e").value.length || isNaN(n)) 
+                        if (0 == document.getElementById("age_e").value.length) 
+                            document.getElementById("age_a").innerHTML = "Chưa nhập gì hết."; 
+                        else { 
+                            switch (inc) { 
+                                case 0: document.getElementById("age_a").innerHTML = e; break; 
+                                case 1: document.getElementById("age_a").innerHTML = "Đây là lần thứ 2 rồi nhưng bạn vẫn nhập sai."; break; 
+                                case 2: document.getElementById("age_a").innerHTML = "Thật ra bạn chỉ bấm cái nút này cho vui thôi phải không?" 
+                            }
+                            inc++; 
+                        } 
+                    else 
+                        0 == inb ? (document.getElementById("age_a").innerHTML = "Bạn đã " + n + " tuổi rồi.", inc = 0) : document.getElementById("age_a").innerHTML = "Bạn đã nhấn cái nút này " + inb + " lần, tuổi của bạn vẫn là " + n, inb++; 
+                    if (3 < inc) 
+                        for (var t = 0; t <= inc; t++) document.getElementById("age_a").innerHTML = " đừng có nhấn nữa".repeat(t); 
+                    6 == inc && (document.getElementById("age_a").innerHTML = "nhấn thêm lần nữa xem?"), 
+                    7 == inc && (document.getElementById("age_a").innerHTML = "chắc chưa?", document.getElementById("nut_adawdawdawdawdawd").innerHTML = "chắc."), 
+                    7 < inc && (window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
+                }
+            </script>
+        </div>
 
         <!-- == SLOT 30 == -->
         <div id="slot-30"></div>
