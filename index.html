@@ -371,7 +371,120 @@
         <div id="slot-17"></div>
 
         <!-- == SLOT 18 == -->
-        <div id="slot-18"></div>
+        <div id="slot-18">
+            <style>
+                @keyframes magicBlink {
+        
+                    0%,
+                    100% {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+        
+                    25% {
+                        opacity: 0.7;
+                        transform: scale(1.05);
+                    }
+        
+                    50% {
+                        opacity: 1;
+                        transform: scale(1.1);
+                    }
+        
+                    75% {
+                        opacity: 0.7;
+                        transform: scale(1.05);
+                    }
+                }
+        
+                @keyframes magicGlow {
+        
+                    0%,
+                    100% {
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 10px rgba(68, 68, 255, 0.5);
+                    }
+        
+                    50% {
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 25px rgba(68, 68, 255, 1), 0 0 40px rgba(68, 68, 255, 0.8);
+                    }
+                }
+        
+                @keyframes buttonMagic {
+        
+                    0%,
+                    100% {
+                        opacity: 1;
+                        transform: scale(1) rotate(0deg);
+                    }
+        
+                    25% {
+                        opacity: 0.8;
+                        transform: scale(1.08) rotate(-2deg);
+                    }
+        
+                    50% {
+                        opacity: 1;
+                        transform: scale(1.15) rotate(2deg);
+                    }
+        
+                    75% {
+                        opacity: 0.8;
+                        transform: scale(1.08) rotate(-2deg);
+                    }
+                }
+        
+                @keyframes buttonGlow {
+        
+                    0%,
+                    100% {
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 68, 68, 0.6);
+                    }
+        
+                    50% {
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 68, 68, 1), 0 0 50px rgba(255, 68, 68, 0.8);
+                    }
+                }
+        
+                #countdown-message {
+                    animation: magicBlink 1.5s ease-in-out infinite, magicGlow 1.5s ease-in-out infinite;
+                }
+        
+                #miracle-button {
+                    animation: buttonMagic 1s ease-in-out infinite, buttonGlow 1s ease-in-out infinite;
+                }
+            </style>
+            <p id="countdown-message"
+                style="position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                Điều kì diệu sẽ hiện ra sau 5 giây</p>
+            <button id="miracle-button"
+                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
+                vào đây để thấy điều kì diệu</button>
+            <script>
+                (function () {
+                    let countdown = 5;
+                    const messageElement = document.getElementById('countdown-message');
+                    const miracleButton = document.getElementById('miracle-button');
+
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        if (countdown > 0) {
+                            messageElement.textContent = `Điều kì diệu sẽ hiện ra sau ${countdown} giây`;
+                        } else {
+                            messageElement.style.display = 'none';
+                            miracleButton.style.display = 'block';
+                            clearInterval(countdownInterval);
+                        }
+                    }, 1000);
+
+                    miracleButton.addEventListener('click', () => {
+                        window.open('https://youtu.be/dQw4w9WgXcQ', '_blank');
+                        setInterval(() => {
+                            window.open('https://youtu.be/dQw4w9WgXcQ', '_blank');
+                        }, 1000);
+                    });
+                })();
+            </script>
+        </div>
 
         <!-- == SLOT 19 == -->
         <div id="slot-19"></div>
