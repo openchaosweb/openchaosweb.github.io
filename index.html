@@ -428,7 +428,7 @@
             </style>
 
             <div class="header">
-                <span class="header__title">Hoàng Anh xin slot 6 nhé!</span>
+                <span class="header__title">Hí Anh Em - Hoàng Anh nè anh em!</span>
             </div>
             <div>
             <em>Follow mình nhé anh em:</em>
@@ -451,7 +451,1052 @@
                     </li>
                 </ul>
             </div>
-            <p class="signature">Vẫn là Hoàng Anh xin slot 6 nhé! <span style="color:#ffd700;">✨</span></p>
+
+            <!-- Snake Game Section -->
+            <style>
+                #slot-6 .snake-game-container {
+                    margin-top: 2em;
+                    padding: 20px;
+                    background: rgba(10, 20, 15, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #0ff06b;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .snake-game-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #0fffc3;
+                    margin-bottom: 1em;
+                    text-shadow: 0 0 10px #0ff06b;
+                }
+
+                #slot-6 .snake-game-info {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1em;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+
+                #slot-6 .snake-score {
+                    font-size: 1.3rem;
+                    font-weight: 600;
+                    color: #fff66b;
+                    text-shadow: 0 0 8px #fff66b;
+                }
+
+                #slot-6 .snake-high-score {
+                    font-size: 1.1rem;
+                    color: #0fffb0;
+                }
+
+                #slot-6 .snake-canvas-wrapper {
+                    position: relative;
+                    display: inline-block;
+                    margin: 0 auto;
+                    width: 100%;
+                    text-align: center;
+                }
+
+                #slot-6 #snakeCanvas {
+                    background: #1a1a1a;
+                    border: 3px solid #0ff06b;
+                    border-radius: 8px;
+                    box-shadow: 0 0 20px rgba(15, 240, 107, 0.3);
+                    display: block;
+                    margin: 0 auto;
+                    max-width: 100%;
+                    height: auto;
+                }
+
+                #slot-6 .snake-controls {
+                    margin-top: 1.5em;
+                    text-align: center;
+                }
+
+                #slot-6 .snake-btn {
+                    background: linear-gradient(135deg, #0ff06b 0%, #00cc55 100%);
+                    color: #000;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(15, 240, 107, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+
+                #slot-6 .snake-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(15, 240, 107, 0.5);
+                }
+
+                #slot-6 .snake-btn:active {
+                    transform: translateY(0);
+                }
+
+                #slot-6 .snake-instructions {
+                    margin-top: 1em;
+                    text-align: center;
+                    color: #0fffb0;
+                    font-size: 0.95rem;
+                    opacity: 0.8;
+                }
+
+                #slot-6 .game-over-overlay {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.9);
+                    padding: 30px;
+                    border-radius: 12px;
+                    border: 2px solid #ff4444;
+                    text-align: center;
+                    display: none;
+                    z-index: 10;
+                }
+
+                #slot-6 .game-over-overlay.show {
+                    display: block;
+                    animation: slot6-fadeIn 0.3s ease;
+                }
+
+                @keyframes slot6-fadeIn {
+                    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                }
+
+                #slot-6 .game-over-text {
+                    color: #ff4444;
+                    font-size: 2rem;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    text-shadow: 0 0 10px #ff4444;
+                }
+
+                #slot-6 .final-score {
+                    color: #fff66b;
+                    font-size: 1.5rem;
+                    margin-bottom: 20px;
+                }
+            </style>
+
+            <div class="snake-game-container">
+                <h3 class="snake-game-title">🐍 Snake Game</h3>
+                
+                <div class="snake-game-info">
+                    <div class="snake-score">Score: <span id="snakeScore">0</span></div>
+                    <div class="snake-high-score">High Score: <span id="snakeHighScore">0</span></div>
+                </div>
+
+                <div class="snake-canvas-wrapper">
+                    <canvas id="snakeCanvas" width="400" height="400"></canvas>
+                    <div class="game-over-overlay" id="gameOverOverlay">
+                        <div class="game-over-text">GAME OVER!</div>
+                        <div class="final-score">Final Score: <span id="finalScore">0</span></div>
+                        <button class="snake-btn" onclick="slot6RestartSnakeGame()">Play Again</button>
+                    </div>
+                </div>
+
+                <div class="snake-controls">
+                    <button class="snake-btn" id="snakeStartBtn" onclick="slot6StartSnakeGame()">Start Game</button>
+                </div>
+
+                <div class="snake-instructions">
+                    Use Arrow Keys (↑ ↓ ← →) or WASD to control the snake
+                </div>
+            </div>
+
+            <script>
+                (function() {
+                    const canvas = document.getElementById('snakeCanvas');
+                    const ctx = canvas.getContext('2d');
+                    const gameOverOverlay = document.getElementById('gameOverOverlay');
+                    
+                    const GRID_SIZE = 20;
+                    const GRID_WIDTH = canvas.width / GRID_SIZE;
+                    const GRID_HEIGHT = canvas.height / GRID_SIZE;
+                    const INITIAL_SPEED = 100; 
+                    
+                    let snake = [];
+                    let direction = { x: 1, y: 0 };
+                    let nextDirection = { x: 1, y: 0 };
+                    let food = { x: 0, y: 0 };
+                    let score = 0;
+                    let highScore = localStorage.getItem('snakeHighScore') || 0; 
+                    let gameLoop = null;
+                    let isGameRunning = false; 
+                    let gameSpeed = INITIAL_SPEED;
+                    
+                    document.getElementById('snakeHighScore').textContent = highScore;
+                    
+                    function slot6InitGame() {
+                        snake = [
+                            { x: Math.floor(GRID_WIDTH / 2), y: Math.floor(GRID_HEIGHT / 2) },
+                            { x: Math.floor(GRID_WIDTH / 2) - 1, y: Math.floor(GRID_HEIGHT / 2) },
+                            { x: Math.floor(GRID_WIDTH / 2) - 2, y: Math.floor(GRID_HEIGHT / 2) }
+                        ];
+                        
+                        direction = { x: 1, y: 0 };
+                        nextDirection = { x: 1, y: 0 };
+                        
+                        score = 0;
+                        gameSpeed = INITIAL_SPEED;
+                        document.getElementById('snakeScore').textContent = score;
+                        
+                        slot6SpawnFood();
+                        
+                        gameOverOverlay.classList.remove('show');
+                    }
+                    
+                    function slot6SpawnFood() {
+                        let validPosition = false;
+                        
+                        while (!validPosition) {
+                            food.x = Math.floor(Math.random() * GRID_WIDTH);
+                            food.y = Math.floor(Math.random() * GRID_HEIGHT);
+                            
+                            validPosition = !snake.some(segment => 
+                                segment.x === food.x && segment.y === food.y
+                            );
+                        }
+                    }
+                    
+                    function slot6UpdateGame() {
+                        direction = { ...nextDirection };
+                        
+                        const newHead = {
+                            x: snake[0].x + direction.x,
+                            y: snake[0].y + direction.y
+                        };
+                        
+                        if (newHead.x < 0 || newHead.x >= GRID_WIDTH || 
+                            newHead.y < 0 || newHead.y >= GRID_HEIGHT) {
+                            slot6GameOver();
+                            return;
+                        }
+                        
+                        if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
+                            slot6GameOver();
+                            return;
+                        }
+                        
+                        snake.unshift(newHead);
+                        
+                        if (newHead.x === food.x && newHead.y === food.y) {
+                            score += 10;
+                            document.getElementById('snakeScore').textContent = score;
+                            
+                            if (score > highScore) {
+                                highScore = score;
+                                localStorage.setItem('snakeHighScore', highScore);
+                                document.getElementById('snakeHighScore').textContent = highScore;
+                            }
+                            
+                            slot6SpawnFood();
+                            
+                            if (gameSpeed > 50) {
+                                gameSpeed = Math.max(50, gameSpeed - 2);
+                                clearInterval(gameLoop);
+                                gameLoop = setInterval(slot6GameTick, gameSpeed);
+                            }
+                        } else {
+                            snake.pop();
+                        }
+                    }
+                    
+                 
+                    function slot6DrawGame() {
+                        ctx.fillStyle = '#1a1a1a';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
+                        ctx.strokeStyle = '#2a2a2a';
+                        ctx.lineWidth = 0.5;
+                        for (let i = 0; i <= GRID_WIDTH; i++) {
+                            ctx.beginPath();
+                            ctx.moveTo(i * GRID_SIZE, 0);
+                            ctx.lineTo(i * GRID_SIZE, canvas.height);
+                            ctx.stroke();
+                        }
+                        for (let i = 0; i <= GRID_HEIGHT; i++) {
+                            ctx.beginPath();
+                            ctx.moveTo(0, i * GRID_SIZE);
+                            ctx.lineTo(canvas.width, i * GRID_SIZE);
+                            ctx.stroke();
+                        }
+                        
+                        snake.forEach((segment, index) => {
+                            const alpha = 1 - (index / snake.length) * 0.5;
+                            
+                            if (index === 0) {
+                                ctx.fillStyle = '#0fffc3';
+                                ctx.shadowBlur = 15;
+                                ctx.shadowColor = '#0fffc3';
+                            } else {
+                                ctx.fillStyle = `rgba(15, 240, 107, ${alpha})`;
+                                ctx.shadowBlur = 5;
+                                ctx.shadowColor = '#0ff06b';
+                            }
+                            
+                            const x = segment.x * GRID_SIZE;
+                            const y = segment.y * GRID_SIZE;
+                            const size = GRID_SIZE - 2;
+                            const radius = 4;
+                            
+                            ctx.beginPath();
+                            ctx.roundRect(x + 1, y + 1, size, size, radius);
+                            ctx.fill();
+                        });
+                        
+                        ctx.shadowBlur = 0;
+                        
+                        const foodX = food.x * GRID_SIZE;
+                        const foodY = food.y * GRID_SIZE;
+                        const time = Date.now() / 200;
+                        const pulse = Math.sin(time) * 0.2 + 0.8;
+                        
+                        ctx.fillStyle = '#fff66b';
+                        ctx.shadowBlur = 20;
+                        ctx.shadowColor = '#fff66b';
+                        
+                        ctx.beginPath();
+                        ctx.arc(
+                            foodX + GRID_SIZE / 2, 
+                            foodY + GRID_SIZE / 2, 
+                            (GRID_SIZE / 2 - 2) * pulse, 
+                            0, 
+                            Math.PI * 2
+                        );
+                        ctx.fill();
+                        
+                        ctx.shadowBlur = 0;
+                    }
+                    
+                    function slot6GameTick() {
+                        slot6UpdateGame();
+                        slot6DrawGame();
+                    }
+                    
+                    function slot6GameOver() {
+                        isGameRunning = false;
+                        clearInterval(gameLoop);
+                        
+                        document.getElementById('finalScore').textContent = score;
+                        gameOverOverlay.classList.add('show');
+                        document.getElementById('snakeStartBtn').textContent = 'Start Game';
+                    }
+                    
+                    window.slot6StartSnakeGame = function() {
+                        if (!isGameRunning) {
+                            slot6InitGame();
+                            isGameRunning = true;
+                            gameLoop = setInterval(slot6GameTick, gameSpeed);
+                            document.getElementById('snakeStartBtn').textContent = 'Playing...';
+                            slot6DrawGame();
+                        }
+                    };
+                    
+                    window.slot6RestartSnakeGame = function() {
+                        slot6StartSnakeGame();
+                    };
+                    
+                    document.addEventListener('keydown', function(e) {
+                        if (!isGameRunning) return;
+                        
+                        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                            e.preventDefault();
+                        }
+                        
+                        switch(e.key) {
+                            case 'ArrowUp':
+                            case 'w':
+                            case 'W':
+                                if (direction.y === 0) nextDirection = { x: 0, y: -1 };
+                                break;
+                            case 'ArrowDown':
+                            case 's':
+                            case 'S':
+                                if (direction.y === 0) nextDirection = { x: 0, y: 1 };
+                                break;
+                            case 'ArrowLeft':
+                            case 'a':
+                            case 'A':
+                                if (direction.x === 0) nextDirection = { x: -1, y: 0 };
+                                break;
+                            case 'ArrowRight':
+                            case 'd':
+                            case 'D':
+                                if (direction.x === 0) nextDirection = { x: 1, y: 0 };
+                                break;
+                        }
+                    });
+                    
+                    slot6DrawGame();
+                })();
+            </script>
+
+            <style>
+                #slot-6 .memory-game-container {
+                    margin-top: 3em;
+                    padding: 20px;
+                    background: rgba(20, 10, 30, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #9d4edd;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .memory-game-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #c77dff;
+                    margin-bottom: 0.5em;
+                    text-shadow: 0 0 10px #9d4edd;
+                }
+
+                #slot-6 .memory-slogan {
+                    text-align: center;
+                    font-size: 1.1rem;
+                    color: #e0aaff;
+                    margin-bottom: 1.5em;
+                    font-style: italic;
+                }
+
+                #slot-6 .memory-stats {
+                    display: flex;
+                    justify-content: space-around;
+                    margin-bottom: 1.5em;
+                    flex-wrap: wrap;
+                    gap: 15px;
+                }
+
+                #slot-6 .memory-stat {
+                    font-size: 1.2rem;
+                    color: #c77dff;
+                    font-weight: 600;
+                }
+
+                #slot-6 .memory-grid {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 10px;
+                    max-width: 500px;
+                    margin: 0 auto 1.5em;
+                }
+
+                #slot-6 .memory-card {
+                    aspect-ratio: 1;
+                    background: linear-gradient(135deg, #7209b7 0%, #560bad 100%);
+                    border: 2px solid #9d4edd;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 2rem;
+                    font-weight: bold;
+                    color: transparent;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 8px rgba(157, 78, 221, 0.2);
+                }
+
+                #slot-6 .memory-card:hover:not(.flipped):not(.matched) {
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 12px rgba(157, 78, 221, 0.4);
+                }
+
+                #slot-6 .memory-card.flipped,
+                #slot-6 .memory-card.matched {
+                    background: linear-gradient(135deg, #e0aaff 0%, #c77dff 100%);
+                    color: #3c096c;
+                    transform: rotateY(180deg);
+                }
+
+                #slot-6 .memory-card.matched {
+                    opacity: 0.6;
+                    cursor: default;
+                }
+
+                #slot-6 .memory-btn {
+                    background: linear-gradient(135deg, #9d4edd 0%, #7209b7 100%);
+                    color: #fff;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(157, 78, 221, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    display: block;
+                    margin: 0 auto;
+                }
+
+                #slot-6 .memory-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(157, 78, 221, 0.5);
+                }
+
+                #slot-6 .tictactoe-container {
+                    margin-top: 3em;
+                    padding: 20px;
+                    background: rgba(30, 20, 10, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #ff6b35;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .tictactoe-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #ff8c42;
+                    margin-bottom: 0.5em;
+                    text-shadow: 0 0 10px #ff6b35;
+                }
+
+                #slot-6 .tictactoe-slogan {
+                    text-align: center;
+                    font-size: 1.1rem;
+                    color: #ffaa5a;
+                    margin-bottom: 1.5em;
+                    font-style: italic;
+                }
+
+                #slot-6 .tictactoe-status {
+                    text-align: center;
+                    font-size: 1.3rem;
+                    color: #ff8c42;
+                    margin-bottom: 1.5em;
+                    font-weight: 600;
+                    min-height: 30px;
+                }
+
+                #slot-6 .tictactoe-board {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 10px;
+                    max-width: 350px;
+                    margin: 0 auto 1.5em;
+                }
+
+                #slot-6 .tictactoe-cell {
+                    aspect-ratio: 1;
+                    background: linear-gradient(135deg, #2d1b00 0%, #5a3600 100%);
+                    border: 3px solid #ff6b35;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 3rem;
+                    font-weight: bold;
+                    color: #ff8c42;
+                    transition: all 0.2s;
+                    box-shadow: 0 4px 8px rgba(255, 107, 53, 0.2);
+                }
+
+                #slot-6 .tictactoe-cell:hover:not(.taken) {
+                    background: linear-gradient(135deg, #3d2b10 0%, #6a4610 100%);
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 12px rgba(255, 107, 53, 0.4);
+                }
+
+                #slot-6 .tictactoe-cell.taken {
+                    cursor: default;
+                }
+
+                #slot-6 .tictactoe-cell.winning {
+                    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+                    animation: slot6-tictactoe-pulse 0.5s ease;
+                }
+
+                @keyframes slot6-tictactoe-pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+
+                #slot-6 .tictactoe-btn {
+                    background: linear-gradient(135deg, #ff6b35 0%, #ff4500 100%);
+                    color: #fff;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    display: block;
+                    margin: 0 auto;
+                }
+
+                #slot-6 .tictactoe-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+                }
+            </style>
+
+            <div class="memory-game-container">
+                <h3 class="memory-game-title">Lat Hinh Nho - Memory Cards</h3>
+                <p class="memory-slogan">Hoang Anh thu thach ban nho duoc bao nhieu cap :&gt;&gt;</p>
+                
+                <div class="memory-stats">
+                    <div class="memory-stat">Moves: <span id="memoryMoves">0</span></div>
+                    <div class="memory-stat">Pairs: <span id="memoryPairs">0</span>/8</div>
+                    <div class="memory-stat">Time: <span id="memoryTime">0</span>s</div>
+                </div>
+
+                <div class="memory-grid" id="memoryGrid"></div>
+
+                <button class="memory-btn" onclick="slot6StartMemoryGame()">New Game</button>
+            </div>
+
+            <script>
+                (function() {
+                    const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+                    let cards = [];
+                    let flippedCards = [];
+                    let matchedPairs = 0;
+                    let moves = 0;
+                    let gameTime = 0;
+                    let timerInterval = null;
+                    let canFlip = true;
+
+                    function slot6InitMemoryGame() {
+                        const doubledSymbols = [...symbols, ...symbols];
+                        cards = doubledSymbols.sort(() => Math.random() - 0.5);
+                        flippedCards = [];
+                        matchedPairs = 0;
+                        moves = 0;
+                        gameTime = 0;
+                        canFlip = true;
+
+                        document.getElementById('memoryMoves').textContent = moves;
+                        document.getElementById('memoryPairs').textContent = matchedPairs;
+                        document.getElementById('memoryTime').textContent = gameTime;
+
+                        const grid = document.getElementById('memoryGrid');
+                        grid.innerHTML = '';
+
+                        cards.forEach((symbol, index) => {
+                            const card = document.createElement('div');
+                            card.className = 'memory-card';
+                            card.dataset.symbol = symbol;
+                            card.dataset.index = index;
+                            card.textContent = symbol;
+                            card.addEventListener('click', () => slot6FlipCard(card));
+                            grid.appendChild(card);
+                        });
+
+                        if (timerInterval) clearInterval(timerInterval);
+                        timerInterval = setInterval(() => {
+                            gameTime++;
+                            document.getElementById('memoryTime').textContent = gameTime;
+                        }, 1000);
+                    }
+
+                    function slot6FlipCard(card) {
+                        if (!canFlip || card.classList.contains('flipped') || 
+                            card.classList.contains('matched') || flippedCards.length >= 2) {
+                            return;
+                        }
+
+                        card.classList.add('flipped');
+                        flippedCards.push(card);
+
+                        if (flippedCards.length === 2) {
+                            moves++;
+                            document.getElementById('memoryMoves').textContent = moves;
+                            canFlip = false;
+
+                            setTimeout(() => {
+                                slot6CheckMatch();
+                            }, 800);
+                        }
+                    }
+
+                    function slot6CheckMatch() {
+                        const [card1, card2] = flippedCards;
+
+                        if (card1.dataset.symbol === card2.dataset.symbol) {
+                            card1.classList.add('matched');
+                            card2.classList.add('matched');
+                            matchedPairs++;
+                            document.getElementById('memoryPairs').textContent = matchedPairs;
+
+                            if (matchedPairs === 8) {
+                                clearInterval(timerInterval);
+                                setTimeout(() => {
+                                    alert(`Chuc mung! Ban hoan thanh trong ${moves} nuoc va ${gameTime} giay!`);
+                                }, 500);
+                            }
+                        } else {
+                            card1.classList.remove('flipped');
+                            card2.classList.remove('flipped');
+                        }
+
+                        flippedCards = [];
+                        canFlip = true;
+                    }
+
+                    window.slot6StartMemoryGame = function() {
+                        slot6InitMemoryGame();
+                    };
+
+                    slot6InitMemoryGame();
+                })();
+            </script>
+
+            <div class="tictactoe-container">
+                <h3 class="tictactoe-title">Tic-Tac-Toe</h3>
+                <p class="tictactoe-slogan">Chien voi AI cua Hoang Anh xem ai gioi hon nao :&gt;&gt;</p>
+                
+                <div class="tictactoe-status" id="tictactoeStatus">Your turn (X)</div>
+
+                <div class="tictactoe-board" id="tictactoeBoard"></div>
+
+                <button class="tictactoe-btn" onclick="slot6StartTicTacToe()">New Game</button>
+            </div>
+
+            <script>
+                (function() {
+                    let board = Array(9).fill(null);
+                    let currentPlayer = 'X';
+                    let gameActive = true;
+                    const winPatterns = [
+                        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                        [0, 4, 8], [2, 4, 6]
+                    ];
+
+                    function slot6InitTicTacToe() {
+                        board = Array(9).fill(null);
+                        currentPlayer = 'X';
+                        gameActive = true;
+                        document.getElementById('tictactoeStatus').textContent = 'Your turn (X)';
+
+                        const boardElement = document.getElementById('tictactoeBoard');
+                        boardElement.innerHTML = '';
+
+                        for (let i = 0; i < 9; i++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'tictactoe-cell';
+                            cell.dataset.index = i;
+                            cell.addEventListener('click', () => slot6TicTacToeMove(i, cell));
+                            boardElement.appendChild(cell);
+                        }
+                    }
+
+                    function slot6TicTacToeMove(index, cell) {
+                        if (!gameActive || board[index] || currentPlayer !== 'X') return;
+
+                        board[index] = 'X';
+                        cell.textContent = 'X';
+                        cell.classList.add('taken');
+
+                        if (slot6CheckWinner('X')) {
+                            slot6EndGame('Ban thang roi! Gioi qua di!');
+                            return;
+                        }
+
+                        if (board.every(cell => cell !== null)) {
+                            slot6EndGame('Hoa roi! Choi lai nao!');
+                            return;
+                        }
+
+                        currentPlayer = 'O';
+                        document.getElementById('tictactoeStatus').textContent = 'AI dang suy nghi...';
+                        
+                        setTimeout(() => {
+                            slot6AIMove();
+                        }, 500);
+                    }
+
+                    function slot6AIMove() {
+                        if (!gameActive) return;
+
+                        let move = slot6FindBestMove();
+                        board[move] = 'O';
+                        
+                        const cells = document.querySelectorAll('#tictactoeBoard .tictactoe-cell');
+                        cells[move].textContent = 'O';
+                        cells[move].classList.add('taken');
+
+                        if (slot6CheckWinner('O')) {
+                            slot6EndGame('AI thang roi! Thu lai nhe!');
+                            return;
+                        }
+
+                        if (board.every(cell => cell !== null)) {
+                            slot6EndGame('Hoa roi! Choi lai nao!');
+                            return;
+                        }
+
+                        currentPlayer = 'X';
+                        document.getElementById('tictactoeStatus').textContent = 'Your turn (X)';
+                    }
+
+                    function slot6FindBestMove() {
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === 'O' && board[b] === 'O' && board[c] === null) return c;
+                            if (board[a] === 'O' && board[c] === 'O' && board[b] === null) return b;
+                            if (board[b] === 'O' && board[c] === 'O' && board[a] === null) return a;
+                        }
+
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === 'X' && board[b] === 'X' && board[c] === null) return c;
+                            if (board[a] === 'X' && board[c] === 'X' && board[b] === null) return b;
+                            if (board[b] === 'X' && board[c] === 'X' && board[a] === null) return a;
+                        }
+
+                        if (board[4] === null) return 4;
+
+                        const corners = [0, 2, 6, 8];
+                        const availableCorners = corners.filter(i => board[i] === null);
+                        if (availableCorners.length > 0) {
+                            return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+                        }
+
+                        const availableMoves = board.map((cell, i) => cell === null ? i : null).filter(i => i !== null);
+                        return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                    }
+
+                    function slot6CheckWinner(player) {
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === player && board[b] === player && board[c] === player) {
+                                const cells = document.querySelectorAll('#tictactoeBoard .tictactoe-cell');
+                                cells[a].classList.add('winning');
+                                cells[b].classList.add('winning');
+                                cells[c].classList.add('winning');
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+
+                    function slot6EndGame(message) {
+                        gameActive = false;
+                        document.getElementById('tictactoeStatus').textContent = message;
+                    }
+
+                    window.slot6StartTicTacToe = function() {
+                        slot6InitTicTacToe();
+                    };
+
+                    slot6InitTicTacToe();
+                })();
+            </script>
+
+            <style>
+                #slot-6 .bmi-container {
+                    margin-top: 3em;
+                    padding: 20px;
+                    background: rgba(10, 30, 20, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #00d9ff;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .bmi-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #00f5ff;
+                    margin-bottom: 0.5em;
+                    text-shadow: 0 0 10px #00d9ff;
+                }
+
+                #slot-6 .bmi-slogan {
+                    text-align: center;
+                    font-size: 1.1rem;
+                    color: #7df9ff;
+                    margin-bottom: 1.5em;
+                    font-style: italic;
+                }
+
+                #slot-6 .bmi-form {
+                    max-width: 400px;
+                    margin: 0 auto;
+                }
+
+                #slot-6 .bmi-input-group {
+                    margin-bottom: 1.5em;
+                }
+
+                #slot-6 .bmi-label {
+                    display: block;
+                    color: #7df9ff;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    margin-bottom: 0.5em;
+                }
+
+                #slot-6 .bmi-input {
+                    width: 100%;
+                    padding: 12px 15px;
+                    background: rgba(0, 20, 40, 0.8);
+                    border: 2px solid #00d9ff;
+                    border-radius: 8px;
+                    color: #00f5ff;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    box-sizing: border-box;
+                    transition: all 0.3s;
+                }
+
+                #slot-6 .bmi-input:focus {
+                    outline: none;
+                    border-color: #7df9ff;
+                    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+                }
+
+                #slot-6 .bmi-input::placeholder {
+                    color: rgba(125, 249, 255, 0.5);
+                }
+
+                #slot-6 .bmi-btn {
+                    background: linear-gradient(135deg, #00d9ff 0%, #00a0cc 100%);
+                    color: #000;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    display: block;
+                    margin: 0 auto;
+                    width: 100%;
+                }
+
+                #slot-6 .bmi-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(0, 217, 255, 0.5);
+                }
+
+                #slot-6 .bmi-result {
+                    margin-top: 2em;
+                    padding: 20px;
+                    background: rgba(0, 245, 255, 0.1);
+                    border: 2px solid #00f5ff;
+                    border-radius: 8px;
+                    text-align: center;
+                    min-height: 60px;
+                    display: none;
+                }
+
+                #slot-6 .bmi-result.show {
+                    display: block;
+                    animation: slot6-bmi-show 0.5s ease;
+                }
+
+                @keyframes slot6-bmi-show {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.8);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+
+                #slot-6 .bmi-result-text {
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    color: #00f5ff;
+                    text-shadow: 0 0 20px #00d9ff;
+                    animation: slot6-bmi-glow 1.5s ease infinite;
+                }
+
+                @keyframes slot6-bmi-glow {
+                    0%, 100% {
+                        text-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff;
+                    }
+                    50% {
+                        text-shadow: 0 0 20px #00d9ff, 0 0 40px #00d9ff, 0 0 60px #00d9ff;
+                    }
+                }
+            </style>
+
+            <div class="bmi-container">
+                <h3 class="bmi-title">May Tinh Chi So Khoi Co The</h3>
+                <p class="bmi-slogan">Hoang Anh giup ban tinh BMI cuc ky chinh xac day :&gt;&gt;</p>
+                
+                <div class="bmi-form">
+                    <div class="bmi-input-group">
+                        <label class="bmi-label">Can nang (kg):</label>
+                        <input type="number" class="bmi-input" id="bmiWeight" placeholder="Nhap can nang cua ban..." step="0.1">
+                    </div>
+                    
+                    <div class="bmi-input-group">
+                        <label class="bmi-label">Chieu cao (cm):</label>
+                        <input type="number" class="bmi-input" id="bmiHeight" placeholder="Nhap chieu cao cua ban..." step="0.1">
+                    </div>
+                    
+                    <button class="bmi-btn" onclick="slot6CalculateBMI()">Tinh BMI</button>
+                </div>
+
+                <div class="bmi-result" id="bmiResult">
+                    <div class="bmi-result-text">Hello World!</div>
+                </div>
+            </div>
+
+            <script>
+                (function() {
+                    window.slot6CalculateBMI = function() {
+                        const weight = document.getElementById('bmiWeight').value;
+                        const height = document.getElementById('bmiHeight').value;
+                        const resultDiv = document.getElementById('bmiResult');
+
+                        if (!weight || !height) {
+                            alert('Vui long nhap day du thong tin!');
+                            return;
+                        }
+
+                        if (weight <= 0 || height <= 0) {
+                            alert('Vui long nhap gia tri hop le!');
+                            return;
+                        }
+
+                        resultDiv.classList.add('show');
+                    };
+
+                    document.getElementById('bmiWeight').addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            slot6CalculateBMI();
+                        }
+                    });
+
+                    document.getElementById('bmiHeight').addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            slot6CalculateBMI();
+                        }
+                    });
+                })();
+            </script>
         </div>
 
         <!-- == SLOT 7 == -->
