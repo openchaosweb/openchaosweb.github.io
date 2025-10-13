@@ -428,7 +428,7 @@
             </style>
 
             <div class="header">
-                <span class="header__title">Hoàng Anh xin slot 6 nhé!</span>
+                <span class="header__title">Hí Anh Em - Hoàng Anh nè anh em!</span>
             </div>
             <div>
             <em>Follow mình nhé anh em:</em>
@@ -451,7 +451,740 @@
                     </li>
                 </ul>
             </div>
-            <p class="signature">Vẫn là Hoàng Anh xin slot 6 nhé! <span style="color:#ffd700;">✨</span></p>
+
+            <!-- Snake Game Section -->
+            <style>
+                #slot-6 .snake-game-container {
+                    margin-top: 2em;
+                    padding: 20px;
+                    background: rgba(10, 20, 15, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #0ff06b;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .snake-game-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #0fffc3;
+                    margin-bottom: 1em;
+                    text-shadow: 0 0 10px #0ff06b;
+                }
+
+                #slot-6 .snake-game-info {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1em;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+
+                #slot-6 .snake-score {
+                    font-size: 1.3rem;
+                    font-weight: 600;
+                    color: #fff66b;
+                    text-shadow: 0 0 8px #fff66b;
+                }
+
+                #slot-6 .snake-high-score {
+                    font-size: 1.1rem;
+                    color: #0fffb0;
+                }
+
+                #slot-6 .snake-canvas-wrapper {
+                    position: relative;
+                    display: inline-block;
+                    margin: 0 auto;
+                    width: 100%;
+                    text-align: center;
+                }
+
+                #slot-6 #snakeCanvas {
+                    background: #1a1a1a;
+                    border: 3px solid #0ff06b;
+                    border-radius: 8px;
+                    box-shadow: 0 0 20px rgba(15, 240, 107, 0.3);
+                    display: block;
+                    margin: 0 auto;
+                    max-width: 100%;
+                    height: auto;
+                }
+
+                #slot-6 .snake-controls {
+                    margin-top: 1.5em;
+                    text-align: center;
+                }
+
+                #slot-6 .snake-btn {
+                    background: linear-gradient(135deg, #0ff06b 0%, #00cc55 100%);
+                    color: #000;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(15, 240, 107, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+
+                #slot-6 .snake-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(15, 240, 107, 0.5);
+                }
+
+                #slot-6 .snake-btn:active {
+                    transform: translateY(0);
+                }
+
+                #slot-6 .snake-instructions {
+                    margin-top: 1em;
+                    text-align: center;
+                    color: #0fffb0;
+                    font-size: 0.95rem;
+                    opacity: 0.8;
+                }
+
+                #slot-6 .game-over-overlay {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.9);
+                    padding: 30px;
+                    border-radius: 12px;
+                    border: 2px solid #ff4444;
+                    text-align: center;
+                    display: none;
+                    z-index: 10;
+                }
+
+                #slot-6 .game-over-overlay.show {
+                    display: block;
+                    animation: slot6-fadeIn 0.3s ease;
+                }
+
+                @keyframes slot6-fadeIn {
+                    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                }
+
+                #slot-6 .game-over-text {
+                    color: #ff4444;
+                    font-size: 2rem;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    text-shadow: 0 0 10px #ff4444;
+                }
+
+                #slot-6 .final-score {
+                    color: #fff66b;
+                    font-size: 1.5rem;
+                    margin-bottom: 20px;
+                }
+            </style>
+
+            <div class="snake-game-container">
+                <h3 class="snake-game-title">Chơi game con rắn nhe</h3>
+                
+                <div class="snake-game-info">
+                    <div class="snake-score">Score: <span id="snakeScore">0</span></div>
+                    <div class="snake-high-score">High Score: <span id="snakeHighScore">0</span></div>
+                    <div class="">Ai trên 60 điểm có quà</span></div>
+                </div>
+
+                <div class="snake-canvas-wrapper">
+                    <canvas id="snakeCanvas" width="400" height="400"></canvas>
+                    <div class="game-over-overlay" id="gameOverOverlay">
+                        <div class="game-over-text">Thua!</div>
+                        <div class="final-score">Final Score: <span id="finalScore">0</span></div>
+                        <button class="snake-btn" onclick="slot6RestartSnakeGame()">Play Again</button>
+                    </div>
+                </div>
+
+                <div class="snake-controls">
+                    <button class="snake-btn" id="snakeStartBtn" onclick="slot6StartSnakeGame()">Chơi Luôn</button>
+                </div>
+
+                <div class="snake-instructions">
+                    Bấm mấy phím mũi tên để chơi nha mấy anh em
+                </div>
+            </div>
+
+            <script>
+                (function() {
+                    const canvas = document.getElementById('snakeCanvas');
+                    const ctx = canvas.getContext('2d');
+                    const gameOverOverlay = document.getElementById('gameOverOverlay');
+                    
+                    const GRID_SIZE = 20;
+                    const GRID_WIDTH = canvas.width / GRID_SIZE;
+                    const GRID_HEIGHT = canvas.height / GRID_SIZE;
+                    const INITIAL_SPEED = 100; 
+                    
+                    let snake = [];
+                    let direction = { x: 1, y: 0 };
+                    let nextDirection = { x: 1, y: 0 };
+                    let food = { x: 0, y: 0 };
+                    let score = 0;
+                    let highScore = localStorage.getItem('snakeHighScore') || 0; 
+                    let gameLoop = null;
+                    let isGameRunning = false; 
+                    let gameSpeed = INITIAL_SPEED;
+                    
+                    document.getElementById('snakeHighScore').textContent = highScore;
+                    
+                    function slot6InitGame() {
+                        snake = [
+                            { x: Math.floor(GRID_WIDTH / 2), y: Math.floor(GRID_HEIGHT / 2) },
+                            { x: Math.floor(GRID_WIDTH / 2) - 1, y: Math.floor(GRID_HEIGHT / 2) },
+                            { x: Math.floor(GRID_WIDTH / 2) - 2, y: Math.floor(GRID_HEIGHT / 2) }
+                        ];
+                        
+                        direction = { x: 1, y: 0 };
+                        nextDirection = { x: 1, y: 0 };
+                        
+                        score = 0;
+                        gameSpeed = INITIAL_SPEED;
+                        document.getElementById('snakeScore').textContent = score;
+                        
+                        slot6SpawnFood();
+                        
+                        gameOverOverlay.classList.remove('show');
+                    }
+                    
+                    function slot6SpawnFood() {
+                        let validPosition = false;
+                        
+                        while (!validPosition) {
+                            food.x = Math.floor(Math.random() * GRID_WIDTH);
+                            food.y = Math.floor(Math.random() * GRID_HEIGHT);
+                            
+                            validPosition = !snake.some(segment => 
+                                segment.x === food.x && segment.y === food.y
+                            );
+                        }
+                    }
+                    
+                    function slot6UpdateGame() {
+                        direction = { ...nextDirection };
+                        
+                        const newHead = {
+                            x: snake[0].x + direction.x,
+                            y: snake[0].y + direction.y
+                        };
+                        
+                        if (newHead.x < 0 || newHead.x >= GRID_WIDTH || 
+                            newHead.y < 0 || newHead.y >= GRID_HEIGHT) {
+                            slot6GameOver();
+                            return;
+                        }
+                        
+                        if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
+                            slot6GameOver();
+                            return;
+                        }
+                        
+                        snake.unshift(newHead);
+                        
+                        if (newHead.x === food.x && newHead.y === food.y) {
+                            score += 10;
+                            document.getElementById('snakeScore').textContent = score;
+                            
+                            if (score > highScore) {
+                                highScore = score;
+                                localStorage.setItem('snakeHighScore', highScore);
+                                document.getElementById('snakeHighScore').textContent = highScore;
+                            }
+                            
+                            slot6SpawnFood();
+                            
+                            if (gameSpeed > 50) {
+                                gameSpeed = Math.max(50, gameSpeed - 2);
+                                clearInterval(gameLoop);
+                                gameLoop = setInterval(slot6GameTick, gameSpeed);
+                            }
+                        } else {
+                            snake.pop();
+                        }
+                    }
+                    
+                 
+                    function slot6DrawGame() {
+                        ctx.fillStyle = '#1a1a1a';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
+                        ctx.strokeStyle = '#2a2a2a';
+                        ctx.lineWidth = 0.5;
+                        for (let i = 0; i <= GRID_WIDTH; i++) {
+                            ctx.beginPath();
+                            ctx.moveTo(i * GRID_SIZE, 0);
+                            ctx.lineTo(i * GRID_SIZE, canvas.height);
+                            ctx.stroke();
+                        }
+                        for (let i = 0; i <= GRID_HEIGHT; i++) {
+                            ctx.beginPath();
+                            ctx.moveTo(0, i * GRID_SIZE);
+                            ctx.lineTo(canvas.width, i * GRID_SIZE);
+                            ctx.stroke();
+                        }
+                        
+                        snake.forEach((segment, index) => {
+                            const alpha = 1 - (index / snake.length) * 0.5;
+                            
+                            if (index === 0) {
+                                ctx.fillStyle = '#0fffc3';
+                                ctx.shadowBlur = 15;
+                                ctx.shadowColor = '#0fffc3';
+                            } else {
+                                ctx.fillStyle = `rgba(15, 240, 107, ${alpha})`;
+                                ctx.shadowBlur = 5;
+                                ctx.shadowColor = '#0ff06b';
+                            }
+                            
+                            const x = segment.x * GRID_SIZE;
+                            const y = segment.y * GRID_SIZE;
+                            const size = GRID_SIZE - 2;
+                            const radius = 4;
+                            
+                            ctx.beginPath();
+                            ctx.roundRect(x + 1, y + 1, size, size, radius);
+                            ctx.fill();
+                        });
+                        
+                        ctx.shadowBlur = 0;
+                        
+                        const foodX = food.x * GRID_SIZE;
+                        const foodY = food.y * GRID_SIZE;
+                        const time = Date.now() / 200;
+                        const pulse = Math.sin(time) * 0.2 + 0.8;
+                        
+                        ctx.fillStyle = '#fff66b';
+                        ctx.shadowBlur = 20;
+                        ctx.shadowColor = '#fff66b';
+                        
+                        ctx.beginPath();
+                        ctx.arc(
+                            foodX + GRID_SIZE / 2, 
+                            foodY + GRID_SIZE / 2, 
+                            (GRID_SIZE / 2 - 2) * pulse, 
+                            0, 
+                            Math.PI * 2
+                        );
+                        ctx.fill();
+                        
+                        ctx.shadowBlur = 0;
+                    }
+                    
+                    function slot6GameTick() {
+                        slot6UpdateGame();
+                        slot6DrawGame();
+                    }
+                    
+                    function slot6GameOver() {
+                        isGameRunning = false;
+                        clearInterval(gameLoop);
+                        
+                        document.getElementById('finalScore').textContent = score;
+                        gameOverOverlay.classList.add('show');
+                        document.getElementById('snakeStartBtn').textContent = 'Start Game';
+                    }
+                    
+                    window.slot6StartSnakeGame = function() {
+                        if (!isGameRunning) {
+                            slot6InitGame();
+                            isGameRunning = true;
+                            gameLoop = setInterval(slot6GameTick, gameSpeed);
+                            document.getElementById('snakeStartBtn').textContent = 'Playing...';
+                            slot6DrawGame();
+                        }
+                    };
+                    
+                    window.slot6RestartSnakeGame = function() {
+                        slot6StartSnakeGame();
+                    };
+                    
+                    document.addEventListener('keydown', function(e) {
+                        if (!isGameRunning) return;
+                        
+                        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                            e.preventDefault();
+                        }
+                        
+                        switch(e.key) {
+                            case 'ArrowUp':
+                            case 'w':
+                            case 'W':
+                                if (direction.y === 0) nextDirection = { x: 0, y: -1 };
+                                break;
+                            case 'ArrowDown':
+                            case 's':
+                            case 'S':
+                                if (direction.y === 0) nextDirection = { x: 0, y: 1 };
+                                break;
+                            case 'ArrowLeft':
+                            case 'a':
+                            case 'A':
+                                if (direction.x === 0) nextDirection = { x: -1, y: 0 };
+                                break;
+                            case 'ArrowRight':
+                            case 'd':
+                            case 'D':
+                                if (direction.x === 0) nextDirection = { x: 1, y: 0 };
+                                break;
+                        }
+                    });
+                    
+                    slot6DrawGame();
+                })();
+            </script>
+
+            <script>
+                (function() {
+                    let board = Array(9).fill(null);
+                    let currentPlayer = 'X';
+                    let gameActive = true;
+                    const winPatterns = [
+                        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                        [0, 4, 8], [2, 4, 6]
+                    ];
+
+                    function slot6InitTicTacToe() {
+                        board = Array(9).fill(null);
+                        currentPlayer = 'X';
+                        gameActive = true;
+                        document.getElementById('tictactoeStatus').textContent = 'Your turn (X)';
+
+                        const boardElement = document.getElementById('tictactoeBoard');
+                        boardElement.innerHTML = '';
+
+                        for (let i = 0; i < 9; i++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'tictactoe-cell';
+                            cell.dataset.index = i;
+                            cell.addEventListener('click', () => slot6TicTacToeMove(i, cell));
+                            boardElement.appendChild(cell);
+                        }
+                    }
+
+                    function slot6TicTacToeMove(index, cell) {
+                        if (!gameActive || board[index] || currentPlayer !== 'X') return;
+
+                        board[index] = 'X';
+                        cell.textContent = 'X';
+                        cell.classList.add('taken');
+
+                        if (slot6CheckWinner('X')) {
+                            slot6EndGame('Ban thang roi! Gioi qua di!');
+                            return;
+                        }
+
+                        if (board.every(cell => cell !== null)) {
+                            slot6EndGame('Hoa roi! Choi lai nao!');
+                            return;
+                        }
+
+                        currentPlayer = 'O';
+                        document.getElementById('tictactoeStatus').textContent = 'AI dang suy nghi...';
+                        
+                        setTimeout(() => {
+                            slot6AIMove();
+                        }, 500);
+                    }
+
+                    function slot6AIMove() {
+                        if (!gameActive) return;
+
+                        let move = slot6FindBestMove();
+                        board[move] = 'O';
+                        
+                        const cells = document.querySelectorAll('#tictactoeBoard .tictactoe-cell');
+                        cells[move].textContent = 'O';
+                        cells[move].classList.add('taken');
+
+                        if (slot6CheckWinner('O')) {
+                            slot6EndGame('AI thang roi! Thu lai nhe!');
+                            return;
+                        }
+
+                        if (board.every(cell => cell !== null)) {
+                            slot6EndGame('Hoa roi! Choi lai nao!');
+                            return;
+                        }
+
+                        currentPlayer = 'X';
+                        document.getElementById('tictactoeStatus').textContent = 'Your turn (X)';
+                    }
+
+                    function slot6FindBestMove() {
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === 'O' && board[b] === 'O' && board[c] === null) return c;
+                            if (board[a] === 'O' && board[c] === 'O' && board[b] === null) return b;
+                            if (board[b] === 'O' && board[c] === 'O' && board[a] === null) return a;
+                        }
+
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === 'X' && board[b] === 'X' && board[c] === null) return c;
+                            if (board[a] === 'X' && board[c] === 'X' && board[b] === null) return b;
+                            if (board[b] === 'X' && board[c] === 'X' && board[a] === null) return a;
+                        }
+
+                        if (board[4] === null) return 4;
+
+                        const corners = [0, 2, 6, 8];
+                        const availableCorners = corners.filter(i => board[i] === null);
+                        if (availableCorners.length > 0) {
+                            return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+                        }
+
+                        const availableMoves = board.map((cell, i) => cell === null ? i : null).filter(i => i !== null);
+                        return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                    }
+
+                    function slot6CheckWinner(player) {
+                        for (let pattern of winPatterns) {
+                            const [a, b, c] = pattern;
+                            if (board[a] === player && board[b] === player && board[c] === player) {
+                                const cells = document.querySelectorAll('#tictactoeBoard .tictactoe-cell');
+                                cells[a].classList.add('winning');
+                                cells[b].classList.add('winning');
+                                cells[c].classList.add('winning');
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+
+                    function slot6EndGame(message) {
+                        gameActive = false;
+                        document.getElementById('tictactoeStatus').textContent = message;
+                    }
+
+                    window.slot6StartTicTacToe = function() {
+                        slot6InitTicTacToe();
+                    };
+
+                    slot6InitTicTacToe();
+                })();
+            </script>
+
+            <style>
+                #slot-6 .bmi-container {
+                    margin-top: 3em;
+                    padding: 20px;
+                    background: rgba(30, 30, 30, 0.7);
+                    border-radius: 8px;
+                    border: 2px solid #666;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .bmi-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #ddd;
+                    margin-bottom: 0.5em;
+                }
+
+                #slot-6 .bmi-slogan {
+                    text-align: center;
+                    font-size: 1.1rem;
+                    color: #aaa;
+                    margin-bottom: 1.5em;
+                    font-style: italic;
+                }
+
+                #slot-6 .bmi-form {
+                    max-width: 400px;
+                    margin: 0 auto;
+                }
+
+                #slot-6 .bmi-input-group {
+                    margin-bottom: 1.5em;
+                }
+
+                #slot-6 .bmi-label {
+                    display: block;
+                    color: #ccc;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    margin-bottom: 0.5em;
+                }
+
+                #slot-6 .bmi-input {
+                    width: 100%;
+                    padding: 12px 15px;
+                    background: rgba(0, 0, 0, 0.5);
+                    border: 2px solid #555;
+                    border-radius: 6px;
+                    color: #fff;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    box-sizing: border-box;
+                    transition: all 0.3s;
+                }
+
+                #slot-6 .bmi-input:focus {
+                    outline: none;
+                    border-color: #888;
+                }
+
+                #slot-6 .bmi-input::placeholder {
+                    color: rgba(255, 255, 255, 0.3);
+                }
+
+                #slot-6 .bmi-btn {
+                    background: #555;
+                    color: #fff;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 6px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    display: block;
+                    margin: 0 auto;
+                    width: 100%;
+                }
+
+                #slot-6 .bmi-btn:hover {
+                    background: #666;
+                }
+
+                #slot-6 .bmi-categories {
+                    margin-top: 1.5em;
+                    padding: 15px;
+                    background: rgba(0, 0, 0, 0.3);
+                    border-radius: 6px;
+                    color: #ccc;
+                    font-size: 0.95rem;
+                    line-height: 1.8;
+                }
+
+                #slot-6 .bmi-categories-title {
+                    font-weight: 700;
+                    color: #fff;
+                    margin-bottom: 0.5em;
+                }
+
+                #slot-6 .bmi-result {
+                    margin-top: 1.5em;
+                    padding: 20px;
+                    background: rgba(50, 50, 50, 0.8);
+                    border: 2px solid #777;
+                    border-radius: 6px;
+                    text-align: center;
+                    display: none;
+                }
+
+                #slot-6 .bmi-result.show {
+                    display: block;
+                }
+
+                #slot-6 .bmi-result-text {
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #fff;
+                    margin-bottom: 0.5em;
+                }
+
+                #slot-6 .bmi-category {
+                    font-size: 1.2rem;
+                    color: #ddd;
+                    margin-bottom: 1em;
+                }
+
+                #slot-6 .bmi-note {
+                    margin-bottom: 1.5em;
+                    padding: 12px;
+                    background: rgba(255, 100, 100, 0.2);
+                    border-left: 4px solid #ff6b6b;
+                    border-radius: 4px;
+                    color: #ffaaaa;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    font-style: italic;
+                }
+            </style>
+
+            <div class="bmi-container">
+                <h3 class="bmi-title">Máy tính BMI</h3>
+                <p class="bmi-slogan">Để Hoàng Anh giúp anh em tính BMI nhé :&gt;&gt;</p>
+                
+                <div class="bmi-note">Mấy anh em vào tính BMI rồi lo mà tập thể dục đi nhé, rượu bia ít thôi!</div>
+
+                <div class="bmi-form">
+                    <div class="bmi-input-group">
+                        <label class="bmi-label">Câng nặng (kg):</label>
+                        <input type="number" class="bmi-input" id="bmiWeight" placeholder="Nhập cân nặng của bạn..." step="0.1">
+                    </div>
+                    
+                    <div class="bmi-input-group">
+                        <label class="bmi-label">Chiều cao (cm):</label>
+                        <input type="number" class="bmi-input" id="bmiHeight" placeholder="Nhập chiều cao của bạn..." step="0.1">
+                    </div>
+                    
+                    <button class="bmi-btn" onclick="slot6CalculateBMI()">Tính BMI</button>
+
+                    <div class="bmi-categories">
+                        <div class="bmi-categories-title">Phân loại BMI:</div>
+                        <div>Thiếu cân: BMI dưới 18,5</div>
+                        <div>Bình thường: BMI từ 18,5 - 22,9</div>
+                        <div>Thừa cân: BMI từ 23 - 24,9</div>
+                        <div>Béo phì: BMI từ 25 trở lên</div>
+                    </div>
+                </div>
+
+                <div class="bmi-result" id="bmiResult">
+                    <div class="bmi-result-text">Hello World!</div>
+                </div>
+            </div>
+
+            <script>
+                (function() {
+                    window.slot6CalculateBMI = function() {
+                        const weight = document.getElementById('bmiWeight').value;
+                        const height = document.getElementById('bmiHeight').value;
+                        const resultDiv = document.getElementById('bmiResult');
+
+                        if (!weight || !height) {
+                            alert('Vui long nhap day du thong tin!');
+                            return;
+                        }
+
+                        if (weight <= 0 || height <= 0) {
+                            alert('Vui long nhap gia tri hop le!');
+                            return;
+                        }
+
+                        resultDiv.classList.add('show');
+                    };
+
+                    document.getElementById('bmiWeight').addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            slot6CalculateBMI();
+                        }
+                    });
+
+                    document.getElementById('bmiHeight').addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            slot6CalculateBMI();
+                        }
+                    });
+                })();
+            </script>
         </div>
 
         <!-- == SLOT 7 == -->
@@ -1348,7 +2081,19 @@
         <!-- == SLOT 18 == -->
         <div id="slot-18">
             <style>
-                @keyframes magicBlink {
+
+                #slot-18 {
+                    padding: 10em;
+                    text-align: center;
+                    background: #000;
+                    overflow: hidden;
+                    border: 2px solid #00ff00;
+                    border-radius: 8px;
+                    cursor: crosshair;
+                    font-family: 'Courier New', monospace;
+                }
+
+                @keyframes slot18-magicBlink {
         
                     0%,
                     100% {
@@ -1372,7 +2117,7 @@
                     }
                 }
         
-                @keyframes magicGlow {
+                @keyframes slot18-magicGlow {
         
                     0%,
                     100% {
@@ -1384,7 +2129,7 @@
                     }
                 }
         
-                @keyframes buttonMagic {
+                @keyframes slot18-buttonMagic {
         
                     0%,
                     100% {
@@ -1408,7 +2153,7 @@
                     }
                 }
         
-                @keyframes buttonGlow {
+                @keyframes slot18-buttonGlow {
         
                     0%,
                     100% {
@@ -1420,25 +2165,26 @@
                     }
                 }
         
-                #countdown-message {
-                    animation: magicBlink 1.5s ease-in-out infinite, magicGlow 1.5s ease-in-out infinite;
+                #slot-18 #countdown-message {
+                    animation: slot18-magicBlink 1.5s ease-in-out infinite, slot18-magicGlow 1.5s ease-in-out infinite;
                 }
         
-                #miracle-button {
-                    animation: buttonMagic 1s ease-in-out infinite, buttonGlow 1s ease-in-out infinite;
+                #slot-18 #miracle-button {
+                    margin: 0 auto;
+                    animation: slot18-buttonMagic 1s ease-in-out infinite, slot18-buttonGlow 1s ease-in-out infinite;
                 }
             </style>
             <p id="countdown-message"
-                style="position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                style="padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                 Điều kì diệu sẽ hiện ra sau 5 giây</p>
             <button id="miracle-button"
-                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
+                style="display: none; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
                 vào đây để thấy điều kì diệu</button>
             <script>
                 (function () {
                     let countdown = 5;
-                    const messageElement = document.getElementById('countdown-message');
-                    const miracleButton = document.getElementById('miracle-button');
+                    const messageElement = document.querySelector('#slot-18 #countdown-message');
+                    const miracleButton = document.querySelector('#slot-18 #miracle-button');
 
                     const countdownInterval = setInterval(() => {
                         countdown--;
@@ -1453,9 +2199,6 @@
 
                     miracleButton.addEventListener('click', () => {
                         window.open('https://youtu.be/dQw4w9WgXcQ', '_blank');
-                        setInterval(() => {
-                            window.open('https://youtu.be/dQw4w9WgXcQ', '_blank');
-                        }, 1000);
                     });
                 })();
             </script>
@@ -2018,7 +2761,188 @@
         </div>
 
         <!-- == SLOT 29 == -->
-        <div id="slot-29"></div>
+        <div id="slot-29">
+            <style>
+                #slot-29 {
+                    width: 100%;
+                    max-width: 500px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+
+                #slot-29 .centered {
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(10px);
+                    border-radius: 24px;
+                    padding: 40px;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    text-align: center;
+                    animation: fadeIn 0.6s ease-out;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                #mtttm {
+                    font-size: 32px;
+                    font-weight: 700;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    margin-bottom: 12px;
+                    letter-spacing: -0.5px;
+                }
+
+                #slot-29 .centered > p {
+                    color: #64748b;
+                    font-size: 16px;
+                    margin-bottom: 24px;
+                    font-weight: 500;
+                }
+
+                #age_e {
+                    margin-bottom: 20px;
+                    width: 250px;
+                    padding: 16px 20px;
+                    font-size: 18px;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 12px;
+                    outline: none;
+                    transition: all 0.3s ease;
+                    font-family: inherit;
+                    text-align: center;
+                    background: #f8fafc;
+                }
+
+                #age_e:focus {
+                    border-color: #667eea;
+                    background: white;
+                    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+                    transform: translateY(-2px);
+                }
+
+                #age_e:hover {
+                    border-color: #cbd5e1;
+                }
+
+                #age_a {
+                    min-height: 60px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 20px 0;
+                    padding: 16px;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #1e293b;
+                    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                    border-radius: 12px;
+                    border-left: 4px solid #f59e0b;
+                    animation: slideIn 0.4s ease-out;
+                    line-height: 1.6;
+                }
+
+                #age_a:empty {
+                    display: none;
+                }
+
+                @keyframes slideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+
+                #nut_adawdawdawdawdawd {
+                    width: 100%;
+                    padding: 16px 32px;
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: white;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border: none;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                #nut_adawdawdawdawdawd:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+                }
+
+                #nut_adawdawdawdawdawd:active {
+                    transform: translateY(0);
+                    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+                }
+
+                @media (max-width: 600px) {
+                    #slot-29 .centered {
+                        padding: 30px 20px;
+                    }
+
+                    #mtttm {
+                        font-size: 26px;
+                    }
+
+                    #age_e, #nut_adawdawdawdawdawd {
+                        font-size: 16px;
+                    }
+
+                    #age_a {
+                        font-size: 16px;
+                    }
+                }
+            </style>
+           <div class="centered">
+            <h2 id="mtttm">Máy tính tuổi thông minh</h2>
+            <p>Nhập tuổi của bạn</p>
+            <input type="text" onfocus="this.value=''" onchange="mod();" id="age_e">
+            <p id="age_a"></p>
+            <button id="nut_adawdawdawdawdawd" onclick="age()">Tính tuổi của bạn</button>
+            </div>
+            <script>
+               var inc = 0, inb = 0; 
+                function age() { 
+                    var n = document.getElementById("age_e").value, 
+                        e = n + " là tuổi clgt???"; 
+                    if (0 == document.getElementById("age_e").value.length || isNaN(n)) 
+                        if (0 == document.getElementById("age_e").value.length) 
+                            document.getElementById("age_a").innerHTML = "Chưa nhập gì hết."; 
+                        else { 
+                            switch (inc) { 
+                                case 0: document.getElementById("age_a").innerHTML = e; break; 
+                                case 1: document.getElementById("age_a").innerHTML = "Đây là lần thứ 2 rồi nhưng bạn vẫn nhập sai."; break; 
+                                case 2: document.getElementById("age_a").innerHTML = "Thật ra bạn chỉ bấm cái nút này cho vui thôi phải không?" 
+                            }
+                            inc++; 
+                        } 
+                    else 
+                        0 == inb ? (document.getElementById("age_a").innerHTML = "Bạn đã " + n + " tuổi rồi.", inc = 0) : document.getElementById("age_a").innerHTML = "Bạn đã nhấn cái nút này " + inb + " lần, tuổi của bạn vẫn là " + n, inb++; 
+                    if (3 < inc) 
+                        for (var t = 0; t <= inc; t++) document.getElementById("age_a").innerHTML = " đừng có nhấn nữa".repeat(t); 
+                    6 == inc && (document.getElementById("age_a").innerHTML = "nhấn thêm lần nữa xem?"), 
+                    7 == inc && (document.getElementById("age_a").innerHTML = "chắc chưa?", document.getElementById("nut_adawdawdawdawdawd").innerHTML = "chắc."), 
+                    7 < inc && (window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
+                }
+            </script>
+        </div>
 
         <!-- == SLOT 30 == -->
         <div id="slot-30"></div>
@@ -2129,7 +3053,15 @@
         <div id="slot-65"></div>
 
         <!-- == SLOT 66 == -->
-        <div id="slot-66"></div>
+        <div id="slot-66">
+            <button onclick="slot66Click()">Open Dialog Button</button>
+            <div id="back-66" style="display: none; background: black; z-index: 9999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh"></div>
+            <script>
+                function slot66Click() {
+                    document.getElementById('back-66').style.display = 'block';
+                }
+            </script>
+        </div>
 
         <!-- == SLOT 67 == -->
         <div id="slot-67"></div>
@@ -2148,7 +3080,7 @@
                     font-style: italic;
                 }
             </style>
-            <h1>Hello, wỏld</h1>
+            <h1>Nà ná Nà na, anh oii</h1>
             <p>My fít pẩgraph</p>
         </div>
 
@@ -2354,7 +3286,73 @@
         <div id="slot-87"></div>
 
         <!-- == SLOT 88 == -->
-        <div id="slot-88"></div>
+        <div id="slot-88">
+            
+            <h3>Bitcoin sập buồn quá để giá cho anh em theo dõi</h3>
+            <style>
+                #slot-88 {
+                background: #222;
+                color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                font-family: "Nunito", sans-serif;
+                border: 1px solid #f7931a; /* Bitcoin Orange */
+                box-shadow: 0 4px 15px rgba(247, 147, 26, 0.2);
+                }
+                #slot-88 h3 {
+                font-weight: 400;
+                font-size: 2rem;
+                color: #ccc;
+                margin-bottom: 20px;
+                }
+                #slot-88 .btc-price {
+                font-weight: bold;
+                font-size: 3em;
+                margin: 1em auto;
+                display: inline-block; /* Required for transform to work */
+                animation: slot88-zoom 2.5s ease-in-out infinite;
+                }
+
+                @keyframes slot88-zoom {
+                from {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                to {
+                    transform: scale(1);
+                }
+                }
+            </style>
+            <script>
+                async function slot88ShowBTC() {
+                const slot = document.getElementById("slot-88");
+                let priceText = slot.querySelector(".btc-price");
+                if (!priceText) {
+                    priceText = document.createElement("div");
+                    priceText.className = "btc-price";
+                    priceText.style.color = "#f7931a";
+                    slot.appendChild(priceText);
+                }
+                priceText.textContent = "Đang lấy giá BTC...";
+                try {
+                    const r = await fetch(
+                    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+                    );
+                    const j = await r.json();
+                    priceText.textContent =
+                    "Giá Bitcoin hiện tại: $" + j.bitcoin.usd.toLocaleString();
+                } catch (e) {
+                    priceText.textContent = "Bớ ngừ ta, lỗi rồi!.";
+                }
+                }
+
+                // Fetch price on load
+                slot88ShowBTC();
+            </script>
+        </div>
 
         <!-- == SLOT 89 == -->
         <div id="slot-89"></div>
