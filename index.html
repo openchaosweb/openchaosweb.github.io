@@ -853,7 +853,261 @@
         <div id="slot-8"></div>
 
         <!-- == SLOT 9 == -->
-        <div id="slot-9"></div>
+        <div id="slot-9">
+            <style>
+        .slot9-calculator-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh7fVcGZ3lgk1pk2OphDGRdf4v_IhD9pczIw&s') center/cover no-repeat;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .slot9-calculator {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .slot9-calculator-title {
+            text-align: center;
+            color: #667eea;
+            margin: 0 0 20px 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .slot9-display {
+            background: #f8f9fa;
+            border: 3px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 36px;
+            font-weight: 500;
+            color: #2d3748;
+            min-height: 60px;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .slot9-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .slot9-btn {
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .slot9-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .slot9-btn:active {
+            transform: translateY(0);
+        }
+
+        .slot9-btn-number {
+            background: #ffffff;
+        }
+
+        .slot9-btn-operator {
+            background: #667eea;
+            color: #ffffff;
+            border-color: #667eea;
+        }
+
+        .slot9-btn-operator:hover {
+            background: #5568d3;
+        }
+
+        .slot9-btn-equals {
+            background: #48bb78;
+            color: #ffffff;
+            border-color: #48bb78;
+            grid-column: span 2;
+        }
+
+        .slot9-btn-equals:hover {
+            background: #38a169;
+        }
+
+        .slot9-btn-clear {
+            background: #f56565;
+            color: #ffffff;
+            border-color: #f56565;
+        }
+
+        .slot9-btn-clear:hover {
+            background: #e53e3e;
+        }
+
+        .slot9-btn-zero {
+            grid-column: span 2;
+        }
+    </style>
+    <div class="slot9-calculator-container">
+        <div class="slot9-calculator">
+            <h1 class="slot9-calculator-title">Máy Tính Slot9</h1>
+            <div class="slot9-display" id="slot9Display">0</div>
+            <div class="slot9-buttons">
+                <button class="slot9-btn slot9-btn-clear" onclick="slot9Clear()">C</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('/')">/</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('*')">×</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('-')">-</button>
+                
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('7')">7</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('8')">8</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('9')">9</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('+')">+</button>
+                
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('4')">4</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('5')">5</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('6')">6</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('.')">.</button>
+                
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('1')">1</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('2')">2</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('3')">3</button>
+                <button class="slot9-btn slot9-btn-clear" onclick="slot9Delete()">⌫</button>
+                
+                <button class="slot9-btn slot9-btn-number slot9-btn-zero" onclick="slot9AppendNumber('0')">0</button>
+                <button class="slot9-btn slot9-btn-equals" onclick="slot9Calculate()">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var slot9CurrentInput = '0';
+        var slot9PreviousInput = '';
+        var slot9Operation = null;
+        var slot9ShouldResetDisplay = false;
+
+        function slot9UpdateDisplay() {
+            document.getElementById('slot9Display').textContent = slot9CurrentInput;
+        }
+
+        function slot9AppendNumber(num) {
+            if (slot9ShouldResetDisplay) {
+                slot9CurrentInput = num;
+                slot9ShouldResetDisplay = false;
+            } else {
+                slot9CurrentInput = slot9CurrentInput === '0' ? num : slot9CurrentInput + num;
+            }
+            slot9UpdateDisplay();
+        }
+
+        function slot9AppendOperator(op) {
+            if (op === '.') {
+                if (!slot9CurrentInput.includes('.')) {
+                    slot9CurrentInput += '.';
+                    slot9UpdateDisplay();
+                }
+                return;
+            }
+
+            if (slot9Operation !== null) {
+                slot9Calculate();
+            }
+            slot9PreviousInput = slot9CurrentInput;
+            slot9Operation = op;
+            slot9ShouldResetDisplay = true;
+        }
+
+        function slot9Calculate() {
+            if (slot9Operation === null || slot9ShouldResetDisplay) {
+                return;
+            }
+
+            var slot9Prev = parseFloat(slot9PreviousInput);
+            var slot9Current = parseFloat(slot9CurrentInput);
+            var slot9Result = 0;
+
+            switch (slot9Operation) {
+                case '+':
+                    slot9Result = slot9Prev + slot9Current;
+                    break;
+                case '-':
+                    slot9Result = slot9Prev - slot9Current;
+                    break;
+                case '*':
+                    slot9Result = slot9Prev * slot9Current;
+                    break;
+                case '/':
+                    if (slot9Current === 0) {
+                        slot9CurrentInput = 'Error';
+                        slot9UpdateDisplay();
+                        slot9Operation = null;
+                        slot9ShouldResetDisplay = true;
+                        return;
+                    }
+                    slot9Result = slot9Prev / slot9Current;
+                    break;
+            }
+
+            slot9CurrentInput = slot9Result.toString() + '0';
+            slot9Operation = null;
+            slot9ShouldResetDisplay = true;
+            slot9UpdateDisplay();
+        }
+
+        function slot9Clear() {
+            slot9CurrentInput = '0';
+            slot9PreviousInput = '';
+            slot9Operation = null;
+            slot9ShouldResetDisplay = false;
+            slot9UpdateDisplay();
+        }
+
+        function slot9Delete() {
+            if (slot9CurrentInput.length > 1) {
+                slot9CurrentInput = slot9CurrentInput.slice(0, -1);
+            } else {
+                slot9CurrentInput = '0';
+            }
+            slot9UpdateDisplay();
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(slot9Event) {
+            var slot9Key = slot9Event.key;
+            
+            if (slot9Key >= '0' && slot9Key <= '9') {
+                slot9AppendNumber(slot9Key);
+            } else if (slot9Key === '.') {
+                slot9AppendOperator('.');
+            } else if (slot9Key === '+' || slot9Key === '-' || slot9Key === '*' || slot9Key === '/') {
+                slot9AppendOperator(slot9Key);
+            } else if (slot9Key === 'Enter' || slot9Key === '=') {
+                slot9Calculate();
+            } else if (slot9Key === 'Escape') {
+                slot9Clear();
+            } else if (slot9Key === 'Backspace') {
+                slot9Delete();
+            }
+        });
+    </script>
+        </div>
 
         <!-- == SLOT 10 == -->
         <div id="slot-10"></div>
