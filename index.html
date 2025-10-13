@@ -30,16 +30,321 @@
 
         <!-- == SLOT 1 == -->
         <div id="slot-1">
-            <div class="slot1-flag-container">
-                <img src="https://datafiles.chinhphu.vn/cpp/files/news/2010/11/co_vn.jpg">
-            </div>
             <style>
                 #slot-1 {
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    padding: 20px;
+                    background: #f0f0f0;
+                }
+
+                #slot-1 .slot1-flag-container {
+                    width: 100%;
+                    max-width: 600px;
+                    aspect-ratio: 3 / 2;
+                    background: #000;
+                    border: 2px solid #333;
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+
+                #slot-1 .slot1-canvas {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
                 }
             </style>
+
+            <div class="slot1-flag-container">
+                <canvas class="slot1-canvas" id="slot1-canvas"></canvas>
+            </div>
+
+            <script>
+                (function() {
+                    const slot1_container = document.getElementById('slot-1');
+                    const slot1_canvas = document.getElementById('slot1-canvas');
+                    const slot1_ctx = slot1_canvas.getContext('2d', { alpha: false });
+
+                    // Mobile detection
+                    const slot1_isMobile = window.matchMedia('(max-width: 768px)').matches;
+                    const slot1_cols = slot1_isMobile ? 100 : 200;
+                    const slot1_rows = slot1_isMobile ? 66 : 133;
+
+                    // Get actual display size
+                    const slot1_rect = slot1_canvas.getBoundingClientRect();
+                    const slot1_dpr = window.devicePixelRatio || 1;
+
+                    // Set canvas resolution to match display size with device pixel ratio
+                    slot1_canvas.width = slot1_rect.width * slot1_dpr;
+                    slot1_canvas.height = slot1_rect.height * slot1_dpr;
+
+                    // Calculate pixel size in canvas coordinates
+                    const slot1_pixelWidth = slot1_canvas.width / slot1_cols;
+                    const slot1_pixelHeight = slot1_canvas.height / slot1_rows;
+
+                    // Disable image smoothing for crisp pixels
+                    slot1_ctx.imageSmoothingEnabled = false;
+
+                    // Colors
+                    const slot1_red = '#DA251D';
+                    const slot1_yellow = '#FFCD00';
+
+                    // Lazy loading với Intersection Observer
+                    function slot1_init() {
+
+                    // Tính toán ngôi sao 5 cánh
+                    const slot1_centerX = slot1_cols / 2;
+                    const slot1_centerY = slot1_rows / 2;
+                    const slot1_outerRadius = (slot1_rows * 3) / 10;
+                    const slot1_innerRadius = slot1_outerRadius * 0.382;
+
+                    // Tạo 5 điểm ngoài và 5 điểm trong của ngôi sao
+                    function slot1_getStarPoints() {
+                        const points = [];
+                        for (let i = 0; i < 5; i++) {
+                            const outerAngle = (Math.PI / 2) + (i * 2 * Math.PI / 5);
+                            const innerAngle = outerAngle + (Math.PI / 5);
+
+                            points.push({
+                                x: slot1_centerX + slot1_outerRadius * Math.cos(outerAngle),
+                                y: slot1_centerY - slot1_outerRadius * Math.sin(outerAngle)
+                            });
+
+                            points.push({
+                                x: slot1_centerX + slot1_innerRadius * Math.cos(innerAngle),
+                                y: slot1_centerY - slot1_innerRadius * Math.sin(innerAngle)
+                            });
+                        }
+                        return points;
+                    }
+
+                    // Kiểm tra điểm có nằm trong polygon không (Ray casting algorithm)
+                    function slot1_isPointInPolygon(x, y, points) {
+                        let inside = false;
+                        for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+                            const xi = points[i].x, yi = points[i].y;
+                            const xj = points[j].x, yj = points[j].y;
+
+                            const intersect = ((yi > y) !== (yj > y))
+                                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                            if (intersect) inside = !inside;
+                        }
+                        return inside;
+                    }
+
+                    const slot1_starPoints = slot1_getStarPoints();
+
+                    // Pixel art cho chữ "VIETNAM" (5×7 mỗi chữ - căn giữa hoàn hảo)
+                    const slot1_vietnam = {
+                        'V': [
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [0,1,0,1,0],
+                            [0,0,1,0,0]
+                        ],
+                        'I': [
+                            [1,1,1,1,1],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [1,1,1,1,1]
+                        ],
+                        'E': [
+                            [1,1,1,1,1],
+                            [1,0,0,0,0],
+                            [1,0,0,0,0],
+                            [1,1,1,1,0],
+                            [1,0,0,0,0],
+                            [1,0,0,0,0],
+                            [1,1,1,1,1]
+                        ],
+                        'T': [
+                            [1,1,1,1,1],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0]
+                        ],
+                        'N': [
+                            [1,0,0,0,1],
+                            [1,1,0,0,1],
+                            [1,1,0,0,1],
+                            [1,0,1,0,1],
+                            [1,0,0,1,1],
+                            [1,0,0,1,1],
+                            [1,0,0,0,1]
+                        ],
+                        'A': [
+                            [0,0,1,0,0],
+                            [0,1,0,1,0],
+                            [1,0,0,0,1],
+                            [1,1,1,1,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1]
+                        ],
+                        'M': [
+                            [1,0,0,0,1],
+                            [1,1,0,1,1],
+                            [1,0,1,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1]
+                        ]
+                    };
+
+                    const slot1_text = 'VIETNAM';
+
+                    // Scale font size for mobile
+                    const slot1_margin = slot1_isMobile ? 4 : 8; // Smaller margin on mobile
+                    const slot1_charWidth = 5;
+                    const slot1_charSpacing = 1; // 1 pixel spacing between characters
+                    const slot1_textWidth = slot1_text.length * slot1_charWidth + (slot1_text.length - 1) * slot1_charSpacing;
+                    const slot1_startCol = slot1_cols - slot1_margin - slot1_textWidth;
+                    const slot1_startRow = slot1_margin;
+
+                    // Use Uint8Array for better performance (0 = red, 1 = yellow)
+                    const slot1_totalPixels = slot1_rows * slot1_cols;
+                    const slot1_pixels = new Uint8Array(slot1_totalPixels);
+
+                    // Tính toán chữ VIETNAM - dùng Set với index thay vì string
+                    const slot1_textPositions = new Set();
+                    let slot1_currentCol = slot1_startCol;
+
+                    for (let i = 0; i < slot1_text.length; i++) {
+                        const char = slot1_text[i];
+                        const matrix = slot1_vietnam[char];
+
+                        for (let r = 0; r < 7; r++) {
+                            for (let c = 0; c < 5; c++) {
+                                if (matrix[r][c] === 1) {
+                                    const row = slot1_startRow + r;
+                                    const col = slot1_currentCol + c;
+                                    slot1_textPositions.add(row * slot1_cols + col);
+                                }
+                            }
+                        }
+
+                        slot1_currentCol += slot1_charWidth + slot1_charSpacing;
+                    }
+
+                    // Fill pixels data - optimize: check text first (smaller set)
+                    for (let index = 0; index < slot1_totalPixels; index++) {
+                        if (slot1_textPositions.has(index)) {
+                            slot1_pixels[index] = 1; // Yellow
+                        } else {
+                            const col = index % slot1_cols;
+                            const row = (index / slot1_cols) | 0; // Faster than Math.floor
+                            const cellX = col + 0.5;
+                            const cellY = row + 0.5;
+
+                            slot1_pixels[index] = slot1_isPointInPolygon(cellX, cellY, slot1_starPoints) ? 1 : 0;
+                        }
+                    }
+
+                    // Helper to draw a pixel
+                    function slot1_drawPixel(index) {
+                        const col = index % slot1_cols;
+                        const row = (index / slot1_cols) | 0;
+                        slot1_ctx.fillRect(
+                            col * slot1_pixelWidth,
+                            row * slot1_pixelHeight,
+                            slot1_pixelWidth,
+                            slot1_pixelHeight
+                        );
+                    }
+
+                    // Animation with Canvas
+                    const slot1_prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                    if (slot1_prefersReducedMotion) {
+                        // Draw all pixels immediately - group by color
+                        slot1_ctx.fillStyle = slot1_red;
+                        for (let i = 0; i < slot1_totalPixels; i++) {
+                            if (slot1_pixels[i] === 0) slot1_drawPixel(i);
+                        }
+                        slot1_ctx.fillStyle = slot1_yellow;
+                        for (let i = 0; i < slot1_totalPixels; i++) {
+                            if (slot1_pixels[i] === 1) slot1_drawPixel(i);
+                        }
+                    } else {
+                        // Create shuffled index array for random rendering
+                        const slot1_indices = new Uint32Array(slot1_totalPixels);
+                        for (let i = 0; i < slot1_totalPixels; i++) {
+                            slot1_indices[i] = i;
+                        }
+
+                        // Fisher-Yates shuffle
+                        for (let i = slot1_totalPixels - 1; i > 0; i--) {
+                            const j = (Math.random() * (i + 1)) | 0;
+                            const temp = slot1_indices[i];
+                            slot1_indices[i] = slot1_indices[j];
+                            slot1_indices[j] = temp;
+                        }
+
+                        // Animate pixels in random order
+                        let slot1_currentPixel = 0;
+                        const slot1_batchSize = slot1_isMobile ? 100 : 200;
+                        const slot1_delay = slot1_isMobile ? 0.02 : 0.01;
+
+                        function slot1_drawNextPixel() {
+                            if (slot1_currentPixel >= slot1_totalPixels) return;
+
+                            const slot1_endPixel = Math.min(slot1_currentPixel + slot1_batchSize, slot1_totalPixels);
+
+                            // Group by color in this batch for efficiency
+                            slot1_ctx.fillStyle = slot1_red;
+                            for (let i = slot1_currentPixel; i < slot1_endPixel; i++) {
+                                const index = slot1_indices[i];
+                                if (slot1_pixels[index] === 0) slot1_drawPixel(index);
+                            }
+
+                            slot1_ctx.fillStyle = slot1_yellow;
+                            for (let i = slot1_currentPixel; i < slot1_endPixel; i++) {
+                                const index = slot1_indices[i];
+                                if (slot1_pixels[index] === 1) slot1_drawPixel(index);
+                            }
+
+                            slot1_currentPixel = slot1_endPixel;
+
+                            if (slot1_currentPixel < slot1_totalPixels) {
+                                setTimeout(slot1_drawNextPixel, slot1_delay);
+                            }
+                        }
+
+                        slot1_drawNextPixel();
+                    }
+                    } // End slot1_init
+
+                    // Use Intersection Observer for lazy loading
+                    if ('IntersectionObserver' in window) {
+                        const slot1_observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    slot1_init();
+                                    slot1_observer.disconnect(); // Only init once
+                                }
+                            });
+                        }, {
+                            rootMargin: '50px' // Start loading 50px before visible
+                        });
+
+                        slot1_observer.observe(slot1_container);
+                    } else {
+                        // Fallback for old browsers
+                        slot1_init();
+                    }
+                })();
+            </script>
         </div>
 
         <!-- == SLOT 2 == -->
