@@ -337,13 +337,121 @@
         <!-- == SLOT 6 == -->
         <div id="slot-6">
             <style>
-                #slot-042 { background:#111; color:#0f0; padding:12px; }
-                #slot-042 h3 { margin:0; font-size:18px; }
-              </style>
-            
-              <h3>Hoàng Anh Xin slot 6 nhé!</h3>
-              <p>Hoàng Anh Xin slot 6 nhé!</p>
+                #slot-6 {
+                    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+                    color: #0ff06b;
+                    padding: 32px 18px 28px 18px;
+                    border-radius: 18px;
+                    font-family: 'Inter', 'Nunito', sans-serif;
+                    box-shadow: 0 6px 32px 0 #13ff7e44;
+                    position: relative;
+                    overflow: hidden;
+                }
+                #slot-6::after {
+                    content: "";
+                    position: absolute;
+                    top: -60px; left: -60px;
+                    width: 180px; height: 180px;
+                    background: radial-gradient(circle, #00ffb3b6 0%, #1110 80%);
+                    filter: blur(8px);
+                    z-index: 0;
+                    animation: slot6-glow 5s infinite alternate;
+                }
+                @keyframes slot6-glow {
+                    from { transform:scale(1) rotate(0deg);}
+                    to   { transform:scale(1.2) rotate(15deg);}
+                }
+                #slot-6 .header {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin-bottom: 8px;
+                    position: relative;
+                    z-index: 2;
+                }
+                #slot-6 .header__emoji {
+                    font-size: 2.2rem;
+                    filter: drop-shadow(0 0 8px #0f08);
+                    animation: slot6-bounce 1s infinite alternate;
+                }
+                @keyframes slot6-bounce {
+                    from { transform: translateY(0);}
+                    to   { transform: translateY(-8px);}
+                }
+                #slot-6 .header__title {
+                    font-size: 1.6rem;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    background: linear-gradient(90deg,#0fffc3 20%, #39f 80%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
+                #slot-6 .links {
+                    margin-top: 0.7em;
+                    margin-bottom: 1em;
+                    padding-left: 0;
+                    list-style: none;
+                    position: relative;
+                    z-index: 2;
+                }
+                #slot-6 .links li {
+                    margin-bottom: 0.7em;
+                    font-size: 1.12rem;
+                }
+                #slot-6 .links a {
+                    color: #0fffb0;
+                    text-decoration: none;
+                    border-bottom: 1.5px dotted #0ff8;
+                    transition: color 0.16s, border 0.16s;
+                    font-weight: 600;
+                }
+                #slot-6 .links a:hover {
+                    color: #fff66b;
+                    border-bottom: 1.5px solid #39f;
+                    background: #1113;
+                    border-radius: 4px;
+                    padding: 1.5px 6px;
+                }
+                #slot-6 p.signature {
+                    font-family: 'Nunito', sans-serif;
+                    font-size:1.13rem;
+                    color:#fff;
+                    margin-top:1.6em;
+                    opacity:.95;
+                    font-style:italic;
+                    letter-spacing:.05em;
+                    position: relative;
+                    z-index: 2;
+                    text-shadow:0 1px 6px #13ff7e21;
+                }
+            </style>
+
+            <div class="header">
+                <span class="header__title">Hoàng Anh xin slot 6 nhé!</span>
             </div>
+            <div>
+            <em>Follow mình nhé anh em:</em>
+                <ul class="links">
+                    <li>
+                        <span>Facebook:</span>
+                        <a href="https://www.facebook.com/pvhoanganh1572" target="_blank" rel="noopener">/pvhoanganh1572</a>
+                    </li>
+                    <li>
+                        <span>Website:</span>
+                        <a href="https://phanhoanganh.net/" target="_blank" rel="noopener">phanhoanganh.net</a>
+                    </li>
+                    <li>
+                        <span>LinkedIn:</span>
+                        <a href="https://www.linkedin.com/in/phan-van-hoang-anh/" target="_blank" rel="noopener">@phan-van-hoang-anh</a>
+                    </li>
+                    <li>
+                        <span>Instagram:</span>
+                        <a href="https://www.instagram.com/h_anh.json/" target="_blank" rel="noopener">@h_anh.json</a>
+                    </li>
+                </ul>
+            </div>
+            <p class="signature">Vẫn là Hoàng Anh xin slot 6 nhé! <span style="color:#ffd700;">✨</span></p>
         </div>
 
         <!-- == SLOT 7 == -->
