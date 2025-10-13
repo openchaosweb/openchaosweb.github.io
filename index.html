@@ -151,7 +151,7 @@
         <!-- == SLOT 4 == -->
         <div id="slot-4">
         <style>
-            #slot-4 #gameoflife {
+            #slot-4 #slot4_gameoflife {
             display: flex;
       justify-content: center;
       align-items: center;  
@@ -160,18 +160,18 @@
             border: 1px solid black;
                 }
             </style>
-        <div id="gameoflife">
-        <canvas id="gameCanvas"
+        <div id="slot4_gameoflife">
+        <canvas id="slot4_canvas"
             width="600"
             height="400"></canvas>
     <br />
     <br />
-    <button id="startButton">Start</button>
-    <button id="pauseButton">Pause</button>
-    <button id="restartButton">Restart</button>
+    <button id="slot4_startbtn">Start</button>
+    <button id="slot4_pausebtn">Pause</button>
+    <button id="slot4_restartbtn">Restart</button>
     <script>
         // Initialize canvas and context
-        const canvas = document.getElementById('gameCanvas');
+        const canvas = document.getElementById('slot4_canvas');
         const ctx = canvas.getContext('2d');
         
 
@@ -182,7 +182,7 @@
         const numCols = Math.floor(canvas.width / cellSize);
 
         // Function to initialize the grid
-        function createGrid() {
+        function slot4_1() {
             const grid = [];
             for (let i = 0; i < numRows; i++) {
                 grid[i] = [];
@@ -194,12 +194,12 @@
             return grid;
         }
 
-        let grid = createGrid();
+        let grid = slot4_1();
         let isRunning = false;
         let animationId = null;
 
         // Function to draw the grid
-        function drawGrid() {
+        function slot4_2() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < numRows; i++) {
                 for (let j = 0; j < numCols; j++) {
@@ -213,12 +213,12 @@
         }
 
         // Function to update the grid based on Conway's rules
-        function updateGrid() {
+        function slot4_3() {
             const newGrid = [];
             for (let i = 0; i < numRows; i++) {
                 newGrid[i] = [];
                 for (let j = 0; j < numCols; j++) {
-                    const neighbors = countNeighbors(i, j);
+                    const neighbors = slot4_4(i, j);
                     if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
                         newGrid[i][j] = 0; 
                     } else if (grid[i][j] === 0 && neighbors === 3) {
@@ -232,7 +232,7 @@
         }
 
         // Function to count live neighbors of a cell
-        function countNeighbors(row, col) {
+        function slot4_4(row, col) {
             let count = 0;
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
@@ -248,35 +248,35 @@
         }
 
         // Main loop to update and draw the grid
-        function mainLoop() {
-            updateGrid();
-            drawGrid();
+        function slot4_5() {
+            slot4_3();
+            slot4_2();
             if (isRunning) {
-                animationId = requestAnimationFrame(mainLoop);
+                animationId = requestAnimationFrame(slot4_5);
             }
         }
-        document.getElementById('startButton')
+        document.getElementById('slot4_startbtn')
                   .addEventListener('click', function () {
             if (!isRunning) {
                 isRunning = true;
-                mainLoop();
+                slot4_5();
             }
         });
 
-        document.getElementById('pauseButton')
+        document.getElementById('slot4_pausebtn')
                   .addEventListener('click',
             function () {
             isRunning = false;
             cancelAnimationFrame(animationId);
         });
 
-        document.getElementById('restartButton')
+        document.getElementById('slot4_restartbtn')
                   .addEventListener('click',
             function () {
             isRunning = false;
             cancelAnimationFrame(animationId);
-            grid = createGrid();
-            drawGrid();
+            grid = slot4_1();
+            slot4_2();
         });
 
     </script>
