@@ -355,13 +355,121 @@
         <!-- == SLOT 6 == -->
         <div id="slot-6">
             <style>
-                #slot-042 { background:#111; color:#0f0; padding:12px; }
-                #slot-042 h3 { margin:0; font-size:18px; }
-              </style>
-            
-              <h3>Hoàng Anh Xin slot 6 nhé!</h3>
-              <p>Hoàng Anh Xin slot 6 nhé!</p>
+                #slot-6 {
+                    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+                    color: #0ff06b;
+                    padding: 32px 18px 28px 18px;
+                    border-radius: 18px;
+                    font-family: 'Inter', 'Nunito', sans-serif;
+                    box-shadow: 0 6px 32px 0 #13ff7e44;
+                    position: relative;
+                    overflow: hidden;
+                }
+                #slot-6::after {
+                    content: "";
+                    position: absolute;
+                    top: -60px; left: -60px;
+                    width: 180px; height: 180px;
+                    background: radial-gradient(circle, #00ffb3b6 0%, #1110 80%);
+                    filter: blur(8px);
+                    z-index: 0;
+                    animation: slot6-glow 5s infinite alternate;
+                }
+                @keyframes slot6-glow {
+                    from { transform:scale(1) rotate(0deg);}
+                    to   { transform:scale(1.2) rotate(15deg);}
+                }
+                #slot-6 .header {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin-bottom: 8px;
+                    position: relative;
+                    z-index: 2;
+                }
+                #slot-6 .header__emoji {
+                    font-size: 2.2rem;
+                    filter: drop-shadow(0 0 8px #0f08);
+                    animation: slot6-bounce 1s infinite alternate;
+                }
+                @keyframes slot6-bounce {
+                    from { transform: translateY(0);}
+                    to   { transform: translateY(-8px);}
+                }
+                #slot-6 .header__title {
+                    font-size: 1.6rem;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    background: linear-gradient(90deg,#0fffc3 20%, #39f 80%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
+                #slot-6 .links {
+                    margin-top: 0.7em;
+                    margin-bottom: 1em;
+                    padding-left: 0;
+                    list-style: none;
+                    position: relative;
+                    z-index: 2;
+                }
+                #slot-6 .links li {
+                    margin-bottom: 0.7em;
+                    font-size: 1.12rem;
+                }
+                #slot-6 .links a {
+                    color: #0fffb0;
+                    text-decoration: none;
+                    border-bottom: 1.5px dotted #0ff8;
+                    transition: color 0.16s, border 0.16s;
+                    font-weight: 600;
+                }
+                #slot-6 .links a:hover {
+                    color: #fff66b;
+                    border-bottom: 1.5px solid #39f;
+                    background: #1113;
+                    border-radius: 4px;
+                    padding: 1.5px 6px;
+                }
+                #slot-6 p.signature {
+                    font-family: 'Nunito', sans-serif;
+                    font-size:1.13rem;
+                    color:#fff;
+                    margin-top:1.6em;
+                    opacity:.95;
+                    font-style:italic;
+                    letter-spacing:.05em;
+                    position: relative;
+                    z-index: 2;
+                    text-shadow:0 1px 6px #13ff7e21;
+                }
+            </style>
+
+            <div class="header">
+                <span class="header__title">Hoàng Anh xin slot 6 nhé!</span>
             </div>
+            <div>
+            <em>Follow mình nhé anh em:</em>
+                <ul class="links">
+                    <li>
+                        <span>Facebook:</span>
+                        <a href="https://www.facebook.com/pvhoanganh1572" target="_blank" rel="noopener">/pvhoanganh1572</a>
+                    </li>
+                    <li>
+                        <span>Website:</span>
+                        <a href="https://phanhoanganh.net/" target="_blank" rel="noopener">phanhoanganh.net</a>
+                    </li>
+                    <li>
+                        <span>LinkedIn:</span>
+                        <a href="https://www.linkedin.com/in/phan-van-hoang-anh/" target="_blank" rel="noopener">@phan-van-hoang-anh</a>
+                    </li>
+                    <li>
+                        <span>Instagram:</span>
+                        <a href="https://www.instagram.com/h_anh.json/" target="_blank" rel="noopener">@h_anh.json</a>
+                    </li>
+                </ul>
+            </div>
+            <p class="signature">Vẫn là Hoàng Anh xin slot 6 nhé! <span style="color:#ffd700;">✨</span></p>
         </div>
 
         <!-- == SLOT 7 == -->
@@ -879,14 +987,363 @@
     <!-- == SLOT 9 == -->
     <div id="slot-9"></div>
 
-    <!-- == SLOT 10 == -->
-    <div id="slot-10"></div>
+        <!-- == SLOT 9 == -->
+        <div id="slot-9">
+            <style>
+        .slot9-calculator-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh7fVcGZ3lgk1pk2OphDGRdf4v_IhD9pczIw&s') center/cover no-repeat;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .slot9-calculator {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .slot9-calculator-title {
+            text-align: center;
+            color: #667eea;
+            margin: 0 0 20px 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .slot9-display {
+            background: #f8f9fa;
+            border: 3px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 36px;
+            font-weight: 500;
+            color: #2d3748;
+            min-height: 60px;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .slot9-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .slot9-btn {
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .slot9-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .slot9-btn:active {
+            transform: translateY(0);
+        }
+
+        .slot9-btn-number {
+            background: #ffffff;
+        }
+
+        .slot9-btn-operator {
+            background: #667eea;
+            color: #ffffff;
+            border-color: #667eea;
+        }
+
+        .slot9-btn-operator:hover {
+            background: #5568d3;
+        }
+
+        .slot9-btn-equals {
+            background: #48bb78;
+            color: #ffffff;
+            border-color: #48bb78;
+            grid-column: span 2;
+        }
+
+        .slot9-btn-equals:hover {
+            background: #38a169;
+        }
+
+        .slot9-btn-clear {
+            background: #f56565;
+            color: #ffffff;
+            border-color: #f56565;
+        }
+
+        .slot9-btn-clear:hover {
+            background: #e53e3e;
+        }
+
+        .slot9-btn-zero {
+            grid-column: span 2;
+        }
+    </style>
+    <div class="slot9-calculator-container">
+        <div class="slot9-calculator">
+            <h1 class="slot9-calculator-title">Máy Tính Slot9</h1>
+            <div class="slot9-display" id="slot9Display">0</div>
+            <div class="slot9-buttons">
+                <button class="slot9-btn slot9-btn-clear" onclick="slot9Clear()">C</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('/')">/</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('*')">×</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('-')">-</button>
+                
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('7')">7</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('8')">8</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('9')">9</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('+')">+</button>
+                
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('4')">4</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('5')">5</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('6')">6</button>
+                <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('.')">.</button>
+                
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('1')">1</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('2')">2</button>
+                <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('3')">3</button>
+                <button class="slot9-btn slot9-btn-clear" onclick="slot9Delete()">⌫</button>
+                
+                <button class="slot9-btn slot9-btn-number slot9-btn-zero" onclick="slot9AppendNumber('0')">0</button>
+                <button class="slot9-btn slot9-btn-equals" onclick="slot9Calculate()">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var slot9CurrentInput = '0';
+        var slot9PreviousInput = '';
+        var slot9Operation = null;
+        var slot9ShouldResetDisplay = false;
+
+        function slot9UpdateDisplay() {
+            document.getElementById('slot9Display').textContent = slot9CurrentInput;
+        }
+
+        function slot9AppendNumber(num) {
+            if (slot9ShouldResetDisplay) {
+                slot9CurrentInput = num;
+                slot9ShouldResetDisplay = false;
+            } else {
+                slot9CurrentInput = slot9CurrentInput === '0' ? num : slot9CurrentInput + num;
+            }
+            slot9UpdateDisplay();
+        }
+
+        function slot9AppendOperator(op) {
+            if (op === '.') {
+                if (!slot9CurrentInput.includes('.')) {
+                    slot9CurrentInput += '.';
+                    slot9UpdateDisplay();
+                }
+                return;
+            }
+
+            if (slot9Operation !== null) {
+                slot9Calculate();
+            }
+            slot9PreviousInput = slot9CurrentInput;
+            slot9Operation = op;
+            slot9ShouldResetDisplay = true;
+        }
+
+        function slot9Calculate() {
+            if (slot9Operation === null || slot9ShouldResetDisplay) {
+                return;
+            }
+
+            var slot9Prev = parseFloat(slot9PreviousInput);
+            var slot9Current = parseFloat(slot9CurrentInput);
+            var slot9Result = 0;
+
+            switch (slot9Operation) {
+                case '+':
+                    slot9Result = slot9Prev + slot9Current;
+                    break;
+                case '-':
+                    slot9Result = slot9Prev - slot9Current;
+                    break;
+                case '*':
+                    slot9Result = slot9Prev * slot9Current;
+                    break;
+                case '/':
+                    if (slot9Current === 0) {
+                        slot9CurrentInput = 'Error';
+                        slot9UpdateDisplay();
+                        slot9Operation = null;
+                        slot9ShouldResetDisplay = true;
+                        return;
+                    }
+                    slot9Result = slot9Prev / slot9Current;
+                    break;
+            }
+
+            slot9CurrentInput = slot9Result.toString() + '0';
+            slot9Operation = null;
+            slot9ShouldResetDisplay = true;
+            slot9UpdateDisplay();
+        }
+
+        function slot9Clear() {
+            slot9CurrentInput = '0';
+            slot9PreviousInput = '';
+            slot9Operation = null;
+            slot9ShouldResetDisplay = false;
+            slot9UpdateDisplay();
+        }
+
+        function slot9Delete() {
+            if (slot9CurrentInput.length > 1) {
+                slot9CurrentInput = slot9CurrentInput.slice(0, -1);
+            } else {
+                slot9CurrentInput = '0';
+            }
+            slot9UpdateDisplay();
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(slot9Event) {
+            var slot9Key = slot9Event.key;
+            
+            if (slot9Key >= '0' && slot9Key <= '9') {
+                slot9AppendNumber(slot9Key);
+            } else if (slot9Key === '.') {
+                slot9AppendOperator('.');
+            } else if (slot9Key === '+' || slot9Key === '-' || slot9Key === '*' || slot9Key === '/') {
+                slot9AppendOperator(slot9Key);
+            } else if (slot9Key === 'Enter' || slot9Key === '=') {
+                slot9Calculate();
+            } else if (slot9Key === 'Escape') {
+                slot9Clear();
+            } else if (slot9Key === 'Backspace') {
+                slot9Delete();
+            }
+        });
+    </script>
+        </div>
 
     <!-- == SLOT 11 == -->
     <div id="slot-11"></div>
 
-    <!-- == SLOT 12 == -->
-    <div id="slot-12"></div>
+        <!-- == SLOT 11 == -->
+        <div id="slot-11">
+            <style>
+                #slot-11 {
+                    font-family: "Courier New", monospace;
+                    background-color: #000;
+                    color: #0f0;
+                    padding: 10px;
+                    border-radius: 8px;
+                    border: 2px solid #0f0;
+                    max-width: 600px;
+                    margin: 20px auto;
+                    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+                }
+
+                #slot-11 .line {
+                    display: flex;
+                    align-items: center;
+                }
+
+                #slot-11 .prompt {
+                    margin-right: 10px;
+                }
+
+                #slot-11 .input {
+                    flex-grow: 1;
+                    background: transparent;
+                    border: none;
+                    color: #0f0;
+                    outline: none;
+                    font-family: inherit;
+                    font-size: inherit;
+                }
+
+                #slot-11 .output {
+                    margin-top: 10px;
+                }
+            </style>
+            <div id="terminal">
+                <div class="line">
+                    <span class="prompt">C:\User\DevVietnam&gt;</span>
+                    <input
+                        type="text"
+                        class="input"
+                        id="commandInput"
+                        placeholder="Type to become a hacker hehe..."
+                        autofocus
+                    />
+                </div>
+                <div class="output" id="output"></div>
+            </div>
+            <script>
+                console.log("baolng hehe");
+                const commandInput = document.getElementById("commandInput");
+                const output = document.getElementById("output");
+
+                commandInput.addEventListener("keydown", function (e) {
+                    if (e.key === "Enter") {
+                        const command = commandInput.value.trim();
+                        if (command) {
+                            processCommand(command);
+                            commandInput.value = "";
+                        }
+                    }
+                });
+
+                function processCommand(command) {
+                    const line = document.createElement("div");
+                    line.className = "line";
+                    line.innerHTML = `<span class="prompt">C:\\User\\DevVietnam&gt;</span> ${command}`;
+                    output.appendChild(line);
+
+                    let response = "";
+                    switch (command.toLowerCase()) {
+                        case "help":
+                            response =
+                                "Available commands: help, about, clear, echo [text]";
+                            break;
+                        case "about":
+                            response =
+                                "Have a good day! - DevVietnam";
+                            break;
+                        case "clear":
+                            output.innerHTML = "";
+                            return;
+                        case "echo":
+                            response = command.slice(5);
+                            break;
+                    }
+
+                    const responseLine = document.createElement("div");
+                    responseLine.className = "line";
+                    responseLine.innerHTML = `<span class="prompt">C:\\User\\DevVietnam&gt;</span> ${response}`;
+                    output.appendChild(responseLine);
+                }
+            </script>
+        </div>
 
     <!-- == SLOT 13 == -->
     <div id="slot-13"></div>
@@ -909,7 +1366,19 @@
         <!-- == SLOT 18 == -->
         <div id="slot-18">
             <style>
-                @keyframes magicBlink {
+
+                #slot-18 {
+                    padding: 10em;
+                    text-align: center;
+                    background: #000;
+                    overflow: hidden;
+                    border: 2px solid #00ff00;
+                    border-radius: 8px;
+                    cursor: crosshair;
+                    font-family: 'Courier New', monospace;
+                }
+
+                @keyframes slot18-magicBlink {
         
                     0%,
                     100% {
@@ -933,7 +1402,7 @@
                     }
                 }
         
-                @keyframes magicGlow {
+                @keyframes slot18-magicGlow {
         
                     0%,
                     100% {
@@ -945,7 +1414,7 @@
                     }
                 }
         
-                @keyframes buttonMagic {
+                @keyframes slot18-buttonMagic {
         
                     0%,
                     100% {
@@ -969,7 +1438,7 @@
                     }
                 }
         
-                @keyframes buttonGlow {
+                @keyframes slot18-buttonGlow {
         
                     0%,
                     100% {
@@ -981,25 +1450,26 @@
                     }
                 }
         
-                #countdown-message {
-                    animation: magicBlink 1.5s ease-in-out infinite, magicGlow 1.5s ease-in-out infinite;
+                #slot-18 #countdown-message {
+                    animation: slot18-magicBlink 1.5s ease-in-out infinite, slot18-magicGlow 1.5s ease-in-out infinite;
                 }
         
-                #miracle-button {
-                    animation: buttonMagic 1s ease-in-out infinite, buttonGlow 1s ease-in-out infinite;
+                #slot-18 #miracle-button {
+                    margin: 0 auto;
+                    animation: slot18-buttonMagic 1s ease-in-out infinite, slot18-buttonGlow 1s ease-in-out infinite;
                 }
             </style>
             <p id="countdown-message"
-                style="position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                style="padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                 Điều kì diệu sẽ hiện ra sau 5 giây</p>
             <button id="miracle-button"
-                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
+                style="display: none; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
                 vào đây để thấy điều kì diệu</button>
             <script>
                 (function () {
                     let countdown = 5;
-                    const messageElement = document.getElementById('countdown-message');
-                    const miracleButton = document.getElementById('miracle-button');
+                    const messageElement = document.querySelector('#slot-18 #countdown-message');
+                    const miracleButton = document.querySelector('#slot-18 #miracle-button');
 
                     const countdownInterval = setInterval(() => {
                         countdown--;
@@ -1071,11 +1541,189 @@
           pointer-events: none;
         }
 
-        #slot-28 .rain-drop.bright {
-          color: #ffffff;
-          text-shadow: 0 0 10px #ffffff, 0 0 20px #00ff00;
-          opacity: 1;
-        }
+        <!-- == SLOT 29 == -->
+        <div id="slot-29">
+            <style>
+                #slot-29 {
+                    width: 100%;
+                    max-width: 500px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+
+                #slot-29 .centered {
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(10px);
+                    border-radius: 24px;
+                    padding: 40px;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    text-align: center;
+                    animation: fadeIn 0.6s ease-out;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                #mtttm {
+                    font-size: 32px;
+                    font-weight: 700;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    margin-bottom: 12px;
+                    letter-spacing: -0.5px;
+                }
+
+                #slot-29 .centered > p {
+                    color: #64748b;
+                    font-size: 16px;
+                    margin-bottom: 24px;
+                    font-weight: 500;
+                }
+
+                #age_e {
+                    margin-bottom: 20px;
+                    width: 250px;
+                    padding: 16px 20px;
+                    font-size: 18px;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 12px;
+                    outline: none;
+                    transition: all 0.3s ease;
+                    font-family: inherit;
+                    text-align: center;
+                    background: #f8fafc;
+                }
+
+                #age_e:focus {
+                    border-color: #667eea;
+                    background: white;
+                    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+                    transform: translateY(-2px);
+                }
+
+                #age_e:hover {
+                    border-color: #cbd5e1;
+                }
+
+                #age_a {
+                    min-height: 60px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 20px 0;
+                    padding: 16px;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #1e293b;
+                    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                    border-radius: 12px;
+                    border-left: 4px solid #f59e0b;
+                    animation: slideIn 0.4s ease-out;
+                    line-height: 1.6;
+                }
+
+                #age_a:empty {
+                    display: none;
+                }
+
+                @keyframes slideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+
+                #nut_adawdawdawdawdawd {
+                    width: 100%;
+                    padding: 16px 32px;
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: white;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border: none;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                #nut_adawdawdawdawdawd:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+                }
+
+                #nut_adawdawdawdawdawd:active {
+                    transform: translateY(0);
+                    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+                }
+
+                @media (max-width: 600px) {
+                    #slot-29 .centered {
+                        padding: 30px 20px;
+                    }
+
+                    #mtttm {
+                        font-size: 26px;
+                    }
+
+                    #age_e, #nut_adawdawdawdawdawd {
+                        font-size: 16px;
+                    }
+
+                    #age_a {
+                        font-size: 16px;
+                    }
+                }
+            </style>
+           <div class="centered">
+            <h2 id="mtttm">Máy tính tuổi thông minh</h2>
+            <p>Nhập tuổi của bạn</p>
+            <input type="text" onfocus="this.value=''" onchange="mod();" id="age_e">
+            <p id="age_a"></p>
+            <button id="nut_adawdawdawdawdawd" onclick="age()">Tính tuổi của bạn</button>
+            </div>
+            <script>
+               var inc = 0, inb = 0; 
+                function age() { 
+                    var n = document.getElementById("age_e").value, 
+                        e = n + " là tuổi clgt???"; 
+                    if (0 == document.getElementById("age_e").value.length || isNaN(n)) 
+                        if (0 == document.getElementById("age_e").value.length) 
+                            document.getElementById("age_a").innerHTML = "Chưa nhập gì hết."; 
+                        else { 
+                            switch (inc) { 
+                                case 0: document.getElementById("age_a").innerHTML = e; break; 
+                                case 1: document.getElementById("age_a").innerHTML = "Đây là lần thứ 2 rồi nhưng bạn vẫn nhập sai."; break; 
+                                case 2: document.getElementById("age_a").innerHTML = "Thật ra bạn chỉ bấm cái nút này cho vui thôi phải không?" 
+                            }
+                            inc++; 
+                        } 
+                    else 
+                        0 == inb ? (document.getElementById("age_a").innerHTML = "Bạn đã " + n + " tuổi rồi.", inc = 0) : document.getElementById("age_a").innerHTML = "Bạn đã nhấn cái nút này " + inb + " lần, tuổi của bạn vẫn là " + n, inb++; 
+                    if (3 < inc) 
+                        for (var t = 0; t <= inc; t++) document.getElementById("age_a").innerHTML = " đừng có nhấn nữa".repeat(t); 
+                    6 == inc && (document.getElementById("age_a").innerHTML = "nhấn thêm lần nữa xem?"), 
+                    7 == inc && (document.getElementById("age_a").innerHTML = "chắc chưa?", document.getElementById("nut_adawdawdawdawdawd").innerHTML = "chắc."), 
+                    7 < inc && (window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
+                }
+            </script>
+        </div>
 
         #slot-28 .rain-drop.red {
           color: #ff0000;
@@ -1365,8 +2013,16 @@
     <!-- == SLOT 52 == -->
     <div id="slot-52"></div>
 
-    <!-- == SLOT 53 == -->
-    <div id="slot-53"></div>
+        <!-- == SLOT 66 == -->
+        <div id="slot-66">
+            <button onclick="slot66Click()">Open Dialog Button</button>
+            <div id="back-66" style="display: none; background: black; z-index: 9999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh"></div>
+            <script>
+                function slot66Click() {
+                    document.getElementById('back-66').style.display = 'block';
+                }
+            </script>
+        </div>
 
     <!-- == SLOT 54 == -->
     <div id="slot-54"></div>
@@ -1374,8 +2030,20 @@
     <!-- == SLOT 55 == -->
     <div id="slot-55"></div>
 
-    <!-- == SLOT 56 == -->
-    <div id="slot-56"></div>
+        <!-- == SLOT 69 == -->
+        <div id="slot-69">
+            <style>
+                #slot-69 h1 {
+                    background-color: green;
+                    color: white;
+                    text-align: center;
+                    font-size: 20;
+                    font-style: italic;
+                }
+            </style>
+            <h1>Nà ná Nà na, anh oii</h1>
+            <p>My fít pẩgraph</p>
+        </div>
 
     <!-- == SLOT 57 == -->
     <div id="slot-57"></div>
