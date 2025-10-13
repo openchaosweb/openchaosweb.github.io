@@ -2265,7 +2265,73 @@
         <div id="slot-87"></div>
 
         <!-- == SLOT 88 == -->
-        <div id="slot-88"></div>
+        <div id="slot-88">
+            
+            <h3>Bitcoin sập buồn quá để giá cho anh em theo dõi</h3>
+            <style>
+                #slot-88 {
+                background: #222;
+                color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                font-family: "Nunito", sans-serif;
+                border: 1px solid #f7931a; /* Bitcoin Orange */
+                box-shadow: 0 4px 15px rgba(247, 147, 26, 0.2);
+                }
+                #slot-88 h3 {
+                font-weight: 400;
+                font-size: 2rem;
+                color: #ccc;
+                margin-bottom: 20px;
+                }
+                #slot-88 .btc-price {
+                font-weight: bold;
+                font-size: 3em;
+                margin: 1em auto;
+                display: inline-block; /* Required for transform to work */
+                animation: slot88-zoom 2.5s ease-in-out infinite;
+                }
+
+                @keyframes slot88-zoom {
+                from {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                to {
+                    transform: scale(1);
+                }
+                }
+            </style>
+            <script>
+                async function slot88ShowBTC() {
+                const slot = document.getElementById("slot-88");
+                let priceText = slot.querySelector(".btc-price");
+                if (!priceText) {
+                    priceText = document.createElement("div");
+                    priceText.className = "btc-price";
+                    priceText.style.color = "#f7931a";
+                    slot.appendChild(priceText);
+                }
+                priceText.textContent = "Đang lấy giá BTC...";
+                try {
+                    const r = await fetch(
+                    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+                    );
+                    const j = await r.json();
+                    priceText.textContent =
+                    "Giá Bitcoin hiện tại: $" + j.bitcoin.usd.toLocaleString();
+                } catch (e) {
+                    priceText.textContent = "Bớ ngừ ta, lỗi rồi!.";
+                }
+                }
+
+                // Fetch price on load
+                slot88ShowBTC();
+            </script>
+        </div>
 
         <!-- == SLOT 89 == -->
         <div id="slot-89"></div>
