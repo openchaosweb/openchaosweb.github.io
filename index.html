@@ -117,17 +117,24 @@
         </div>
 
         <!-- == SLOT 4 == -->
+        <div id="slot-4">
         <style>
-                canvas {
+            #slot-4 #gameoflife {
+            display: flex;
+      justify-content: center;
+      align-items: center;  
+            }
+            #slot-4 canvas {
             border: 1px solid black;
                 }
             </style>
-        <div id="slot-4">
+        <div id="gameoflife">
         <canvas id="gameCanvas"
             width="600"
             height="400"></canvas>
     <br />
     <br />
+    <button id="startButton">Start</button>
     <button id="pauseButton">Pause</button>
     <button id="restartButton">Restart</button>
     <script>
@@ -216,7 +223,14 @@
                 animationId = requestAnimationFrame(mainLoop);
             }
         }
-        mainLoop();
+        document.getElementById('startButton')
+                  .addEventListener('click', function () {
+            if (!isRunning) {
+                isRunning = true;
+                mainLoop();
+            }
+        });
+
         document.getElementById('pauseButton')
                   .addEventListener('click',
             function () {
@@ -234,6 +248,7 @@
         });
 
     </script>
+        </div>
         </div>
 
         <!-- == SLOT 5 == -->
