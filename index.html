@@ -5312,5 +5312,119 @@
   h.onclick=()=>{const p=document.createElement('div');p.style=`position:fixed;left:${Math.random()*100}%`;p.animate([{top:'50%',opacity:1},{top:'30%',opacity:0}],{duration:800}).onfinish=()=>p.remove();document.body.appendChild(p)};
 })();
 </script></div>
+
+
+		<!-- == SLOT 101 == -->>
+		<div id="slot-101"><style>#slot-101{font-family:'Roboto Condensed',sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;background-color:#333;color:#fff;border-radius:10px;box-shadow:0 0 15px rgba(0,0,0,.7);position:relative;overflow:hidden}#slot-101 h1{color:#ffc107;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px}#slot-101 #revolver-container{position:relative;width:300px;height:300px;margin:30px auto}#slot-101 #cylinder{position:absolute;width:100%;height:100%;background-color:#888;border-radius:50%;border:10px solid #666;transition:transform 2.5s cubic-bezier(.25,.1,.25,1)}#slot-101 .chamber{position:absolute;top:50%;left:50%;width:60px;height:60px;margin:-30px;background-color:#555;border:5px solid #444;border-radius:50%}#slot-101 #barrel{position:absolute;top:-50px;left:53%;transform:translateX(-50%);width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-bottom:40px solid #ffc107}#slot-101 #message{margin-top:20px;font-size:1.5em;height:30px;color:#fff}#slot-101 #controls{margin-top:20px}#slot-101 button{font-family:'Roboto Condensed',sans-serif;padding:15px 30px;font-size:18px;cursor:pointer;border:none;border-radius:5px;margin:0 10px;color:#333;background-color:#ffc107;text-transform:uppercase;transition:background-color .3s,transform .1s}#slot-101 button:hover{background-color:#ffde7a}#slot-101 button:active{transform:translateY(2px)}#slot-101 button:disabled{background-color:#888;cursor:not-allowed}</style><h1>Cò Quay Nga</h1><div id="revolver-container"><div id="barrel"></div><div id="cylinder"></div></div><div id="message">Nhấn "Quay Nòng Súng" để bắt đầu!</div><div id="controls"><button id="spinButton">Quay Nòng Súng</button><button id="pullTriggerButton" disabled="disabled">Bóp Cò</button></div><script>(function() {
+            const slot101 = document.getElementById('slot-101');
+            const cylinder = slot101.querySelector('#cylinder');
+            const spinButton = slot101.querySelector('#spinButton');
+            const pullTriggerButton = slot101.querySelector('#pullTriggerButton');
+            const message = slot101.querySelector('#message');
+
+            const chamberCount = 6;
+            const anglePerChamber = 360 / chamberCount;
+            let bulletChamber;
+            let currentChamber = 0;
+            let pullsMade = 0;
+            let isSpinning = false;
+            const rickrollURL = 'https://www.youtube.com/watch?v=xvFZjo5PgG0';
+
+            function setupChambers() {
+                cylinder.innerHTML = '';
+                for (let i = 0; i < chamberCount; i++) {
+                    const chamber = document.createElement('div');
+                    chamber.classList.add('chamber');
+                    const angle = (anglePerChamber * i) - 90;
+                    const radius = 110;
+                    const x = radius * Math.cos(angle * Math.PI / 180);
+                    const y = radius * Math.sin(angle * Math.PI / 180);
+                    chamber.style.transform = `translate(${x}px, ${y}px)`;
+                    cylinder.appendChild(chamber);
+                }
+            }
+
+            function spinCylinder() {
+                if (isSpinning) return;
+                isSpinning = true;
+                
+                // Reset lại số lần bóp cò
+                pullsMade = 0;
+
+                // 1. Đặt viên đạn vào một lỗ ngẫu nhiên (về mặt logic)
+                bulletChamber = Math.floor(Math.random() * chamberCount);
+                console.log(`Bí mật: Viên đạn ở lỗ số ${bulletChamber + 1}`);
+
+                // 2. *** THAY ĐỔI QUAN TRỌNG ***
+                // Chọn ngẫu nhiên một lỗ đạn sẽ dừng lại ở trên cùng
+                const stoppingChamberIndex = Math.floor(Math.random() * chamberCount);
+                
+                // Tính toán góc quay cuối cùng phải là một bội số của 60 độ
+                const finalAngle = stoppingChamberIndex * anglePerChamber;
+                const randomSpins = Math.floor(Math.random() * 5) + 5; // Số vòng quay hiệu ứng
+                const totalRotation = (randomSpins * 360) + finalAngle;
+
+                // Cập nhật logic: lỗ đạn hiện tại là lỗ vừa dừng ở trên
+                currentChamber = stoppingChamberIndex;
+
+                cylinder.style.transform = `rotate(${totalRotation}deg)`;
+                spinButton.disabled = true;
+                message.textContent = "Đang quay...";
+
+                setTimeout(() => {
+                    isSpinning = false;
+                    pullTriggerButton.disabled = false;
+                    message.textContent = "Đến lượt bạn. Hãy bóp cò!";
+                }, 2500);
+            }
+
+            function pullTrigger() {
+                if (isSpinning) return;
+                
+                // Logic kiểm tra xem lỗ đạn hiện tại có đạn không
+                if (currentChamber === bulletChamber) {
+                    message.textContent = "BÙM! Chúc mừng, bạn đã trúng thưởng!";
+                    window.open(rickrollURL, '_blank');
+                    pullTriggerButton.disabled = true;
+                    setTimeout(resetGame, 2000);
+                    return; // Dừng lại ngay khi trúng đạn
+                }
+                
+                // Nếu không trúng, tiếp tục
+                pullsMade++;
+                message.textContent = "Cạch... Bạn vẫn an toàn!";
+                
+                // Logic chuyển sang lỗ đạn tiếp theo
+                currentChamber = (currentChamber + 1) % chamberCount;
+
+                // Xoay hình ảnh thêm 60 độ để khớp với logic
+                const currentRotation = parseFloat(cylinder.style.transform.match(/rotate\(([^deg]+)deg\)/)[1]);
+                cylinder.style.transition = 'transform 0.3s ease-out';
+                cylinder.style.transform = `rotate(${currentRotation + anglePerChamber}deg)`;
+
+                // Nếu đã bóp cò hết các lỗ mà vẫn an toàn
+                if (pullsMade >= chamberCount -1) {
+                    setTimeout(() => {
+                        message.textContent = "Hết đạn! Bạn đã thắng!";
+                        pullTriggerButton.disabled = true;
+                        setTimeout(resetGame, 2000);
+                    }, 500);
+                }
+            }
+
+            function resetGame() {
+                cylinder.style.transition = 'none';
+                cylinder.style.transform = 'rotate(0deg)';
+                message.textContent = 'Nhấn "Quay Nòng Súng" để bắt đầu!';
+                spinButton.disabled = false;
+                pullTriggerButton.disabled = true;
+                pullsMade = 0;
+            }
+
+            spinButton.addEventListener('click', spinCylinder);
+            pullTriggerButton.addEventListener('click', pullTrigger);
+
+            setupChambers();
+        })();</script></div>
     </body>
 </html>
