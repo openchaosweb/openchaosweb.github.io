@@ -34,7 +34,87 @@
         </div>
 
         <!-- == SLOT 3 == -->
-        <div id="slot-3"></div>
+        <div id="slot-3">
+            <a class="fsqjs" href="https://github.com/fastschema/qjs" target="_blank" title="Run JavaScript in Golang">
+                <span>
+                    fastschema/qjs
+                    <span>fastschema/qjs</span>
+                    <span>fastschema/qjs</span>
+                    <span>Run JavaScript in Golang</span>
+                </span>
+                <p class="label">ads</p>
+            </a>
+            <style>
+                #slot-3 {
+                    margin: 20px auto;
+                    height: 200px;
+                    position: relative;
+                    border: 2px solid #000;
+                }
+                #slot-3 > a.fsqjs {
+                    display: block;
+                    width: 100%; height: 100%;
+                    text-decoration: none;
+                    position: relative;
+                    overflow: hidden;
+                }
+                #slot-3 > a.fsqjs > span {
+                    display: block;
+                    margin: 0; padding: 0;
+                    position:absolute;
+                    top: 50%; left: 50%;
+                    transform:translate(-50%,-50%);
+                    font-size: 6em; color:transparent;
+                    text-align: center;
+                }
+                #slot-3 > a.fsqjs > span span:nth-child(1){
+                    position:absolute;
+                    top:0; left:0; color: #000;
+                    transition:0.5s;
+                    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+                    overflow:hidden;
+                }
+                #slot-3 > a.fsqjs:hover > span span:nth-child(1){
+                    transform:translateY(-18px);
+                }
+                #slot-3 > a.fsqjs > span span:nth-child(2){
+                    position:absolute;
+                    top:0; left:0; color: #000;
+                    transition:0.5s;
+                    clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+                    overflow:hidden;
+                }
+                #slot-3 > a.fsqjs:hover > span span:nth-child(2){
+                    transform:translateY(18px);
+                }
+                #slot-3 > a.fsqjs > span span:nth-child(3){
+                    position:absolute;
+                    top:50%; left: 0;
+                    transform:translateY(-50%) scaleY(0);
+                    width: 91%; color: #000;
+                    background:#ff0;
+                    font-size: 0.25em; font-weight: 500;
+                    letter-spacing: 0.2em;
+                    text-align:center;
+                    padding-left: 20px; margin-left: 5px;
+                    transition:0.5s;
+                    word-spacing: 20px;
+                }
+                #slot-3 > a.fsqjs:hover > span span:nth-child(3){
+                    transform:translateY(-50%) scaleY(1);
+                }
+                #slot-3 .label {
+                    position:absolute;
+                    bottom:0; right:0;
+                    background:#000; color:#fff;
+                    font-size: 1em;
+                    font-weight: 600;
+                    padding:2px 5px;
+                    border-top-left-radius: 5px;
+                    margin: 0;
+                }
+            </style>
+        </div>
 
         <!-- == SLOT 4 == -->
         <div id="slot-4"></div>
