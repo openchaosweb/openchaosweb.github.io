@@ -2377,7 +2377,329 @@
         <div id="slot-15"></div>
 
         <!-- == SLOT 16 == -->
-        <div id="slot-16"></div>
+		<div id="slot-16" class="slot">
+			<style>
+				/* CSS scoped cho slot-16 */
+				#slot-16 {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					padding: 20px;
+					background: #0f0f23;
+					/* Màu nền đậm kiểu retro */
+					color: #00ff00;
+					font-family: 'Courier New', monospace;
+					border: 2px solid #00ff00;
+					border-radius: 8px;
+					box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+					max-width: 600px;
+					margin: 10px auto;
+					text-align: center;
+				}
+		
+				#slot-16 h3 {
+					font-size: 1.8rem;
+					margin-bottom: 20px;
+					text-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
+				}
+		
+				/* Giao diện ban đầu - Các nút chọn */
+				#slot-16 .slot16-buttons-container {
+					display: flex;
+					flex-direction: column;
+					gap: 15px;
+					width: 100%;
+					margin-bottom: 20px;
+				}
+		
+				#slot-16 .slot16-difficulty-btn {
+					padding: 15px 20px;
+					font-size: 1.2rem;
+					font-weight: bold;
+					font-family: inherit;
+					color: #fff;
+					border: 2px solid;
+					border-radius: 8px;
+					cursor: pointer;
+					transition: all 0.2s ease;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 10px;
+				}
+		
+				#slot-16 .slot16-difficulty-btn:hover:not(:disabled) {
+					transform: scale(1.03);
+					box-shadow: 0 0 15px currentColor;
+				}
+		
+				#slot-16 .slot16-difficulty-btn:active:not(:disabled) {
+					transform: scale(0.98);
+				}
+		
+				#slot-16 .slot16-difficulty-btn:disabled {
+					opacity: 0.5;
+					cursor: not-allowed;
+					transform: none;
+					box-shadow: none;
+				}
+		
+				#slot-16 .slot16-easy-btn {
+					background: #2e7d32;
+					border-color: #4caf50;
+				}
+		
+				#slot-16 .slot16-normal-btn {
+					background: #1565c0;
+					border-color: #2196f3;
+				}
+		
+				#slot-16 .slot16-hard-btn {
+					background: #c62828;
+					border-color: #f44336;
+				}
+		
+				#slot-16 .slot16-ai-btn {
+					background: #6a1b9a;
+					border-color: #9c27b0;
+					margin-top: 10px;
+					box-shadow: 0 0 10px #9c27b0;
+				}
+		
+				#slot-16 .slot16-ai-btn:hover:not(:disabled) {
+					box-shadow: 0 0 20px #9c27b0;
+				}
+		
+				/* Giao diện Terminal giả lập */
+				#slot-16 .slot16-analysis-terminal {
+					display: none;
+					/* Ẩn mặc định */
+					width: 100%;
+					max-height: 200px;
+					padding: 15px;
+					background: #000;
+					border: 1px solid #0f0;
+					border-radius: 5px;
+					font-family: 'Courier New', monospace;
+					font-size: 0.9rem;
+					color: #0f0;
+					overflow-y: auto;
+					white-space: pre-wrap;
+					box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.1);
+					margin: 10px 0;
+				}
+		
+				/* Giao diện kết quả */
+				#slot-16 .slot16-result-display {
+					display: none;
+					/* Ẩn mặc định */
+					width: 100%;
+					padding: 20px;
+				}
+		
+				#slot-16 .slot16-result-display h2 {
+					font-size: 1.5rem;
+					margin-bottom: 10px;
+					color: #0f0;
+				}
+		
+				#slot-16 .slot16-result-display p {
+					margin: 8px 0;
+					font-size: 1rem;
+				}
+		
+				#slot-16 .slot16-result-display h1 {
+					font-size: 3rem;
+					margin: 20px 0;
+					color: #ffeb3b;
+					text-shadow: 0 0 15px rgba(255, 235, 59, 0.7);
+				}
+		
+				/* Hiệu ứng loading cho nút AI */
+				.slot16-loading {
+					animation: slot16-pulse 1.5s infinite;
+				}
+		
+				@keyframes slot16-pulse {
+					0% {
+						box-shadow: 0 0 10px currentColor;
+					}
+		
+					50% {
+						box-shadow: 0 0 20px currentColor;
+					}
+		
+					100% {
+						box-shadow: 0 0 10px currentColor;
+					}
+				}
+			</style>
+		
+			<p style="font-size: 14px; color: #888; margin-top: -10px; text-align: center;">
+				<em>Hệ Thống Phân Tích Tâm Lý Dựa Trên Thói Quen Trên Website</em>
+			</p>
+		
+			<hr>
+		
+			<div id="description-area" style="text-align: left; margin-bottom: 20px;">
+				<p>Để mang lại trải nghiệm được cá nhân hóa tối ưu, hệ thống của chúng tôi có thể tự động hiệu chỉnh độ khó
+					của trò chơi dựa trên phân tích hành vi người dùng trong phiên duyệt web hiện tại. Quá trình này hoàn
+					toàn bảo mật và không thu thập dữ liệu cá nhân.</p>
+		
+				<!-- Giao diện ban đầu: Các nút chọn độ khó -->
+				<div class="slot16-buttons-container" id="slot16ButtonsContainer">
+					<h3>CHỌN ĐỘ KHÓ</h3>
+					<button class="slot16-difficulty-btn slot16-easy-btn" id="slot16EasyBtn">
+						❤️ DỄ
+					</button>
+					<button class="slot16-difficulty-btn slot16-normal-btn" id="slot16NormalBtn">
+						⚔️ BÌNH THƯỜNG
+					</button>
+					<button class="slot16-difficulty-btn slot16-hard-btn" id="slot16HardBtn">
+						☠️ KHÓ
+					</button>
+					<button class="slot16-difficulty-btn slot16-ai-btn" id="slot16AiBtn">
+						🤖 Để AI Phân Tích & Chọn Giúp
+					</button>
+				</div>
+		
+				<!-- Giao diện Terminal giả lập -->
+				<div class="slot16-analysis-terminal" id="slot16AnalysisTerminal">
+					<!-- Dòng log sẽ được thêm vào đây bằng JavaScript -->
+				</div>
+		
+				<!-- Giao diện kết quả -->
+				<div class="slot16-result-display" id="slot16ResultDisplay">
+					<!-- Nội dung sẽ được cập nhật bởi JavaScript -->
+				</div>
+		
+				<script>
+					(function () {
+						// --- Dữ liệu giả cho terminal ---
+						const slot16AnalysisLines = [
+							"> Analyzing browser fingerprint... [Hash: %RANDOM_HASH%]",
+							"> Calibrating user skill level based on APM (Actions Per Minute)...",
+							"> Estimated APM: %RANDOM_NUM% (Low)",
+							"> Estimated APM: %RANDOM_NUM% (High)",
+							"> Cross-referencing installed extensions... [AdBlock detected: Stealth skill +%RANDOM_NUM%]",
+							"> Scanning sessionStorage for gaming patterns... [No relevant data]",
+							"> Evaluating screen resolution: %RANDOM_RES%... [Strategic advantage: %RANDOM_ADV%]",
+							"> Pinging server latency... %RANDOM_MS%ms [Reflexes: %RANDOM_REFLEX%]",
+							"> Compiling cognitive profile...",
+							"> Re-calibrating... User seems indecisive.",
+							"> Accessing FAKE_history.log... Found '%RANDOM_SEARCH%'.",
+							"> Skill assessment: %RANDOM_SKILL%",
+							"> CONFLICT DETECTED. INITIATING RANDOMIZER PROTOCOL.",
+							"> Loading quantum processing core... [Status: %RANDOM_STATUS%]",
+							"> Calculating optimal difficulty based on mouse acceleration...",
+							"> Error 418: I'm a teapot. Recalculating...",
+							"> Simulating 1000000 game simulations... [Progress: %RANDOM_PROGRESS%%]",
+							"> Detecting presence of gaming peripherals... [Found: %RANDOM_PERIPH%]",
+							"> Measuring time spent reading README.md... [Time: %RANDOM_TIME%s]",
+							"> Analyzing keystroke dynamics... [Typing speed: %RANDOM_WPM% WPM]",
+							"> Scanning for signs of prior gaming experience... [Result: %RANDOM_EXP%]",
+							"> Finalizing decision tree... [Node count: %RANDOM_NODES%]"
+						];
+
+						// --- Lấy các phần tử DOM ---
+						const buttonsContainer = document.getElementById('slot16ButtonsContainer');
+						const analysisTerminal = document.getElementById('slot16AnalysisTerminal');
+						const resultDisplay = document.getElementById('slot16ResultDisplay');
+						const easyBtn = document.getElementById('slot16EasyBtn');
+						const normalBtn = document.getElementById('slot16NormalBtn');
+						const hardBtn = document.getElementById('slot16HardBtn');
+						const aiBtn = document.getElementById('slot16AiBtn');
+
+						let analysisInterval = null; // Biến để lưu trữ ID của setInterval
+
+						// --- Hàm xử lý khi chọn độ khó thủ công ---
+						function slot16SetDifficulty(level) {
+							// Vô hiệu hóa các nút
+							[easyBtn, normalBtn, hardBtn, aiBtn].forEach(btn => btn.disabled = true);
+							// Ẩn container nút
+							buttonsContainer.style.display = 'none';
+							// Hiển thị kết quả
+							resultDisplay.style.display = 'block';
+							resultDisplay.innerHTML = `<p>Đã chọn độ khó: <strong>${level}</strong>. Trò chơi sẽ bắt đầu...</p><p>(Có điều... không có trò chơi nào cả 😅)</p>`;
+						}
+
+						// --- Hàm bắt đầu phân tích giả lập ---
+						function slot16StartAiAnalysis() {
+							// Vô hiệu hóa các nút
+							[easyBtn, normalBtn, hardBtn, aiBtn].forEach(btn => btn.disabled = true);
+							// Thêm hiệu ứng loading cho nút AI
+							aiBtn.classList.add('slot16-loading');
+							// Ẩn container nút
+							buttonsContainer.style.display = 'none';
+							// Hiển thị terminal
+							analysisTerminal.style.display = 'block';
+
+							// Bắt đầu cập nhật log giả lập mỗi 150ms
+							analysisInterval = setInterval(slot16UpdateAnalysisConsole, 150);
+
+							// Dừng sau 30 giây và hiển thị kết quả
+							setTimeout(slot16FinishAnalysis, 30000);
+						}
+
+						// --- Hàm cập nhật nội dung terminal ---
+						function slot16UpdateAnalysisConsole() {
+							let output = "";
+							// Lấy 5 dòng ngẫu nhiên từ analysisLines và thay thế placeholder
+							for (let i = 0; i < 5; i++) {
+								let line = slot16AnalysisLines[Math.floor(Math.random() * slot16AnalysisLines.length)];
+								line = line.replace('%RANDOM_HASH%', Math.random().toString(36).substring(2, 8).toUpperCase());
+								line = line.replace('%RANDOM_NUM%', Math.floor(Math.random() * 100));
+								line = line.replace('%RANDOM_RES%', `${Math.floor(Math.random() * 2000) + 1000}x${Math.floor(Math.random() * 1500) + 700}`);
+								line = line.replace('%RANDOM_ADV%', ['Low', 'Moderate', 'High'][Math.floor(Math.random() * 3)]);
+								line = line.replace('%RANDOM_MS%', Math.floor(Math.random() * 100));
+								line = line.replace('%RANDOM_REFLEX%', ['Slow', 'Average', 'Fast'][Math.floor(Math.random() * 3)]);
+								line = line.replace('%RANDOM_SEARCH%', ['git command for dummies', 'advanced CSS tricks', 'how to beat level 1', 'why is this so hard'][Math.floor(Math.random() * 4)]);
+								line = line.replace('%RANDOM_SKILL%', ['BEGINNER', 'INTERMEDIATE', 'EXPERT'][Math.floor(Math.random() * 3)]);
+								line = line.replace('%RANDOM_STATUS%', ['OK', 'BUSY', 'OVERLOADED'][Math.floor(Math.random() * 3)]);
+								line = line.replace('%RANDOM_PROGRESS%', Math.floor(Math.random() * 100));
+								line = line.replace('%RANDOM_PERIPH%', ['None', 'Gaming Mouse', 'Mechanical Keyboard', 'Both'][Math.floor(Math.random() * 4)]);
+								line = line.replace('%RANDOM_TIME%', (Math.random() * 10).toFixed(2));
+								line = line.replace('%RANDOM_WPM%', Math.floor(Math.random() * 200));
+								line = line.replace('%RANDOM_EXP%', ['None', 'Some', 'Extensive'][Math.floor(Math.random() * 3)]);
+								line = line.replace('%RANDOM_NODES%', Math.floor(Math.random() * 1000000));
+								output += line + '\n';
+							}
+							analysisTerminal.innerHTML = output;
+							// Cuộn xuống cuối cùng
+							analysisTerminal.scrollTop = analysisTerminal.scrollHeight;
+						}
+
+						// --- Hàm kết thúc phân tích và hiển thị kết quả ---
+						function slot16FinishAnalysis() {
+							if (analysisInterval) {
+								clearInterval(analysisInterval); // Dừng cập nhật console
+							}
+
+							// Chọn ngẫu nhiên độ khó
+							const difficulties = ["DỄ", "BÌNH THƯỜNG", "KHÓ"];
+							const randomChoice = difficulties[Math.floor(Math.random() * difficulties.length)];
+
+							// Hiển thị kết quả cuối cùng
+							analysisTerminal.style.display = 'none';
+							resultDisplay.style.display = 'block';
+							resultDisplay.innerHTML = `
+		              <h2>Phân tích hoàn tất.</h2>
+		              <p>Không có đọc trình duyệt gì ở đây và cũng không quá quan trọng.</p>
+		              <p>Tôi sẽ giúp bạn chọn ngẫu nhiên, độ khó của bạn là...</p>
+		              <h1>${randomChoice}</h1>
+		            `;
+						}
+
+						// --- Gắn sự kiện cho các nút ---
+						easyBtn.addEventListener('click', () => slot16SetDifficulty("DỄ"));
+						normalBtn.addEventListener('click', () => slot16SetDifficulty("BÌNH THƯỜNG"));
+						hardBtn.addEventListener('click', () => slot16SetDifficulty("KHÓ"));
+						aiBtn.addEventListener('click', slot16StartAiAnalysis);
+					})();
+				</script>
+			</div>
+		</div>
 
         <!-- == SLOT 17 == -->
         <div id="slot-17">
