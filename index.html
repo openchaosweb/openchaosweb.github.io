@@ -428,7 +428,7 @@
             </style>
 
             <div class="header">
-                <span class="header__title">Hí Anh Em - Hoàng Anh nè anh em! (Ông Ở Trên Bị GAY)</span>
+                <span class="header__title">Hí Anh Em - Hoàng Anh nè anh em!</span>
             </div>
             <div>
             <em>Follow mình nhé anh em:</em>
@@ -451,7 +451,397 @@
                     </li>
                 </ul>
             </div>
-            <p class="signature">(Ông Ở Dưới Cũng GAY)<span style="color:#ffd700;">✨</span></p>
+
+            <!-- Snake Game Section -->
+            <style>
+                #slot-6 .snake-game-container {
+                    margin-top: 2em;
+                    padding: 20px;
+                    background: rgba(10, 20, 15, 0.6);
+                    border-radius: 12px;
+                    border: 2px solid #0ff06b;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                #slot-6 .snake-game-title {
+                    text-align: center;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #0fffc3;
+                    margin-bottom: 1em;
+                    text-shadow: 0 0 10px #0ff06b;
+                }
+
+                #slot-6 .snake-game-info {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1em;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+
+                #slot-6 .snake-score {
+                    font-size: 1.3rem;
+                    font-weight: 600;
+                    color: #fff66b;
+                    text-shadow: 0 0 8px #fff66b;
+                }
+
+                #slot-6 .snake-high-score {
+                    font-size: 1.1rem;
+                    color: #0fffb0;
+                }
+
+                #slot-6 .snake-canvas-wrapper {
+                    position: relative;
+                    display: inline-block;
+                    margin: 0 auto;
+                    width: 100%;
+                    text-align: center;
+                }
+
+                #slot-6 #snakeCanvas {
+                    background: #1a1a1a;
+                    border: 3px solid #0ff06b;
+                    border-radius: 8px;
+                    box-shadow: 0 0 20px rgba(15, 240, 107, 0.3);
+                    display: block;
+                    margin: 0 auto;
+                    max-width: 100%;
+                    height: auto;
+                }
+
+                #slot-6 .snake-controls {
+                    margin-top: 1.5em;
+                    text-align: center;
+                }
+
+                #slot-6 .snake-btn {
+                    background: linear-gradient(135deg, #0ff06b 0%, #00cc55 100%);
+                    color: #000;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(15, 240, 107, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+
+                #slot-6 .snake-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(15, 240, 107, 0.5);
+                }
+
+                #slot-6 .snake-btn:active {
+                    transform: translateY(0);
+                }
+
+                #slot-6 .snake-instructions {
+                    margin-top: 1em;
+                    text-align: center;
+                    color: #0fffb0;
+                    font-size: 0.95rem;
+                    opacity: 0.8;
+                }
+
+                #slot-6 .game-over-overlay {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.9);
+                    padding: 30px;
+                    border-radius: 12px;
+                    border: 2px solid #ff4444;
+                    text-align: center;
+                    display: none;
+                    z-index: 10;
+                }
+
+                #slot-6 .game-over-overlay.show {
+                    display: block;
+                    animation: slot6-fadeIn 0.3s ease;
+                }
+
+                @keyframes slot6-fadeIn {
+                    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                }
+
+                #slot-6 .game-over-text {
+                    color: #ff4444;
+                    font-size: 2rem;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    text-shadow: 0 0 10px #ff4444;
+                }
+
+                #slot-6 .final-score {
+                    color: #fff66b;
+                    font-size: 1.5rem;
+                    margin-bottom: 20px;
+                }
+            </style>
+
+            <div class="snake-game-container">
+                <h3 class="snake-game-title">🐍 Snake Game</h3>
+                
+                <div class="snake-game-info">
+                    <div class="snake-score">Score: <span id="snakeScore">0</span></div>
+                    <div class="snake-high-score">High Score: <span id="snakeHighScore">0</span></div>
+                </div>
+
+                <div class="snake-canvas-wrapper">
+                    <canvas id="snakeCanvas" width="400" height="400"></canvas>
+                    <div class="game-over-overlay" id="gameOverOverlay">
+                        <div class="game-over-text">GAME OVER!</div>
+                        <div class="final-score">Final Score: <span id="finalScore">0</span></div>
+                        <button class="snake-btn" onclick="slot6RestartSnakeGame()">Play Again</button>
+                    </div>
+                </div>
+
+                <div class="snake-controls">
+                    <button class="snake-btn" id="snakeStartBtn" onclick="slot6StartSnakeGame()">Start Game</button>
+                </div>
+
+                <div class="snake-instructions">
+                    Use Arrow Keys (↑ ↓ ← →) or WASD to control the snake
+                </div>
+            </div>
+
+            <script>
+                (function() {
+                    const canvas = document.getElementById('snakeCanvas');
+                    const ctx = canvas.getContext('2d');
+                    const gameOverOverlay = document.getElementById('gameOverOverlay');
+                    
+                    const GRID_SIZE = 20;
+                    const GRID_WIDTH = canvas.width / GRID_SIZE;
+                    const GRID_HEIGHT = canvas.height / GRID_SIZE;
+                    const INITIAL_SPEED = 100; 
+                    
+                    let snake = [];
+                    let direction = { x: 1, y: 0 };
+                    let nextDirection = { x: 1, y: 0 };
+                    let food = { x: 0, y: 0 };
+                    let score = 0;
+                    let highScore = localStorage.getItem('snakeHighScore') || 0; 
+                    let gameLoop = null;
+                    let isGameRunning = false; 
+                    let gameSpeed = INITIAL_SPEED;
+                    
+                    document.getElementById('snakeHighScore').textContent = highScore;
+                    
+                    function slot6InitGame() {
+                        snake = [
+                            { x: Math.floor(GRID_WIDTH / 2), y: Math.floor(GRID_HEIGHT / 2) },
+                            { x: Math.floor(GRID_WIDTH / 2) - 1, y: Math.floor(GRID_HEIGHT / 2) },
+                            { x: Math.floor(GRID_WIDTH / 2) - 2, y: Math.floor(GRID_HEIGHT / 2) }
+                        ];
+                        
+                        direction = { x: 1, y: 0 };
+                        nextDirection = { x: 1, y: 0 };
+                        
+                        score = 0;
+                        gameSpeed = INITIAL_SPEED;
+                        document.getElementById('snakeScore').textContent = score;
+                        
+                        slot6SpawnFood();
+                        
+                        gameOverOverlay.classList.remove('show');
+                    }
+                    
+                    function slot6SpawnFood() {
+                        let validPosition = false;
+                        
+                        while (!validPosition) {
+                            food.x = Math.floor(Math.random() * GRID_WIDTH);
+                            food.y = Math.floor(Math.random() * GRID_HEIGHT);
+                            
+                            validPosition = !snake.some(segment => 
+                                segment.x === food.x && segment.y === food.y
+                            );
+                        }
+                    }
+                    
+                    function slot6UpdateGame() {
+                        direction = { ...nextDirection };
+                        
+                        const newHead = {
+                            x: snake[0].x + direction.x,
+                            y: snake[0].y + direction.y
+                        };
+                        
+                        if (newHead.x < 0 || newHead.x >= GRID_WIDTH || 
+                            newHead.y < 0 || newHead.y >= GRID_HEIGHT) {
+                            slot6GameOver();
+                            return;
+                        }
+                        
+                        if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
+                            slot6GameOver();
+                            return;
+                        }
+                        
+                        snake.unshift(newHead);
+                        
+                        if (newHead.x === food.x && newHead.y === food.y) {
+                            score += 10;
+                            document.getElementById('snakeScore').textContent = score;
+                            
+                            if (score > highScore) {
+                                highScore = score;
+                                localStorage.setItem('snakeHighScore', highScore);
+                                document.getElementById('snakeHighScore').textContent = highScore;
+                            }
+                            
+                            slot6SpawnFood();
+                            
+                            if (gameSpeed > 50) {
+                                gameSpeed = Math.max(50, gameSpeed - 2);
+                                clearInterval(gameLoop);
+                                gameLoop = setInterval(slot6GameTick, gameSpeed);
+                            }
+                        } else {
+                            snake.pop();
+                        }
+                    }
+                    
+                 
+                    function slot6DrawGame() {
+                        ctx.fillStyle = '#1a1a1a';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
+                        ctx.strokeStyle = '#2a2a2a';
+                        ctx.lineWidth = 0.5;
+                        for (let i = 0; i <= GRID_WIDTH; i++) {
+                            ctx.beginPath();
+                            ctx.moveTo(i * GRID_SIZE, 0);
+                            ctx.lineTo(i * GRID_SIZE, canvas.height);
+                            ctx.stroke();
+                        }
+                        for (let i = 0; i <= GRID_HEIGHT; i++) {
+                            ctx.beginPath();
+                            ctx.moveTo(0, i * GRID_SIZE);
+                            ctx.lineTo(canvas.width, i * GRID_SIZE);
+                            ctx.stroke();
+                        }
+                        
+                        snake.forEach((segment, index) => {
+                            const alpha = 1 - (index / snake.length) * 0.5;
+                            
+                            if (index === 0) {
+                                ctx.fillStyle = '#0fffc3';
+                                ctx.shadowBlur = 15;
+                                ctx.shadowColor = '#0fffc3';
+                            } else {
+                                ctx.fillStyle = `rgba(15, 240, 107, ${alpha})`;
+                                ctx.shadowBlur = 5;
+                                ctx.shadowColor = '#0ff06b';
+                            }
+                            
+                            const x = segment.x * GRID_SIZE;
+                            const y = segment.y * GRID_SIZE;
+                            const size = GRID_SIZE - 2;
+                            const radius = 4;
+                            
+                            ctx.beginPath();
+                            ctx.roundRect(x + 1, y + 1, size, size, radius);
+                            ctx.fill();
+                        });
+                        
+                        ctx.shadowBlur = 0;
+                        
+                        const foodX = food.x * GRID_SIZE;
+                        const foodY = food.y * GRID_SIZE;
+                        const time = Date.now() / 200;
+                        const pulse = Math.sin(time) * 0.2 + 0.8;
+                        
+                        ctx.fillStyle = '#fff66b';
+                        ctx.shadowBlur = 20;
+                        ctx.shadowColor = '#fff66b';
+                        
+                        ctx.beginPath();
+                        ctx.arc(
+                            foodX + GRID_SIZE / 2, 
+                            foodY + GRID_SIZE / 2, 
+                            (GRID_SIZE / 2 - 2) * pulse, 
+                            0, 
+                            Math.PI * 2
+                        );
+                        ctx.fill();
+                        
+                        ctx.shadowBlur = 0;
+                    }
+                    
+                    function slot6GameTick() {
+                        slot6UpdateGame();
+                        slot6DrawGame();
+                    }
+                    
+                    function slot6GameOver() {
+                        isGameRunning = false;
+                        clearInterval(gameLoop);
+                        
+                        document.getElementById('finalScore').textContent = score;
+                        gameOverOverlay.classList.add('show');
+                        document.getElementById('snakeStartBtn').textContent = 'Start Game';
+                    }
+                    
+                    window.slot6StartSnakeGame = function() {
+                        if (!isGameRunning) {
+                            slot6InitGame();
+                            isGameRunning = true;
+                            gameLoop = setInterval(slot6GameTick, gameSpeed);
+                            document.getElementById('snakeStartBtn').textContent = 'Playing...';
+                            slot6DrawGame();
+                        }
+                    };
+                    
+                    window.slot6RestartSnakeGame = function() {
+                        slot6StartSnakeGame();
+                    };
+                    
+                    document.addEventListener('keydown', function(e) {
+                        if (!isGameRunning) return;
+                        
+                        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                            e.preventDefault();
+                        }
+                        
+                        switch(e.key) {
+                            case 'ArrowUp':
+                            case 'w':
+                            case 'W':
+                                if (direction.y === 0) nextDirection = { x: 0, y: -1 };
+                                break;
+                            case 'ArrowDown':
+                            case 's':
+                            case 'S':
+                                if (direction.y === 0) nextDirection = { x: 0, y: 1 };
+                                break;
+                            case 'ArrowLeft':
+                            case 'a':
+                            case 'A':
+                                if (direction.x === 0) nextDirection = { x: -1, y: 0 };
+                                break;
+                            case 'ArrowRight':
+                            case 'd':
+                            case 'D':
+                                if (direction.x === 0) nextDirection = { x: 1, y: 0 };
+                                break;
+                        }
+                    });
+                    
+                    slot6DrawGame();
+                })();
+            </script>
         </div>
 
         <!-- == SLOT 7 == -->
