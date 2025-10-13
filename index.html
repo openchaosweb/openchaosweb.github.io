@@ -2380,7 +2380,340 @@
         <div id="slot-16"></div>
 
         <!-- == SLOT 17 == -->
-        <div id="slot-17"></div>
+        <div id="slot-17">
+           
+            <style>
+              #slot-17 {
+                background: #1a1a1a;
+                color: white;
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 30px;
+                position: relative;
+                overflow: hidden;
+              }
+          
+              #slot-17 h1 {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+              }
+          
+              #slot-17 .bet-container {
+                position: absolute;
+                top: 120px;
+              }
+          
+              #slot-17 .bet-container.left {
+                left: 220px;
+              }
+          
+              #slot-17 .bet-container.right {
+                right: 220px;
+              }
+          
+              #slot-17 .bet-container button {
+                padding: 10px 20px;
+                border-radius: 9999px;
+                width: 150px;
+                font-weight: bold;
+                color: white;
+                cursor: pointer;
+                border: none;
+                transition: 0.2s;
+              }
+          
+              #slot-17 .bet-container button.active {
+                background-color: #dc2626;
+              }
+          
+              #slot-17 .bet-container button:not(.active) {
+                background-color: #9ca3af;
+              }
+          
+              #slot-17 .bet-container button:hover {
+                background-color: #ef4444;
+              }
+          
+              #slot-17 .dice-area {
+                position: relative;
+                display: inline-block;
+                margin: 20px;
+                padding-top: 35px;
+              }
+          
+              #slot-17 .dice-display {
+                font-size: 50px;
+                transition: opacity 0.3s;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+              }
+          
+              #slot-17 .cup {
+                position: absolute;
+                top: 0;
+                width: 210px;
+                height: 210px;
+                background-color: white;
+                border-radius: 50%;
+                cursor: grab;
+                z-index: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                transition: transform 0.3s;
+                }
+          
+                #slot-17 .cup-handle {
+                width: 90px;
+                height: 90px;
+                background-color: white;
+                border-radius: 50%;
+                position: absolute;
+                top: 60px;
+                left: 50%;
+                transform: translateX(-50%);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+                }
+          
+              #slot-17 input {
+                width: 200px;
+                padding: 6px;
+                border-radius: 5px;
+                border: none;
+                margin-top: 10px;
+                text-align: center;
+              }
+          
+              #slot-17 button#roll {
+                padding: 10px 20px;
+                font-size: 18px;
+                border-radius: 10px;
+                border: none;
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+                margin-top: 20px;
+                transition: 0.2s;
+              }
+          
+              #slot-17 button#roll:disabled {
+                background-color: #4b5563;
+                cursor: not-allowed;
+              }
+          
+              #slot-17 .result {
+                font-size: 24px;
+                margin-top: 20px;
+              }
+          
+              #slot-17 .win {
+                color: #4ade80;
+              }
+          
+              #slot-17 .lose {
+                color: #f87171;
+              }
+            </style>
+            <h2>NamNT123 - FIS</h2>
+            <h1>🎲 Game Tài Xỉu 🎲</h1>
+          
+            <div class="bet-container left">
+              <div class="text" style="font-size: 60px;">TÀI</div>
+              <button id="bet-tai">Cược</button>
+            </div>
+          
+            <div class="bet-container right">
+              <div class="text" style="font-size: 60px; color: gold;">XỈU</div>
+              <button id="bet-xiu">Cược</button>
+            </div>
+          
+            <div class="dice-area">
+              <div id="dice-display" class="dice-display" style="opacity: 0.2;">
+                <div style="display:flex;gap:10px;">
+                  <span>🎲1</span>
+                  <span>🎲1</span>
+                </div>
+                <div><span>🎲1</span></div>
+              </div>
+          
+              <div id="cup" class="cup">
+                <div class="cup-handle"></div>
+              </div>
+            </div>
+          
+            <div>
+              <p>💰 Số dư: <span id="balance">1000</span> đ</p>
+              <input id="bet-amount" type="number" placeholder="Nhập số tiền cược" />
+            </div>
+          
+            <h2>Tổng: <span id="sum">?</span></h2>
+            <h2>
+              Kết quả:
+              <span id="result" style="margin-left:5px;">?</span>
+            </h2>
+          
+            <div id="message" class="result"></div>
+          
+            <button id="roll">Lắc Xí Ngầu</button>
+          
+            <script>
+              (function () {
+                const root = document.getElementById("slot-17");
+          
+                const diceDisplay = root.querySelector("#dice-display");
+                const cup = root.querySelector("#cup");
+                const rollBtn = root.querySelector("#roll");
+                const betTaiBtn = root.querySelector("#bet-tai");
+                const betXiuBtn = root.querySelector("#bet-xiu");
+                const balanceEl = root.querySelector("#balance");
+                const betAmountEl = root.querySelector("#bet-amount");
+                const sumEl = root.querySelector("#sum");
+                const resultEl = root.querySelector("#result");
+                const messageEl = root.querySelector("#message");
+          
+                let dice = [1, 1, 1];
+                let sum = 3;
+                let result = "";
+                let isCupOpen = false;
+                let isReadyToOpen = false;
+                let userBet = null;
+                let balance = 1000;
+                let isShaking = false;
+                let hasResultApplied = false;
+                let startPos = null;
+          
+                betTaiBtn.addEventListener("click", () => {
+                  userBet = "Tài";
+                  betTaiBtn.classList.add("active");
+                  betXiuBtn.classList.remove("active");
+                });
+          
+                betXiuBtn.addEventListener("click", () => {
+                  userBet = "Xỉu";
+                  betXiuBtn.classList.add("active");
+                  betTaiBtn.classList.remove("active");
+                });
+          
+                rollBtn.addEventListener("click", () => {
+                  if (!userBet) {
+                    alert("Vui lòng chọn cược Tài hoặc Xỉu trước!");
+                    return;
+                  }
+          
+                  const bet = Number(betAmountEl.value);
+                  if (bet <= 0 || bet > balance || isNaN(bet)) {
+                    alert("Số tiền cược không hợp lệ!");
+                    return;
+                  }
+          
+                  isCupOpen = false;
+                  hasResultApplied = false;
+                  cup.style.transform = "translate(0, 0)";
+                  diceDisplay.style.opacity = 0.2;
+                  isShaking = true;
+                  messageEl.textContent = "";
+                  sumEl.textContent = "?";
+                  resultEl.textContent = "?";
+                  rollBtn.disabled = true;
+                  rollBtn.textContent = "Đang Lắc...";
+          
+                  setTimeout(() => {
+                    dice = [rand(), rand(), rand()];
+                    sum = dice.reduce((a, b) => a + b, 0);
+                    result = sum >= 9 ? "Tài" : "Xỉu";
+                    updateDice();
+                    isReadyToOpen = true;
+                    isShaking = false;
+                    rollBtn.disabled = false;
+                    rollBtn.textContent = "Lắc Xí Ngầu";
+                  }, 2500);
+                });
+          
+                function rand() {
+                  return Math.floor(Math.random() * 6) + 1;
+                }
+          
+                function updateDice() {
+                  diceDisplay.innerHTML = `
+                    <div style="display:flex;gap:10px;">
+                      <span>🎲${dice[0]}</span>
+                      <span>🎲${dice[1]}</span>
+                    </div>
+                    <div><span>🎲${dice[2]}</span></div>`;
+                }
+          
+                cup.addEventListener("mousedown", startDrag);
+                cup.addEventListener("touchstart", startDrag);
+          
+                function startDrag(e) {
+                  e.preventDefault();
+                  if (!isReadyToOpen || isCupOpen || isShaking) return;
+          
+                  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                  startPos = { x: clientX, y: clientY };
+          
+                  document.addEventListener("mousemove", moveHandler);
+                  document.addEventListener("mouseup", endHandler);
+                  document.addEventListener("touchmove", moveHandler);
+                  document.addEventListener("touchend", endHandler);
+                }
+          
+                function moveHandler(event) {
+                  if (!startPos) return;
+          
+                  const currentX = event.touches ? event.touches[0].clientX : event.clientX;
+                  const currentY = event.touches ? event.touches[0].clientY : event.clientY;
+          
+                  const offsetX = currentX - startPos.x;
+                  const offsetY = currentY - startPos.y;
+                  cup.style.transform = `translate(calc( ${offsetX}px), ${offsetY}px)`;
+          
+                  if (
+                    (offsetY < -155 || offsetY > 155 || offsetX > 200 || offsetX < -200) &&
+                    !isCupOpen &&
+                    !hasResultApplied
+                  ) {
+                    openCup();
+                  }
+                }
+          
+                function endHandler() {
+                  if (!isCupOpen) cup.style.transform = "translate(0, 0)";
+                  startPos = null;
+                  document.removeEventListener("mousemove", moveHandler);
+                  document.removeEventListener("mouseup", endHandler);
+                  document.removeEventListener("touchmove", moveHandler);
+                  document.removeEventListener("touchend", endHandler);
+                }
+          
+                function openCup() {
+                  isCupOpen = true;
+                  diceDisplay.style.opacity = 1;
+                  sumEl.textContent = sum;
+                  resultEl.textContent = result;
+                  hasResultApplied = true;
+          
+                  const isWin = userBet === result;
+                  const bet = Number(betAmountEl.value);
+          
+                  balance += isWin ? bet : -bet;
+                  balanceEl.textContent = balance;
+          
+                  messageEl.textContent = isWin
+                    ? "🎉 Chúc mừng! Bạn đoán đúng!"
+                    : "😥 Rất tiếc, bạn đoán sai!";
+                  messageEl.className = "result " + (isWin ? "win" : "lose");
+          
+                  endHandler();
+                }
+              })();
+            </script>
+          </div>
+          
 
         <!-- == SLOT 18 == -->
         <div id="slot-18">
