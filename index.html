@@ -30,10 +30,240 @@
 
         <!-- == SLOT 1 == -->
         <div id="slot-1">
+            <style>
+                #slot-1 {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 20px;
+                    background: #f0f0f0;
+                }
+
+                #slot-1 .slot1-flag-container {
+                    width: 100%;
+                    max-width: 600px;
+                    aspect-ratio: 3 / 2;
+                    background: #000;
+                    border: 2px solid #333;
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+
+                #slot-1 .slot1-flag-grid {
+                    display: grid;
+                    grid-template-columns: repeat(200, 1fr);
+                    grid-template-rows: repeat(133, 1fr);
+                    width: 100%;
+                    height: 100%;
+                    gap: 0;
+                }
+
+                #slot-1 .slot1-cell {
+                    opacity: 0;
+                    transform: scale(0);
+                    transition: all 0.3s ease-out;
+                }
+
+                #slot-1 .slot1-cell.slot1-red {
+                    background-color: #DA251D;
+                }
+
+                #slot-1 .slot1-cell.slot1-yellow {
+                    background-color: #FFCD00;
+                }
+
+                #slot-1 .slot1-cell.slot1-show {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            </style>
+
+            <div class="slot1-flag-container">
+                <div class="slot1-flag-grid" id="slot1-grid"></div>
+            </div>
+
             <script>
-                console.log("Đừng để vợ tôi thấy trang web này!");
+                (function() {
+                    const slot1_grid = document.getElementById('slot1-grid');
+                    const slot1_cols = 200;
+                    const slot1_rows = 133;
+                    const slot1_totalCells = slot1_cols * slot1_rows;
+
+                    // Tính toán ngôi sao 5 cánh
+                    const slot1_centerX = slot1_cols / 2;
+                    const slot1_centerY = slot1_rows / 2;
+                    const slot1_outerRadius = (slot1_rows * 3) / 10; // 3/5 chiều cao / 2
+                    const slot1_innerRadius = slot1_outerRadius * 0.382; // Tỷ lệ vàng cho ngôi sao
+
+                    // Tạo 5 điểm ngoài và 5 điểm trong của ngôi sao
+                    function slot1_getStarPoints() {
+                        const points = [];
+                        for (let i = 0; i < 5; i++) {
+                            const outerAngle = (Math.PI / 2) + (i * 2 * Math.PI / 5);
+                            const innerAngle = outerAngle + (Math.PI / 5);
+
+                            points.push({
+                                x: slot1_centerX + slot1_outerRadius * Math.cos(outerAngle),
+                                y: slot1_centerY - slot1_outerRadius * Math.sin(outerAngle)
+                            });
+
+                            points.push({
+                                x: slot1_centerX + slot1_innerRadius * Math.cos(innerAngle),
+                                y: slot1_centerY - slot1_innerRadius * Math.sin(innerAngle)
+                            });
+                        }
+                        return points;
+                    }
+
+                    // Kiểm tra điểm có nằm trong polygon không (Ray casting algorithm)
+                    function slot1_isPointInPolygon(x, y, points) {
+                        let inside = false;
+                        for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+                            const xi = points[i].x, yi = points[i].y;
+                            const xj = points[j].x, yj = points[j].y;
+
+                            const intersect = ((yi > y) !== (yj > y))
+                                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                            if (intersect) inside = !inside;
+                        }
+                        return inside;
+                    }
+
+                    const slot1_starPoints = slot1_getStarPoints();
+
+                    // Pixel art cho chữ "VIETNAM" (5×7 mỗi chữ - căn giữa hoàn hảo)
+                    const slot1_vietnam = {
+                        'V': [
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [0,1,0,1,0],
+                            [0,0,1,0,0]
+                        ],
+                        'I': [
+                            [1,1,1,1,1],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [1,1,1,1,1]
+                        ],
+                        'E': [
+                            [1,1,1,1,1],
+                            [1,0,0,0,0],
+                            [1,0,0,0,0],
+                            [1,1,1,1,0],
+                            [1,0,0,0,0],
+                            [1,0,0,0,0],
+                            [1,1,1,1,1]
+                        ],
+                        'T': [
+                            [1,1,1,1,1],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0],
+                            [0,0,1,0,0]
+                        ],
+                        'N': [
+                            [1,0,0,0,1],
+                            [1,1,0,0,1],
+                            [1,1,0,0,1],
+                            [1,0,1,0,1],
+                            [1,0,0,1,1],
+                            [1,0,0,1,1],
+                            [1,0,0,0,1]
+                        ],
+                        'A': [
+                            [0,0,1,0,0],
+                            [0,1,0,1,0],
+                            [1,0,0,0,1],
+                            [1,1,1,1,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1]
+                        ],
+                        'M': [
+                            [1,0,0,0,1],
+                            [1,1,0,1,1],
+                            [1,0,1,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1],
+                            [1,0,0,0,1]
+                        ]
+                    };
+
+                    const slot1_text = 'VIETNAM';
+                    const slot1_margin = 8; // Lề trên = lề phải
+                    const slot1_charWidth = 5;
+                    const slot1_charSpacing = 1;
+                    const slot1_textWidth = slot1_text.length * slot1_charWidth + (slot1_text.length - 1) * slot1_charSpacing;
+                    const slot1_startCol = slot1_cols - slot1_margin - slot1_textWidth;
+                    const slot1_startRow = slot1_margin;
+
+                    // Tạo set các vị trí cho chữ VIETNAM
+                    const slot1_textPositions = new Set();
+                    let slot1_currentCol = slot1_startCol;
+
+                    for (let i = 0; i < slot1_text.length; i++) {
+                        const char = slot1_text[i];
+                        const matrix = slot1_vietnam[char];
+
+                        for (let r = 0; r < matrix.length; r++) {
+                            for (let c = 0; c < matrix[r].length; c++) {
+                                if (matrix[r][c] === 1) {
+                                    const row = slot1_startRow + r;
+                                    const col = slot1_currentCol + c;
+                                    slot1_textPositions.add(`${row},${col}`);
+                                }
+                            }
+                        }
+
+                        slot1_currentCol += slot1_charWidth + slot1_charSpacing;
+                    }
+
+                    // Tạo các ô
+                    for (let i = 0; i < slot1_totalCells; i++) {
+                        const row = Math.floor(i / slot1_cols);
+                        const col = i % slot1_cols;
+
+                        const cell = document.createElement('div');
+                        cell.className = 'slot1-cell';
+
+                        // Kiểm tra ô có nằm trong chữ VIETNAM không
+                        const isText = slot1_textPositions.has(`${row},${col}`);
+
+                        if (isText) {
+                            cell.classList.add('slot1-yellow');
+                        } else {
+                            // Kiểm tra ô có nằm trong ngôi sao không
+                            const cellX = col + 0.5;
+                            const cellY = row + 0.5;
+
+                            if (slot1_isPointInPolygon(cellX, cellY, slot1_starPoints)) {
+                                cell.classList.add('slot1-yellow');
+                            } else {
+                                cell.classList.add('slot1-red');
+                            }
+                        }
+
+                        slot1_grid.appendChild(cell);
+                    }
+
+                    // Animation hiển thị tuần tự
+                    const slot1_cells = document.querySelectorAll('#slot-1 .slot1-cell');
+                    slot1_cells.forEach((cell, index) => {
+                        setTimeout(() => {
+                            cell.classList.add('slot1-show');
+                        }, index * 0.2); // 0.2ms mỗi ô = ~5.3 giây tổng (26600 ô)
+                    });
+                })();
             </script>
-            <p>Trang web này tôi để làm kỷ niệm</p>
         </div>
 
         <!-- == SLOT 2 == -->
@@ -55,13 +285,7 @@
                 slot_2.style.color = `red`;
                 slot_2.height = `5px`;
                 slot_2.style.maxWidth = `25px`;
-                setTimeout(() => {
-                    const slot_1 = document.querySelector("#slot-1");
-                    slot_1.innerHTML = `Trang web này tôi để làm kỷ niệm.`;
-                    console.log(
-                        "Tôi định defaced với một dòng trạng thái hấp dẫn hơn ai bảo quá yêu vợ :-))",
-                    );
-                }, 2000);
+                // Code ghi đè slot-1 đã bị xóa để bảo vệ cờ Việt Nam
             </script>
         </div>
 
@@ -2008,7 +2232,6 @@
                         class="input"
                         id="commandInput"
                         placeholder="Type to become a hacker hehe..."
-                        autofocus
                     />
                 </div>
                 <div class="output" id="output"></div>
