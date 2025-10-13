@@ -11,7 +11,7 @@
     </head>
     <body>
         <h1>Welcome to OpenChaosWeb</h1>
-        <!-- 
+        <!--
             Each element should have its own <style> tag right ?
         -->
         <style>
@@ -30,240 +30,16 @@
 
         <!-- == SLOT 1 == -->
         <div id="slot-1">
+            <div class="slot1-flag-container">
+                <img src="https://datafiles.chinhphu.vn/cpp/files/news/2010/11/co_vn.jpg">
+            </div>
             <style>
                 #slot-1 {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    padding: 20px;
-                    background: #f0f0f0;
-                }
-
-                #slot-1 .slot1-flag-container {
-                    width: 100%;
-                    max-width: 600px;
-                    aspect-ratio: 3 / 2;
-                    background: #000;
-                    border: 2px solid #333;
-                    border-radius: 8px;
-                    overflow: hidden;
-                }
-
-                #slot-1 .slot1-flag-grid {
-                    display: grid;
-                    grid-template-columns: repeat(200, 1fr);
-                    grid-template-rows: repeat(133, 1fr);
-                    width: 100%;
-                    height: 100%;
-                    gap: 0;
-                }
-
-                #slot-1 .slot1-cell {
-                    opacity: 0;
-                    transform: scale(0);
-                    transition: all 0.3s ease-out;
-                }
-
-                #slot-1 .slot1-cell.slot1-red {
-                    background-color: #DA251D;
-                }
-
-                #slot-1 .slot1-cell.slot1-yellow {
-                    background-color: #FFCD00;
-                }
-
-                #slot-1 .slot1-cell.slot1-show {
-                    opacity: 1;
-                    transform: scale(1);
                 }
             </style>
-
-            <div class="slot1-flag-container">
-                <div class="slot1-flag-grid" id="slot1-grid"></div>
-            </div>
-
-            <script>
-                (function() {
-                    const slot1_grid = document.getElementById('slot1-grid');
-                    const slot1_cols = 200;
-                    const slot1_rows = 133;
-                    const slot1_totalCells = slot1_cols * slot1_rows;
-
-                    // Tính toán ngôi sao 5 cánh
-                    const slot1_centerX = slot1_cols / 2;
-                    const slot1_centerY = slot1_rows / 2;
-                    const slot1_outerRadius = (slot1_rows * 3) / 10; // 3/5 chiều cao / 2
-                    const slot1_innerRadius = slot1_outerRadius * 0.382; // Tỷ lệ vàng cho ngôi sao
-
-                    // Tạo 5 điểm ngoài và 5 điểm trong của ngôi sao
-                    function slot1_getStarPoints() {
-                        const points = [];
-                        for (let i = 0; i < 5; i++) {
-                            const outerAngle = (Math.PI / 2) + (i * 2 * Math.PI / 5);
-                            const innerAngle = outerAngle + (Math.PI / 5);
-
-                            points.push({
-                                x: slot1_centerX + slot1_outerRadius * Math.cos(outerAngle),
-                                y: slot1_centerY - slot1_outerRadius * Math.sin(outerAngle)
-                            });
-
-                            points.push({
-                                x: slot1_centerX + slot1_innerRadius * Math.cos(innerAngle),
-                                y: slot1_centerY - slot1_innerRadius * Math.sin(innerAngle)
-                            });
-                        }
-                        return points;
-                    }
-
-                    // Kiểm tra điểm có nằm trong polygon không (Ray casting algorithm)
-                    function slot1_isPointInPolygon(x, y, points) {
-                        let inside = false;
-                        for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
-                            const xi = points[i].x, yi = points[i].y;
-                            const xj = points[j].x, yj = points[j].y;
-
-                            const intersect = ((yi > y) !== (yj > y))
-                                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-                            if (intersect) inside = !inside;
-                        }
-                        return inside;
-                    }
-
-                    const slot1_starPoints = slot1_getStarPoints();
-
-                    // Pixel art cho chữ "VIETNAM" (5×7 mỗi chữ - căn giữa hoàn hảo)
-                    const slot1_vietnam = {
-                        'V': [
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [0,1,0,1,0],
-                            [0,0,1,0,0]
-                        ],
-                        'I': [
-                            [1,1,1,1,1],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [1,1,1,1,1]
-                        ],
-                        'E': [
-                            [1,1,1,1,1],
-                            [1,0,0,0,0],
-                            [1,0,0,0,0],
-                            [1,1,1,1,0],
-                            [1,0,0,0,0],
-                            [1,0,0,0,0],
-                            [1,1,1,1,1]
-                        ],
-                        'T': [
-                            [1,1,1,1,1],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0]
-                        ],
-                        'N': [
-                            [1,0,0,0,1],
-                            [1,1,0,0,1],
-                            [1,1,0,0,1],
-                            [1,0,1,0,1],
-                            [1,0,0,1,1],
-                            [1,0,0,1,1],
-                            [1,0,0,0,1]
-                        ],
-                        'A': [
-                            [0,0,1,0,0],
-                            [0,1,0,1,0],
-                            [1,0,0,0,1],
-                            [1,1,1,1,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1]
-                        ],
-                        'M': [
-                            [1,0,0,0,1],
-                            [1,1,0,1,1],
-                            [1,0,1,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1]
-                        ]
-                    };
-
-                    const slot1_text = 'VIETNAM';
-                    const slot1_margin = 8; // Lề trên = lề phải
-                    const slot1_charWidth = 5;
-                    const slot1_charSpacing = 1;
-                    const slot1_textWidth = slot1_text.length * slot1_charWidth + (slot1_text.length - 1) * slot1_charSpacing;
-                    const slot1_startCol = slot1_cols - slot1_margin - slot1_textWidth;
-                    const slot1_startRow = slot1_margin;
-
-                    // Tạo set các vị trí cho chữ VIETNAM
-                    const slot1_textPositions = new Set();
-                    let slot1_currentCol = slot1_startCol;
-
-                    for (let i = 0; i < slot1_text.length; i++) {
-                        const char = slot1_text[i];
-                        const matrix = slot1_vietnam[char];
-
-                        for (let r = 0; r < matrix.length; r++) {
-                            for (let c = 0; c < matrix[r].length; c++) {
-                                if (matrix[r][c] === 1) {
-                                    const row = slot1_startRow + r;
-                                    const col = slot1_currentCol + c;
-                                    slot1_textPositions.add(`${row},${col}`);
-                                }
-                            }
-                        }
-
-                        slot1_currentCol += slot1_charWidth + slot1_charSpacing;
-                    }
-
-                    // Tạo các ô
-                    for (let i = 0; i < slot1_totalCells; i++) {
-                        const row = Math.floor(i / slot1_cols);
-                        const col = i % slot1_cols;
-
-                        const cell = document.createElement('div');
-                        cell.className = 'slot1-cell';
-
-                        // Kiểm tra ô có nằm trong chữ VIETNAM không
-                        const isText = slot1_textPositions.has(`${row},${col}`);
-
-                        if (isText) {
-                            cell.classList.add('slot1-yellow');
-                        } else {
-                            // Kiểm tra ô có nằm trong ngôi sao không
-                            const cellX = col + 0.5;
-                            const cellY = row + 0.5;
-
-                            if (slot1_isPointInPolygon(cellX, cellY, slot1_starPoints)) {
-                                cell.classList.add('slot1-yellow');
-                            } else {
-                                cell.classList.add('slot1-red');
-                            }
-                        }
-
-                        slot1_grid.appendChild(cell);
-                    }
-
-                    // Animation hiển thị tuần tự
-                    const slot1_cells = document.querySelectorAll('#slot-1 .slot1-cell');
-                    slot1_cells.forEach((cell, index) => {
-                        setTimeout(() => {
-                            cell.classList.add('slot1-show');
-                        }, index * 0.2); // 0.2ms mỗi ô = ~5.3 giây tổng (26600 ô)
-                    });
-                })();
-            </script>
         </div>
 
         <!-- == SLOT 2 == -->
@@ -277,7 +53,7 @@
                     font-family: "Inter", sans-serif;
                     font-size: 1rem;
                    padding: 2px;
-                   
+
                 }
             </style>
             <script>
@@ -406,7 +182,7 @@
             #slot-4 #slot4_gameoflife {
             display: flex;
       justify-content: center;
-      align-items: center;  
+      align-items: center;
       flex-direction: column;
             }
             #slot-4 canvas {
@@ -441,7 +217,7 @@
         // Initialize canvas and context
         const canvas = document.getElementById('slot4_canvas');
         const ctx = canvas.getContext('2d');
-        
+
 
 
         // Define cell size and grid dimensions
@@ -488,11 +264,11 @@
                 for (let j = 0; j < numCols; j++) {
                     const neighbors = slot4_4(i, j);
                     if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
-                        newGrid[i][j] = 0; 
+                        newGrid[i][j] = 0;
                     } else if (grid[i][j] === 0 && neighbors === 3) {
-                        newGrid[i][j] = 1; 
+                        newGrid[i][j] = 1;
                     } else {
-                        newGrid[i][j] = grid[i][j]; 
+                        newGrid[i][j] = grid[i][j];
                     }
                 }
             }
@@ -815,7 +591,7 @@
 
             <div class="snake-game-container">
                 <h3 class="snake-game-title">Chơi game con rắn nhe</h3>
-                
+
                 <div class="snake-game-info">
                     <div class="snake-score">Score: <span id="snakeScore">0</span></div>
                     <div class="snake-high-score">High Score: <span id="snakeHighScore">0</span></div>
@@ -845,89 +621,89 @@
                     const canvas = document.getElementById('snakeCanvas');
                     const ctx = canvas.getContext('2d');
                     const gameOverOverlay = document.getElementById('gameOverOverlay');
-                    
+
                     const GRID_SIZE = 20;
                     const GRID_WIDTH = canvas.width / GRID_SIZE;
                     const GRID_HEIGHT = canvas.height / GRID_SIZE;
-                    const INITIAL_SPEED = 100; 
-                    
+                    const INITIAL_SPEED = 100;
+
                     let snake = [];
                     let direction = { x: 1, y: 0 };
                     let nextDirection = { x: 1, y: 0 };
                     let food = { x: 0, y: 0 };
                     let score = 0;
-                    let highScore = localStorage.getItem('snakeHighScore') || 0; 
+                    let highScore = localStorage.getItem('snakeHighScore') || 0;
                     let gameLoop = null;
-                    let isGameRunning = false; 
+                    let isGameRunning = false;
                     let gameSpeed = INITIAL_SPEED;
-                    
+
                     document.getElementById('snakeHighScore').textContent = highScore;
-                    
+
                     function slot6InitGame() {
                         snake = [
                             { x: Math.floor(GRID_WIDTH / 2), y: Math.floor(GRID_HEIGHT / 2) },
                             { x: Math.floor(GRID_WIDTH / 2) - 1, y: Math.floor(GRID_HEIGHT / 2) },
                             { x: Math.floor(GRID_WIDTH / 2) - 2, y: Math.floor(GRID_HEIGHT / 2) }
                         ];
-                        
+
                         direction = { x: 1, y: 0 };
                         nextDirection = { x: 1, y: 0 };
-                        
+
                         score = 0;
                         gameSpeed = INITIAL_SPEED;
                         document.getElementById('snakeScore').textContent = score;
-                        
+
                         slot6SpawnFood();
-                        
+
                         gameOverOverlay.classList.remove('show');
                     }
-                    
+
                     function slot6SpawnFood() {
                         let validPosition = false;
-                        
+
                         while (!validPosition) {
                             food.x = Math.floor(Math.random() * GRID_WIDTH);
                             food.y = Math.floor(Math.random() * GRID_HEIGHT);
-                            
-                            validPosition = !snake.some(segment => 
+
+                            validPosition = !snake.some(segment =>
                                 segment.x === food.x && segment.y === food.y
                             );
                         }
                     }
-                    
+
                     function slot6UpdateGame() {
                         direction = { ...nextDirection };
-                        
+
                         const newHead = {
                             x: snake[0].x + direction.x,
                             y: snake[0].y + direction.y
                         };
-                        
-                        if (newHead.x < 0 || newHead.x >= GRID_WIDTH || 
+
+                        if (newHead.x < 0 || newHead.x >= GRID_WIDTH ||
                             newHead.y < 0 || newHead.y >= GRID_HEIGHT) {
                             slot6GameOver();
                             return;
                         }
-                        
+
                         if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
                             slot6GameOver();
                             return;
                         }
-                        
+
                         snake.unshift(newHead);
-                        
+
                         if (newHead.x === food.x && newHead.y === food.y) {
                             score += 10;
                             document.getElementById('snakeScore').textContent = score;
-                            
+
                             if (score > highScore) {
                                 highScore = score;
                                 localStorage.setItem('snakeHighScore', highScore);
                                 document.getElementById('snakeHighScore').textContent = highScore;
                             }
-                            
+
                             slot6SpawnFood();
-                            
+
                             if (gameSpeed > 50) {
                                 gameSpeed = Math.max(50, gameSpeed - 2);
                                 clearInterval(gameLoop);
@@ -937,12 +713,12 @@
                             snake.pop();
                         }
                     }
-                    
-                 
+
+
                     function slot6DrawGame() {
                         ctx.fillStyle = '#1a1a1a';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        
+
                         ctx.strokeStyle = '#2a2a2a';
                         ctx.lineWidth = 0.5;
                         for (let i = 0; i <= GRID_WIDTH; i++) {
@@ -957,10 +733,10 @@
                             ctx.lineTo(canvas.width, i * GRID_SIZE);
                             ctx.stroke();
                         }
-                        
+
                         snake.forEach((segment, index) => {
                             const alpha = 1 - (index / snake.length) * 0.5;
-                            
+
                             if (index === 0) {
                                 ctx.fillStyle = '#0fffc3';
                                 ctx.shadowBlur = 15;
@@ -970,55 +746,55 @@
                                 ctx.shadowBlur = 5;
                                 ctx.shadowColor = '#0ff06b';
                             }
-                            
+
                             const x = segment.x * GRID_SIZE;
                             const y = segment.y * GRID_SIZE;
                             const size = GRID_SIZE - 2;
                             const radius = 4;
-                            
+
                             ctx.beginPath();
                             ctx.roundRect(x + 1, y + 1, size, size, radius);
                             ctx.fill();
                         });
-                        
+
                         ctx.shadowBlur = 0;
-                        
+
                         const foodX = food.x * GRID_SIZE;
                         const foodY = food.y * GRID_SIZE;
                         const time = Date.now() / 200;
                         const pulse = Math.sin(time) * 0.2 + 0.8;
-                        
+
                         ctx.fillStyle = '#fff66b';
                         ctx.shadowBlur = 20;
                         ctx.shadowColor = '#fff66b';
-                        
+
                         ctx.beginPath();
                         ctx.arc(
-                            foodX + GRID_SIZE / 2, 
-                            foodY + GRID_SIZE / 2, 
-                            (GRID_SIZE / 2 - 2) * pulse, 
-                            0, 
+                            foodX + GRID_SIZE / 2,
+                            foodY + GRID_SIZE / 2,
+                            (GRID_SIZE / 2 - 2) * pulse,
+                            0,
                             Math.PI * 2
                         );
                         ctx.fill();
-                        
+
                         ctx.shadowBlur = 0;
                     }
-                    
+
                     function slot6GameTick() {
                         slot6UpdateGame();
                         slot6DrawGame();
                     }
-                    
+
                     function slot6GameOver() {
                         isGameRunning = false;
                         clearInterval(gameLoop);
-                        
+
                         document.getElementById('finalScore').textContent = score;
                         gameOverOverlay.classList.add('show');
                         document.getElementById('snakeStartBtn').textContent = 'Start Game';
                     }
-                    
+
                     window.slot6StartSnakeGame = function() {
                         if (!isGameRunning) {
                             slot6InitGame();
@@ -1028,18 +804,18 @@
                             slot6DrawGame();
                         }
                     };
-                    
+
                     window.slot6RestartSnakeGame = function() {
                         slot6StartSnakeGame();
                     };
-                    
+
                     document.addEventListener('keydown', function(e) {
                         if (!isGameRunning) return;
-                        
+
                         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
                             e.preventDefault();
                         }
-                        
+
                         switch(e.key) {
                             case 'ArrowUp':
                             case 'w':
@@ -1063,7 +839,7 @@
                                 break;
                         }
                     });
-                    
+
                     slot6DrawGame();
                 })();
             </script>
@@ -1116,7 +892,7 @@
 
                         currentPlayer = 'O';
                         document.getElementById('tictactoeStatus').textContent = 'AI dang suy nghi...';
-                        
+
                         setTimeout(() => {
                             slot6AIMove();
                         }, 500);
@@ -1127,7 +903,7 @@
 
                         let move = slot6FindBestMove();
                         board[move] = 'O';
-                        
+
                         const cells = document.querySelectorAll('#tictactoeBoard .tictactoe-cell');
                         cells[move].textContent = 'O';
                         cells[move].classList.add('taken');
@@ -1346,7 +1122,7 @@
             <div class="bmi-container">
                 <h3 class="bmi-title">Máy tính BMI</h3>
                 <p class="bmi-slogan">Để Hoàng Anh giúp anh em tính BMI nhé :&gt;&gt;</p>
-                
+
                 <div class="bmi-note">Mấy anh em vào tính BMI rồi lo mà tập thể dục đi nhé, rượu bia ít thôi!</div>
 
                 <div class="bmi-form">
@@ -1354,12 +1130,12 @@
                         <label class="bmi-label">Câng nặng (kg):</label>
                         <input type="number" class="bmi-input" id="bmiWeight" placeholder="Nhập cân nặng của bạn..." step="0.1">
                     </div>
-                    
+
                     <div class="bmi-input-group">
                         <label class="bmi-label">Chiều cao (cm):</label>
                         <input type="number" class="bmi-input" id="bmiHeight" placeholder="Nhập chiều cao của bạn..." step="0.1">
                     </div>
-                    
+
                     <button class="bmi-btn" onclick="slot6CalculateBMI()">Tính BMI</button>
 
                     <div class="bmi-categories">
@@ -1851,7 +1627,7 @@
             var slot7_dealerScore = slot7_calculateScore(slot7_dealerHand);
             var slot7_playerScore = slot7_calculateScore(slot7_playerHand);
 
-            document.getElementById('slot7-dealer-score').textContent = slot7_showDealerCard ? 
+            document.getElementById('slot7-dealer-score').textContent = slot7_showDealerCard ?
                 'Score: ' + slot7_dealerScore : 'Score: ' + slot7_calculateScore([slot7_dealerHand[0]]);
             document.getElementById('slot7-player-score').textContent = 'Score: ' + slot7_playerScore;
         }
@@ -2049,22 +1825,22 @@
                 <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('/')">/</button>
                 <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('*')">×</button>
                 <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('-')">-</button>
-                
+
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('7')">7</button>
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('8')">8</button>
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('9')">9</button>
                 <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('+')">+</button>
-                
+
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('4')">4</button>
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('5')">5</button>
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('6')">6</button>
                 <button class="slot9-btn slot9-btn-operator" onclick="slot9AppendOperator('.')">.</button>
-                
+
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('1')">1</button>
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('2')">2</button>
                 <button class="slot9-btn slot9-btn-number" onclick="slot9AppendNumber('3')">3</button>
                 <button class="slot9-btn slot9-btn-clear" onclick="slot9Delete()">⌫</button>
-                
+
                 <button class="slot9-btn slot9-btn-number slot9-btn-zero" onclick="slot9AppendNumber('0')">0</button>
                 <button class="slot9-btn slot9-btn-equals" onclick="slot9Calculate()">=</button>
             </div>
@@ -2165,7 +1941,7 @@
         // Keyboard support
         document.addEventListener('keydown', function(slot9Event) {
             var slot9Key = slot9Event.key;
-            
+
             if (slot9Key >= '0' && slot9Key <= '9') {
                 slot9AppendNumber(slot9Key);
             } else if (slot9Key === '.') {
@@ -2304,110 +2080,198 @@
         <!-- == SLOT 18 == -->
         <div id="slot-18">
             <style>
-
+                /* Scoped styles for slot 18 */
                 #slot-18 {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+
+                #slot-18 .slot-18-header {
+                    text-align: center;
+                    padding: 20px;
+                    margin: 20px 0;
+                    border-top: 2px solid #667eea;
+                    border-bottom: 2px solid #667eea;
+                }
+
+                #slot-18 .slot-18-header h2 {
+                    color: #667eea;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 600;
+                }
+
+                #slot-18 .slot-18-feature-1 {
                     padding: 10em;
                     text-align: center;
-                    background: #000;
+                    background-color: #e5e5f7;
+                    opacity: 0.8;
+                    background-image: radial-gradient(circle at center center, #444cf7, #e5e5f7), repeating-radial-gradient(circle at center center, #444cf7, #444cf7, 10px, transparent 20px, transparent 10px);
+                    background-blend-mode: multiply;
                     overflow: hidden;
                     border: 2px solid #00ff00;
                     border-radius: 8px;
                     cursor: crosshair;
                     font-family: 'Courier New', monospace;
+                    margin-bottom: 0.5em;
                 }
 
                 @keyframes slot18-magicBlink {
-        
-                    0%,
-                    100% {
+                    0%, 100% {
                         opacity: 1;
                         transform: scale(1);
                     }
-        
                     25% {
                         opacity: 0.7;
                         transform: scale(1.05);
                     }
-        
                     50% {
                         opacity: 1;
                         transform: scale(1.1);
                     }
-        
                     75% {
                         opacity: 0.7;
                         transform: scale(1.05);
                     }
                 }
-        
+
                 @keyframes slot18-magicGlow {
-        
-                    0%,
-                    100% {
+                    0%, 100% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 10px rgba(68, 68, 255, 0.5);
                     }
-        
                     50% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 25px rgba(68, 68, 255, 1), 0 0 40px rgba(68, 68, 255, 0.8);
                     }
                 }
-        
+
                 @keyframes slot18-buttonMagic {
-        
-                    0%,
-                    100% {
+                    0%, 100% {
                         opacity: 1;
                         transform: scale(1) rotate(0deg);
                     }
-        
                     25% {
                         opacity: 0.8;
                         transform: scale(1.08) rotate(-2deg);
                     }
-        
                     50% {
                         opacity: 1;
                         transform: scale(1.15) rotate(2deg);
                     }
-        
                     75% {
                         opacity: 0.8;
                         transform: scale(1.08) rotate(-2deg);
                     }
                 }
-        
+
                 @keyframes slot18-buttonGlow {
-        
-                    0%,
-                    100% {
+                    0%, 100% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 68, 68, 0.6);
                     }
-        
                     50% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 68, 68, 1), 0 0 50px rgba(255, 68, 68, 0.8);
                     }
                 }
-        
-                #slot-18 #countdown-message {
+
+                #slot-18 .slot-18-countdown {
+                    padding: 15px 30px;
+                    background-color: #4444ff;
+                    color: white;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
                     animation: slot18-magicBlink 1.5s ease-in-out infinite, slot18-magicGlow 1.5s ease-in-out infinite;
                 }
-        
-                #slot-18 #miracle-button {
+
+                #slot-18 .slot-18-miracle-btn {
+                    display: none;
+                    padding: 15px 30px;
+                    background-color: #ff4444;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
                     margin: 0 auto;
                     animation: slot18-buttonMagic 1s ease-in-out infinite, slot18-buttonGlow 1s ease-in-out infinite;
                 }
+
+                #slot-18 .slot-18-miracle-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 68, 68, 1), 0 0 50px rgba(255, 68, 68, 0.8);
+                }
+
+                #slot-18 .slot-18-iframe {
+                    width: 100%;
+                    height: 800px;
+                    border: none;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+
+                #slot-18 .slot-18-btn-container {
+                    text-align: center;
+                }
+
+                #slot-18 .slot-18-btn {
+                    margin: 10px auto;
+                    padding: 12px 24px;
+                    background-color: #667eea;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                    transition: all 0.3s ease;
+                }
+
+                #slot-18 .slot-18-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+                }
+
+                #slot-18 .slot-18-youtube-btn {
+                    margin: 10px auto;
+                    padding: 12px 24px;
+                    background-color: #ff0000;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                #slot-18 .slot-18-youtube-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+                }
             </style>
-            <p id="countdown-message"
-                style="padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                Điều kì diệu sẽ hiện ra sau 5 giây</p>
-            <button id="miracle-button"
-                style="display: none; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
-                vào đây để thấy điều kì diệu</button>
+
+            <!-- Header -->
+            <div class="slot-18-header">
+                <h2>Welcome to slot 18</h2>
+            </div>
+
+            <!-- Feature 1: Countdown & Miracle Button -->
+            <div class="slot-18-feature-1">
+                <p class="slot-18-countdown">Điều kì diệu sẽ hiện ra sau 5 giây</p>
+                <button class="slot-18-miracle-btn">Ấn vào đây để thấy điều kì diệu</button>
+            </div>
+
             <script>
                 (function () {
                     let countdown = 5;
-                    const messageElement = document.querySelector('#slot-18 #countdown-message');
-                    const miracleButton = document.querySelector('#slot-18 #miracle-button');
+                    const messageElement = document.querySelector('#slot-18 .slot-18-countdown');
+                    const miracleButton = document.querySelector('#slot-18 .slot-18-miracle-btn');
 
                     const countdownInterval = setInterval(() => {
                         countdown--;
@@ -2425,6 +2289,59 @@
                     });
                 })();
             </script>
+
+            <!-- Feature 2: Timelapse Iframe -->
+            <div>
+                <iframe
+                    src="https://noctrlz1110.github.io/timelapse"
+                    class="slot-18-iframe"
+                    title="Timelapse">
+                </iframe>
+
+                <div class="slot-18-btn-container">
+                    <button class="slot-18-btn slot-18-fullscreen-btn">
+                        Xem toàn màn hình
+                    </button>
+                    <button
+                        class="slot-18-btn"
+                        onclick="window.open('https://noctrlz1110.github.io/timelapse', '_blank')">
+                        Mở trong cửa sổ mới
+                    </button>
+                </div>
+
+                <div class="slot-18-btn-container">
+                    <button
+                        class="slot-18-youtube-btn"
+                        onclick="window.open('https://bit.ly/van-huy-dev-youtube', '_blank')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
+                        Đăng ký kênh ủng hộ của mình
+                    </button>
+                </div>
+
+                <script>
+                    (function () {
+                        const fullscreenBtn = document.querySelector('#slot-18 .slot-18-fullscreen-btn');
+                        const iframe = document.querySelector('#slot-18 .slot-18-iframe');
+
+                        fullscreenBtn.addEventListener('click', () => {
+                            if (iframe.requestFullscreen) {
+                                iframe.requestFullscreen();
+                            } else if (iframe.webkitRequestFullscreen) {
+                                iframe.webkitRequestFullscreen();
+                            } else if (iframe.msRequestFullscreen) {
+                                iframe.msRequestFullscreen();
+                            }
+                        });
+                    })();
+                </script>
+            </div>
+
+            <!-- Footer -->
+            <div class="slot-18-header">
+                <h2>Cảm ơn bạn đã ghé thăm Slot 18! ✨</h2>
+            </div>
         </div>
 
         <!-- == SLOT 19 == -->
@@ -2443,7 +2360,7 @@
               box-shadow: 0 8px 32px rgba(0,0,0,0.12);
               border: 1px solid rgba(255,255,255,0.4);
             }
-        
+
             /* Lớp nền động phủ toàn bộ chiều ngang slot */
             #slot-20 .fc-bg {
               position: absolute;
@@ -2481,7 +2398,7 @@
               50%  { transform: translate(60px,-40px) scale(1.1); opacity: 0.75; }
               100% { transform: translate(-50px,50px) scale(0.92); opacity: 0.6; }
             }
-        
+
             #slot-20 .fc-content {
               position: relative;
               z-index: 1;
@@ -2495,7 +2412,7 @@
               align-items: center;
               gap: 16px;
             }
-        
+
             #slot-20 .fc-card {
               width: 100%;
               height: 240px;
@@ -2513,7 +2430,7 @@
               50% { background-position: 100% 50%; }
               100% { background-position: 0% 50%; }
             }
-        
+
             #slot-20 .fc-card-inner {
               width: 100%; height: 100%;
               position: relative;
@@ -2521,7 +2438,7 @@
               transform-style: preserve-3d;
             }
             #slot-20 .fc-card.flipped .fc-card-inner { transform: rotateY(180deg); }
-        
+
             #slot-20 .fc-face {
               position: absolute;
               inset: 0;
@@ -2549,7 +2466,7 @@
               font-weight: 600;
               font-size: 20px;
             }
-        
+
             #slot-20 .fc-controls {
               display: flex;
               gap: 12px;
@@ -2571,7 +2488,7 @@
               transform: translateY(-2px);
               box-shadow: 0 8px 20px rgba(236,72,153,0.4);
             }
-        
+
             #slot-20 .fc-link {
               width: 100%;
               display: block;
@@ -2589,7 +2506,7 @@
               transform: translateY(-2px);
               box-shadow: 0 8px 28px rgba(249,115,22,0.45);
             }
-        
+
             #slot-20 .fc-note {
               font-size: 14px;
               color: #333;
@@ -2604,13 +2521,13 @@
             #slot-20 .fc-note a { color: #2563eb; font-weight: 700; text-decoration: none; }
             #slot-20 .fc-note a:hover { text-decoration: underline; }
           </style>
-        
+
           <div class="fc-bg">
             <div class="fc-blob"></div>
             <div class="fc-blob"></div>
             <div class="fc-blob"></div>
           </div>
-        
+
           <div class="fc-content">
             <div class="fc-card" id="slot-20-card" aria-label="Flashcard">
               <div class="fc-card-inner">
@@ -2618,27 +2535,27 @@
                 <div class="fc-face fc-back" id="slot-20-back"></div>
               </div>
             </div>
-        
+
             <div class="fc-controls">
               <button class="fc-btn" id="slot-20-prev">⟨ Trước</button>
               <button class="fc-btn" id="slot-20-next">Sau ⟩</button>
             </div>
-        
+
             <a class="fc-link" href="https://theeng.org" target="_blank" rel="noopener noreferrer">
               ✨ Mở theeng.org ✨
             </a>
-        
+
             <div class="fc-note">
               📘 Em sẽ cập nhật thêm dữ liệu từ vựng sau này<br>
               hoặc vào <a href="https://theeng.org" target="_blank" rel="noopener noreferrer">theeng.org</a> để học nhiều từ hơn!
             </div>
           </div>
-        
+
           <script>
             (function(){
               const slot20Root = document.getElementById("slot-20");
               if (!slot20Root) return console.log("[slot-20] Root not found");
-        
+
               const slot20Data = [
                   { word: "abandon", meaning: "từ bỏ, ruồng bỏ" },
                   { word: "brilliant", meaning: "xuất sắc, rực rỡ" },
@@ -2689,20 +2606,20 @@
                   { word: "zephyr", meaning: "làn gió nhẹ" }
                 ];
 
-        
+
               const card = slot20Root.querySelector("#slot-20-card");
               const front = slot20Root.querySelector("#slot-20-front");
               const back = slot20Root.querySelector("#slot-20-back");
               const prev = slot20Root.querySelector("#slot-20-prev");
               const next = slot20Root.querySelector("#slot-20-next");
-        
+
               let index = 0;
               function render() {
                 const item = slot20Data[index];
                 front.textContent = item.word;
                 back.textContent = item.meaning;
               }
-        
+
               card.addEventListener("click", () => card.classList.toggle("flipped"));
               next.addEventListener("click", () => {
                 card.classList.remove("flipped");
@@ -2714,7 +2631,7 @@
                 index = (index - 1 + slot20Data.length) % slot20Data.length;
                 render();
               });
-        
+
               render();
             })();
           </script>
@@ -2755,7 +2672,7 @@
                     cursor: crosshair;
                     font-family: 'Courier New', monospace;
                 }
-                
+
                 #slot-28 .rain-drop {
                     position: absolute;
                     color: #00ff00;
@@ -2766,28 +2683,28 @@
                     user-select: none;
                     pointer-events: none;
                 }
-                
+
                 #slot-28 .rain-drop.bright {
                     color: #ffffff;
                     text-shadow: 0 0 10px #ffffff, 0 0 20px #00ff00;
                     opacity: 1;
                 }
-                
+
                 #slot-28 .rain-drop.red {
                     color: #ff0000;
                     text-shadow: 0 0 5px #ff0000;
                 }
-                
+
                 #slot-28 .rain-drop.blue {
                     color: #0088ff;
                     text-shadow: 0 0 5px #0088ff;
                 }
-                
+
                 #slot-28 .rain-drop.purple {
                     color: #8800ff;
                     text-shadow: 0 0 5px #8800ff;
                 }
-                
+
                 #slot-28 .controls {
                     position: absolute;
                     top: 10px;
@@ -2798,7 +2715,7 @@
                     border-radius: 5px;
                     border: 1px solid #00ff00;
                 }
-                
+
                 #slot-28 .controls button {
                     background: #00ff00;
                     color: #000;
@@ -2811,12 +2728,12 @@
                     font-size: 12px;
                     font-weight: bold;
                 }
-                
+
                 #slot-28 .controls button:hover {
                     background: #ffffff;
                     box-shadow: 0 0 10px #00ff00;
                 }
-                
+
                 #slot-28 .info {
                     position: absolute;
                     bottom: 10px;
@@ -2826,7 +2743,7 @@
                     text-shadow: 0 0 5px #00ff00;
                 }
             </style>
-            
+
             <div class="controls">
                 <button onclick="slot28ChangeColor('green')">Green</button>
                 <button onclick="slot28ChangeColor('red')">Red</button>
@@ -2834,11 +2751,11 @@
                 <button onclick="slot28ChangeColor('purple')">Purple</button>
                 <button onclick="slot28ToggleSpeed()">Speed</button>
             </div>
-            
+
             <div class="info">
                 Move mouse to interact
             </div>
-            
+
             <script>
                 (function() {
                     const slot28 = document.getElementById('slot-28');
@@ -2847,7 +2764,7 @@
                     let currentColor = 'green';
                     let speed = 1;
                     let isRunning = true;
-                    
+
                     function slot28CreateDrop() {
                         const drop = document.createElement('div');
                         drop.className = 'rain-drop';
@@ -2855,7 +2772,7 @@
                         drop.style.top = '-20px';
                         drop.textContent = chars[Math.floor(Math.random() * chars.length)];
                         slot28.appendChild(drop);
-                        
+
                         const dropObj = {
                             element: drop,
                             x: parseInt(drop.style.left),
@@ -2863,71 +2780,71 @@
                             speed: 0.5 + Math.random() * 2,
                             chars: []
                         };
-                        
+
                         // Tạo chuỗi ký tự cho drop
                         for (let i = 0; i < 10 + Math.random() * 20; i++) {
                             dropObj.chars.push(chars[Math.floor(Math.random() * chars.length)]);
                         }
-                        
+
                         drops.push(dropObj);
                     }
-                    
+
                     function slot28UpdateDrops() {
                         if (!isRunning) return;
-                        
+
                         drops.forEach((drop, index) => {
                             drop.y += drop.speed * speed;
                             drop.element.style.top = drop.y + 'px';
-                            
+
                             // Cập nhật ký tự hiện tại
                             const charIndex = Math.floor(drop.y / 20) % drop.chars.length;
                             drop.element.textContent = drop.chars[charIndex];
-                            
+
                             // Làm sáng ký tự cuối
                             if (charIndex === drop.chars.length - 1) {
                                 drop.element.classList.add('bright');
                             } else {
                                 drop.element.classList.remove('bright');
                             }
-                            
+
                             // Xóa drop khi ra khỏi màn hình
                             if (drop.y > slot28.offsetHeight + 50) {
                                 drop.element.remove();
                                 drops.splice(index, 1);
                             }
                         });
-                        
+
                         // Tạo drop mới
                         if (Math.random() < 0.3) {
                             slot28CreateDrop();
                         }
-                        
+
                         requestAnimationFrame(slot28UpdateDrops);
                     }
-                    
+
                     function slot28ChangeColor(color) {
                         currentColor = color;
                         drops.forEach(drop => {
                             drop.element.className = 'rain-drop ' + color;
                         });
                     }
-                    
+
                     function slot28ToggleSpeed() {
                         speed = speed === 1 ? 2 : speed === 2 ? 0.5 : 1;
                     }
-                    
+
                     // Tương tác với chuột
                     slot28.addEventListener('mousemove', function(e) {
                         const rect = slot28.getBoundingClientRect();
                         const x = e.clientX - rect.left;
                         const y = e.clientY - rect.top;
-                        
+
                         // Tạo hiệu ứng xung quanh chuột
                         drops.forEach(drop => {
                             const dx = drop.x - x;
                             const dy = drop.y - y;
                             const distance = Math.sqrt(dx * dx + dy * dy);
-                            
+
                             if (distance < 100) {
                                 const force = (100 - distance) / 100;
                                 drop.x += dx * force * 0.1;
@@ -2936,13 +2853,13 @@
                             }
                         });
                     });
-                    
+
                     // Click để tạo burst
                     slot28.addEventListener('click', function(e) {
                         const rect = slot28.getBoundingClientRect();
                         const x = e.clientX - rect.left;
                         const y = e.clientY - rect.top;
-                        
+
                         // Tạo nhiều drop từ vị trí click
                         for (let i = 0; i < 10; i++) {
                             const drop = document.createElement('div');
@@ -2952,7 +2869,7 @@
                             drop.textContent = chars[Math.floor(Math.random() * chars.length)];
                             drop.style.transform = `rotate(${(Math.random() - 0.5) * 360}deg)`;
                             slot28.appendChild(drop);
-                            
+
                             const dropObj = {
                                 element: drop,
                                 x: parseInt(drop.style.left),
@@ -2960,22 +2877,22 @@
                                 speed: 1 + Math.random() * 3,
                                 chars: []
                             };
-                            
+
                             for (let j = 0; j < 5; j++) {
                                 dropObj.chars.push(chars[Math.floor(Math.random() * chars.length)]);
                             }
-                            
+
                             drops.push(dropObj);
                         }
                     });
-                    
+
                     // Khởi tạo
                     for (let i = 0; i < 20; i++) {
                         setTimeout(() => slot28CreateDrop(), i * 100);
                     }
-                    
+
                     slot28UpdateDrops();
-                    
+
                     // Expose functions globally
                     window.slot28ChangeColor = slot28ChangeColor;
                     window.slot28ToggleSpeed = slot28ToggleSpeed;
@@ -3141,28 +3058,28 @@
             <button id="nut_adawdawdawdawdawd" onclick="age()">Tính tuổi của bạn</button>
             </div>
             <script>
-               var inc = 0, inb = 0; 
-                function age() { 
-                    var n = document.getElementById("age_e").value, 
-                        e = n + " là tuổi clgt???"; 
-                    if (0 == document.getElementById("age_e").value.length || isNaN(n)) 
-                        if (0 == document.getElementById("age_e").value.length) 
-                            document.getElementById("age_a").innerHTML = "Chưa nhập gì hết."; 
-                        else { 
-                            switch (inc) { 
-                                case 0: document.getElementById("age_a").innerHTML = e; break; 
-                                case 1: document.getElementById("age_a").innerHTML = "Đây là lần thứ 2 rồi nhưng bạn vẫn nhập sai."; break; 
-                                case 2: document.getElementById("age_a").innerHTML = "Thật ra bạn chỉ bấm cái nút này cho vui thôi phải không?" 
+               var inc = 0, inb = 0;
+                function age() {
+                    var n = document.getElementById("age_e").value,
+                        e = n + " là tuổi clgt???";
+                    if (0 == document.getElementById("age_e").value.length || isNaN(n))
+                        if (0 == document.getElementById("age_e").value.length)
+                            document.getElementById("age_a").innerHTML = "Chưa nhập gì hết.";
+                        else {
+                            switch (inc) {
+                                case 0: document.getElementById("age_a").innerHTML = e; break;
+                                case 1: document.getElementById("age_a").innerHTML = "Đây là lần thứ 2 rồi nhưng bạn vẫn nhập sai."; break;
+                                case 2: document.getElementById("age_a").innerHTML = "Thật ra bạn chỉ bấm cái nút này cho vui thôi phải không?"
                             }
-                            inc++; 
-                        } 
-                    else 
-                        0 == inb ? (document.getElementById("age_a").innerHTML = "Bạn đã " + n + " tuổi rồi.", inc = 0) : document.getElementById("age_a").innerHTML = "Bạn đã nhấn cái nút này " + inb + " lần, tuổi của bạn vẫn là " + n, inb++; 
-                    if (3 < inc) 
-                        for (var t = 0; t <= inc; t++) document.getElementById("age_a").innerHTML = " đừng có nhấn nữa".repeat(t); 
-                    6 == inc && (document.getElementById("age_a").innerHTML = "nhấn thêm lần nữa xem?"), 
-                    7 == inc && (document.getElementById("age_a").innerHTML = "chắc chưa?", document.getElementById("nut_adawdawdawdawdawd").innerHTML = "chắc."), 
-                    7 < inc && (window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
+                            inc++;
+                        }
+                    else
+                        0 == inb ? (document.getElementById("age_a").innerHTML = "Bạn đã " + n + " tuổi rồi.", inc = 0) : document.getElementById("age_a").innerHTML = "Bạn đã nhấn cái nút này " + inb + " lần, tuổi của bạn vẫn là " + n, inb++;
+                    if (3 < inc)
+                        for (var t = 0; t <= inc; t++) document.getElementById("age_a").innerHTML = " đừng có nhấn nữa".repeat(t);
+                    6 == inc && (document.getElementById("age_a").innerHTML = "nhấn thêm lần nữa xem?"),
+                    7 == inc && (document.getElementById("age_a").innerHTML = "chắc chưa?", document.getElementById("nut_adawdawdawdawdawd").innerHTML = "chắc."),
+                    7 < inc && (window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
                 }
             </script>
         </div>
@@ -3510,7 +3427,7 @@
 
         <!-- == SLOT 88 == -->
         <div id="slot-88">
-            
+
             <h3>Bitcoin sập buồn quá để giá cho anh em theo dõi</h3>
             <style>
                 #slot-88 {
@@ -3608,7 +3525,256 @@
         <div id="slot-98"></div>
 
         <!-- == SLOT 99 == -->
-        <div id="slot-99"></div>
+        <div id="slot-99">
+          <div class="ocw99-wrap">
+            <div class="ocw99-hero">
+              <div class="ocw99-badge">Slot 99</div>
+              <h2 class="ocw99-title">Cảm ơn anh đã tạo ra trang web này</h2>
+              <p class="ocw99-subtitle">
+                <a href="https://www.facebook.com/Fidoublenn" target="_blank" rel="noopener" class="ocw99-link">
+                  Hải Phúc
+                </a>
+                tự hào là một phần trong anh :)) &lt;3
+              </p>
+
+              <!-- Loading 99% -->
+              <div class="ocw99-progress">
+                <div class="ocw99-progress-track">
+                  <div class="ocw99-progress-bar" style="--p: 99;"></div>
+                </div>
+                <div class="ocw99-progress-label">Đang yêu đời… 99%</div>
+              </div>
+            </div>
+
+            <!-- QR APP -->
+            <div class="ocw99-card">
+              <h3 class="ocw99-card-title">Tạo mã QR từ liên kết</h3>
+              <p class="ocw99-hint">Dán URL vào ô bên dưới, nhấn <strong>Tạo QR</strong> và tải về PNG.</p>
+
+              <div class="ocw99-form">
+                <input
+                  id="ocw99-input"
+                  class="ocw99-input"
+                  type="url"
+                  placeholder="https://ví-dụ.com/đường-dẫn-của-bạn"
+                  inputmode="url"
+                  aria-label="Nhập liên kết để tạo QR"
+                />
+                <div class="ocw99-actions">
+                  <button id="ocw99-generate" class="ocw99-btn">Tạo QR</button>
+                  <button id="ocw99-download" class="ocw99-btn ocw99-btn-ghost" disabled>Tải PNG</button>
+                </div>
+              </div>
+
+              <div class="ocw99-preview">
+                <div id="ocw99-qrcode" class="ocw99-qrcode" aria-live="polite" aria-label="Kết quả mã QR sẽ xuất hiện tại đây"></div>
+              </div>
+              <p class="ocw99-footnote">Tip: dùng link ngắn để QR sắc nét hơn.</p>
+            </div>
+          </div>
+
+          <!-- Toast (nội bộ slot) -->
+          <div class="ocw99-toast" id="ocw99-toast" role="status" aria-live="polite"></div>
+
+          <!-- Styles (scoped) -->
+          <style>
+            /* ===== SLOT 99 STYLES ===== */
+            #slot-99 {
+              --ocw99-bg: radial-gradient(1200px 800px at 10% 10%, #e8f0ff 0%, #f7f9ff 40%, #ffffff 65%);
+              --ocw99-primary-600: #4f46e5;
+              --ocw99-primary-700: #4338ca;
+              --ocw99-ring: rgba(79, 70, 229, 0.25);
+              --ocw99-text: #0f172a;
+              --ocw99-muted: #475569;
+              --ocw99-border: #e2e8f0;
+              --ocw99-card: rgba(255,255,255,0.7);
+              --ocw99-shadow: 0 8px 30px rgba(2, 6, 23, 0.08);
+
+              font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+              color: var(--ocw99-text);
+              position: relative;
+              margin: 48px auto;
+              padding: 24px;
+              max-width: 980px;
+              border-radius: 20px;
+              background: var(--ocw99-bg);
+              border: 1px solid var(--ocw99-border);
+              box-shadow: var(--ocw99-shadow);
+              overflow: clip;
+              isolation: isolate;
+            }
+            #slot-99 .ocw99-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; }
+            @media (max-width: 900px) { #slot-99 .ocw99-wrap { grid-template-columns: 1fr; } }
+
+            /* Hero */
+            #slot-99 .ocw99-hero { padding: 24px 12px 12px; position: relative; }
+            #slot-99 .ocw99-badge {
+              display: inline-block; padding: 6px 10px; font-size: 12px; font-weight: 700; letter-spacing: .04em;
+              text-transform: uppercase; color: #0f172a; background: #e0e7ff; border: 1px dashed #c7d2fe; border-radius: 999px;
+            }
+            #slot-99 .ocw99-title {
+              margin: 14px 0 6px; font-family: "Nunito", ui-rounded, system-ui, -apple-system, Segoe UI;
+              font-weight: 900; font-size: clamp(24px, 3.2vw, 40px); letter-spacing: -0.02em; line-height: 1.12;
+            }
+            #slot-99 .ocw99-subtitle { margin: 0 0 16px; color: var(--ocw99-muted); font-size: 15px; }
+            #slot-99 .ocw99-link {
+              color: var(--ocw99-primary-600); text-decoration: none; border-bottom: 2px solid transparent;
+              transition: border-color .2s, color .2s, background .2s; padding: 0 4px; border-radius: 6px;
+              background: rgba(79, 70, 229, 0.06);
+            }
+            #slot-99 .ocw99-link:hover { color: var(--ocw99-primary-700); border-color: var(--ocw99-primary-600); background: rgba(79, 70, 229, 0.12); }
+
+            /* Progress 99% */
+            #slot-99 .ocw99-progress { margin-top: 18px; }
+            #slot-99 .ocw99-progress-track {
+              width: 100%; height: 12px; background: #eef2ff; border: 1px solid #e0e7ff; border-radius: 999px;
+              overflow: hidden; position: relative; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+            }
+            #slot-99 .ocw99-progress-bar {
+              --p: 99; height: 100%; width: calc(var(--p) * 1%);
+              background: linear-gradient(90deg, #818cf8, #4f46e5 55%, #312e81); border-right: 1px solid rgba(255,255,255,0.6);
+              position: relative; animation: ocw99-sheen 2.5s linear infinite;
+            }
+            #slot-99 .ocw99-progress-bar::after {
+              content: ""; position: absolute; inset: 0 -80% 0 -40%;
+              background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.35) 20%, transparent 40%);
+              transform: translateX(-60%); animation: ocw99-gloss 2.6s ease-in-out infinite; pointer-events: none;
+            }
+            #slot-99 .ocw99-progress-label { margin-top: 8px; font-size: 13px; color: #334155; font-weight: 600; }
+            @keyframes ocw99-sheen { 0% { filter: brightness(1); } 50% { filter: brightness(1.04); } 100% { filter: brightness(1); } }
+            @keyframes ocw99-gloss { 0% { transform: translateX(-65%); opacity: .7; } 60% { transform: translateX(10%); opacity: .95; } 100% { transform: translateX(40%); opacity: 0; } }
+
+            /* Card */
+            #slot-99 .ocw99-card {
+              background: var(--ocw99-card); backdrop-filter: saturate(140%) blur(8px); border: 1px solid var(--ocw99-border);
+              border-radius: 18px; padding: 20px; box-shadow: var(--ocw99-shadow);
+            }
+            #slot-99 .ocw99-card-title { margin: 0 0 8px; font-weight: 800; font-size: 18px; letter-spacing: -.01em; }
+            #slot-99 .ocw99-hint { margin: 0 0 14px; font-size: 13px; color: var(--ocw99-muted); }
+
+            /* Form */
+            #slot-99 .ocw99-form { display: grid; gap: 10px; }
+            #slot-99 .ocw99-input {
+              width: 100%; height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--ocw99-border); background: #ffffff;
+              font-size: 14px; color: var(--ocw99-text); outline: none; box-shadow: 0 1px 0 rgba(2,6,23,0.02), 0 1px 8px rgba(2,6,23,0.04) inset;
+              transition: box-shadow .2s, border-color .2s;
+            }
+            #slot-99 .ocw99-input:focus { border-color: var(--ocw99-primary-600); box-shadow: 0 0 0 6px var(--ocw99-ring); }
+            #slot-99 .ocw99-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+            #slot-99 .ocw99-btn {
+              appearance: none; border: 1px solid var(--ocw99-primary-600);
+              background: linear-gradient(180deg, #6366f1, #4f46e5); color: #fff; font-weight: 700; letter-spacing: .01em;
+              padding: 10px 14px; border-radius: 12px; cursor: pointer; transition: transform .06s ease, box-shadow .2s ease, filter .2s ease;
+              box-shadow: 0 6px 20px rgba(79,70,229,0.25), inset 0 -2px 0 rgba(0,0,0,0.15);
+            }
+            #slot-99 .ocw99-btn:hover { filter: brightness(1.05); }
+            #slot-99 .ocw99-btn:active { transform: translateY(1px); }
+            #slot-99 .ocw99-btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; filter: grayscale(.1); }
+            #slot-99 .ocw99-btn-ghost {
+              background: #fff; border: 1px solid var(--ocw99-border); color: var(--ocw99-primary-700);
+              box-shadow: 0 6px 20px rgba(2,6,23,0.06), inset 0 -2px 0 rgba(0,0,0,0.04);
+            }
+            #slot-99 .ocw99-btn-ghost:hover { background: #f8fafc; border-color: #dbeafe; }
+
+            /* Preview */
+            #slot-99 .ocw99-preview {
+              margin-top: 14px; display: grid; place-items: center; min-height: 220px; border: 1px dashed #cbd5e1;
+              border-radius: 14px; background: linear-gradient(180deg, #ffffff 20%, #f8fafc);
+            }
+            #slot-99 .ocw99-qrcode canvas, #slot-99 .ocw99-qrcode img {
+              image-rendering: pixelated; border-radius: 10px; box-shadow: 0 8px 28px rgba(2, 6, 23, 0.08);
+            }
+            #slot-99 .ocw99-footnote { margin: 10px 0 0; font-size: 12px; color: var(--ocw99-muted); text-align: center; }
+
+            /* Toast */
+            #slot-99 .ocw99-toast {
+              position: fixed; inset: auto 16px 16px auto; z-index: 1;
+              max-width: 92vw; background: #111827; color: #fff; border: 1px solid #111827; border-radius: 12px;
+              padding: 10px 14px; font-size: 14px; box-shadow: 0 10px 30px rgba(2,6,23,.25);
+              opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .2s, transform .2s;
+            }
+            #slot-99 .ocw99-toast--show { opacity: 1; transform: translateY(0); }
+          </style>
+
+          <!-- QRCode library (không ảnh hưởng slot khác) -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+
+          <!-- Logic (scoped) -->
+          <script>
+            (function ocw99App() {
+              const ready = () => {
+                const input  = document.getElementById("ocw99-input");
+                const genBtn = document.getElementById("ocw99-generate");
+                const dlBtn  = document.getElementById("ocw99-download");
+                const box    = document.getElementById("ocw99-qrcode");
+                const toast  = document.getElementById("ocw99-toast");
+
+                function ocw99IsValidUrl(str) {
+                  try { const u = new URL(str); return !!u.protocol && !!u.hostname; }
+                  catch { return false; }
+                }
+                function ocw99Toast(msg, ms = 2200) {
+                  console.log("[slot-99]", msg);
+                  toast.textContent = msg;
+                  toast.classList.add("ocw99-toast--show");
+                  clearTimeout(ocw99Toast._t);
+                  ocw99Toast._t = setTimeout(() => toast.classList.remove("ocw99-toast--show"), ms);
+                }
+                function ocw99ClearQR() {
+                  box.innerHTML = "";
+                  dlBtn.disabled = true;
+                }
+                function ocw99Generate() {
+                  const url = input.value.trim();
+                  if (!ocw99IsValidUrl(url)) {
+                    input.focus();
+                    input.setSelectionRange(0, input.value.length);
+                    ocw99Toast("Vui lòng nhập đúng URL (ví dụ: https://example.com).");
+                    return;
+                  }
+                  ocw99ClearQR();
+                  new QRCode(box, {
+                    text: url, width: 240, height: 240, colorDark: "#111827", colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                  });
+                  setTimeout(() => { dlBtn.disabled = false; }, 120);
+                }
+                function ocw99DownloadPNG() {
+                  const canvas = box.querySelector("canvas");
+                  const img = box.querySelector("img");
+                  let dataURL;
+                  if (canvas) {
+                    dataURL = canvas.toDataURL("image/png");
+                  } else if (img) {
+                    const c = document.createElement("canvas");
+                    const s = Math.max(img.naturalWidth || 240, img.width || 240);
+                    c.width = s; c.height = s;
+                    const ctx = c.getContext("2d");
+                    ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, s, s);
+                    ctx.drawImage(img, 0, 0, s, s);
+                    dataURL = c.toDataURL("image/png");
+                  } else {
+                    ocw99Toast("Chưa có mã QR để tải.");
+                    return;
+                  }
+                  const a = document.createElement("a");
+                  a.href = dataURL; a.download = "openchaosweb-qr.png";
+                  document.body.appendChild(a); a.click(); a.remove();
+                }
+
+                genBtn.addEventListener("click", ocw99Generate);
+                dlBtn.addEventListener("click", ocw99DownloadPNG);
+                input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); ocw99Generate(); } });
+
+                if (!input.value) { input.value = "https://www.facebook.com/Fidoublenn"; }
+              };
+
+              if (document.readyState === "complete" || document.readyState === "interactive") { setTimeout(ready, 0); }
+              else { document.addEventListener("DOMContentLoaded", ready); }
+            })();
+          </script>
+        </div>
+
 
         <!-- == SLOT 100 == -->
         <div id="slot-100"><!-- Unique 3D Text Effect -->
