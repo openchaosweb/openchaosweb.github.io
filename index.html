@@ -2304,198 +2304,110 @@
         <!-- == SLOT 18 == -->
         <div id="slot-18">
             <style>
-                /* Scoped styles for slot 18 */
+
                 #slot-18 {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                }
-
-                #slot-18 .slot-18-header {
-                    text-align: center;
-                    padding: 20px;
-                    margin: 20px 0;
-                    border-top: 2px solid #667eea;
-                    border-bottom: 2px solid #667eea;
-                }
-
-                #slot-18 .slot-18-header h2 {
-                    color: #667eea;
-                    margin: 0;
-                    font-size: 24px;
-                    font-weight: 600;
-                }
-
-                #slot-18 .slot-18-feature-1 {
                     padding: 10em;
                     text-align: center;
-                    background-color: #e5e5f7;
-                    opacity: 0.8;
-                    background-image: radial-gradient(circle at center center, #444cf7, #e5e5f7), repeating-radial-gradient(circle at center center, #444cf7, #444cf7, 10px, transparent 20px, transparent 10px);
-                    background-blend-mode: multiply;
+                    background: #000;
                     overflow: hidden;
                     border: 2px solid #00ff00;
                     border-radius: 8px;
                     cursor: crosshair;
                     font-family: 'Courier New', monospace;
-                    margin-bottom: 0.5em;
                 }
 
                 @keyframes slot18-magicBlink {
-                    0%, 100% {
+        
+                    0%,
+                    100% {
                         opacity: 1;
                         transform: scale(1);
                     }
+        
                     25% {
                         opacity: 0.7;
                         transform: scale(1.05);
                     }
+        
                     50% {
                         opacity: 1;
                         transform: scale(1.1);
                     }
+        
                     75% {
                         opacity: 0.7;
                         transform: scale(1.05);
                     }
                 }
-
+        
                 @keyframes slot18-magicGlow {
-                    0%, 100% {
+        
+                    0%,
+                    100% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 10px rgba(68, 68, 255, 0.5);
                     }
+        
                     50% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 25px rgba(68, 68, 255, 1), 0 0 40px rgba(68, 68, 255, 0.8);
                     }
                 }
-
+        
                 @keyframes slot18-buttonMagic {
-                    0%, 100% {
+        
+                    0%,
+                    100% {
                         opacity: 1;
                         transform: scale(1) rotate(0deg);
                     }
+        
                     25% {
                         opacity: 0.8;
                         transform: scale(1.08) rotate(-2deg);
                     }
+        
                     50% {
                         opacity: 1;
                         transform: scale(1.15) rotate(2deg);
                     }
+        
                     75% {
                         opacity: 0.8;
                         transform: scale(1.08) rotate(-2deg);
                     }
                 }
-
+        
                 @keyframes slot18-buttonGlow {
-                    0%, 100% {
+        
+                    0%,
+                    100% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 68, 68, 0.6);
                     }
+        
                     50% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 68, 68, 1), 0 0 50px rgba(255, 68, 68, 0.8);
                     }
                 }
-
-                #slot-18 .slot-18-countdown {
-                    padding: 15px 30px;
-                    background-color: #4444ff;
-                    color: white;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    font-weight: bold;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        
+                #slot-18 #countdown-message {
                     animation: slot18-magicBlink 1.5s ease-in-out infinite, slot18-magicGlow 1.5s ease-in-out infinite;
                 }
-
-                #slot-18 .slot-18-miracle-btn {
-                    display: none;
-                    padding: 15px 30px;
-                    background-color: #ff4444;
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        
+                #slot-18 #miracle-button {
                     margin: 0 auto;
                     animation: slot18-buttonMagic 1s ease-in-out infinite, slot18-buttonGlow 1s ease-in-out infinite;
                 }
-
-                #slot-18 .slot-18-miracle-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 68, 68, 1), 0 0 50px rgba(255, 68, 68, 0.8);
-                }
-
-                #slot-18 .slot-18-iframe {
-                    width: 100%;
-                    height: 800px;
-                    border: none;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                }
-
-                #slot-18 .slot-18-btn-container {
-                    text-align: center;
-                }
-
-                #slot-18 .slot-18-btn {
-                    margin: 10px auto;
-                    padding: 12px 24px;
-                    background-color: #667eea;
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 14px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-                    transition: all 0.3s ease;
-                }
-
-                #slot-18 .slot-18-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-                }
-
-                #slot-18 .slot-18-youtube-btn {
-                    margin: 10px auto;
-                    padding: 12px 24px;
-                    background-color: #ff0000;
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 14px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-                    transition: all 0.3s ease;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                }
-
-                #slot-18 .slot-18-youtube-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-                }
             </style>
-
-            <!-- Header -->
-            <div class="slot-18-header">
-                <h2>Welcome to slot 18</h2>
-            </div>
-
-            <!-- Feature 1: Countdown & Miracle Button -->
-            <div class="slot-18-feature-1">
-                <p class="slot-18-countdown">Điều kì diệu sẽ hiện ra sau 5 giây</p>
-                <button class="slot-18-miracle-btn">Ấn vào đây để thấy điều kì diệu</button>
-            </div>
-
+            <p id="countdown-message"
+                style="padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                Điều kì diệu sẽ hiện ra sau 5 giây</p>
+            <button id="miracle-button"
+                style="display: none; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
+                vào đây để thấy điều kì diệu</button>
             <script>
                 (function () {
                     let countdown = 5;
-                    const messageElement = document.querySelector('#slot-18 .slot-18-countdown');
-                    const miracleButton = document.querySelector('#slot-18 .slot-18-miracle-btn');
+                    const messageElement = document.querySelector('#slot-18 #countdown-message');
+                    const miracleButton = document.querySelector('#slot-18 #miracle-button');
 
                     const countdownInterval = setInterval(() => {
                         countdown--;
@@ -2513,59 +2425,6 @@
                     });
                 })();
             </script>
-
-            <!-- Feature 2: Timelapse Iframe -->
-            <div>
-                <iframe 
-                    src="https://noctrlz1110.github.io/timelapse"
-                    class="slot-18-iframe"
-                    title="Timelapse">
-                </iframe>
-                
-                <div class="slot-18-btn-container">
-                    <button class="slot-18-btn slot-18-fullscreen-btn">
-                        Xem toàn màn hình
-                    </button>
-                    <button 
-                        class="slot-18-btn"
-                        onclick="window.open('https://noctrlz1110.github.io/timelapse', '_blank')">
-                        Mở trong cửa sổ mới
-                    </button>
-                </div>
-
-                <div class="slot-18-btn-container">
-                    <button 
-                        class="slot-18-youtube-btn"
-                        onclick="window.open('https://bit.ly/van-huy-dev-youtube', '_blank')">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                        </svg>
-                        Đăng ký kênh ủng hộ của mình
-                    </button>
-                </div>
-
-                <script>
-                    (function () {
-                        const fullscreenBtn = document.querySelector('#slot-18 .slot-18-fullscreen-btn');
-                        const iframe = document.querySelector('#slot-18 .slot-18-iframe');
-
-                        fullscreenBtn.addEventListener('click', () => {
-                            if (iframe.requestFullscreen) {
-                                iframe.requestFullscreen();
-                            } else if (iframe.webkitRequestFullscreen) {
-                                iframe.webkitRequestFullscreen();
-                            } else if (iframe.msRequestFullscreen) {
-                                iframe.msRequestFullscreen();
-                            }
-                        });
-                    })();
-                </script>
-            </div>
-
-            <!-- Footer -->
-            <div class="slot-18-header">
-                <h2>Cảm ơn bạn đã ghé thăm Slot 18! ✨</h2>
-            </div>
         </div>
 
         <!-- == SLOT 19 == -->
@@ -3740,7 +3599,367 @@
         <div id="slot-95"></div>
 
         <!-- == SLOT 96 == -->
-        <div id="slot-96"></div>
+        <div id="slot-96">
+            <!-- Flappy Bird Game -->
+            <div class="flappy-bird-container">
+                <h3>🐦 Flappy Bird Game của ĐQH. Ae tối ưu nó giúp tôi. </h3>
+                <div class="game-info">
+                    <div class="score">Score: <span id="score">0</span></div>
+                    <div class="high-score">Best: <span id="highScore">0</span></div>
+                </div>
+                <div class="game-wrapper">
+                    <canvas id="flappyCanvas" width="400" height="300"></canvas>
+                    <div class="game-over" id="gameOver">
+                        <h4>Game Over!</h4>
+                        <p>Score: <span id="finalScore">0</span></p>
+                        <button onclick="restartGame()">Play Again</button>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button onclick="startGame()" id="startBtn">Start Game</button>
+                    <p class="instructions">Click or press SPACE to flap!</p>
+                </div>
+            </div>
+
+            <style>
+                #slot-96 {
+                    padding: 20px;
+                    text-align: center;
+                }
+
+                #slot-96 h2 {
+                    margin-bottom: 30px;
+                    font-family: "Nunito", sans-serif;
+                }
+
+                .flappy-bird-container {
+                    max-width: 450px;
+                    margin: 0 auto;
+                    background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 100%);
+                    border-radius: 15px;
+                    padding: 20px;
+                    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+                    border: 3px solid #4682B4;
+                }
+
+                .flappy-bird-container h3 {
+                    color: #2F4F4F;
+                    margin-bottom: 15px;
+                    font-size: 1.5rem;
+                    text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+                }
+
+                .game-info {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 15px;
+                    font-weight: bold;
+                    color: #2F4F4F;
+                }
+
+                .game-wrapper {
+                    position: relative;
+                    display: inline-block;
+                    margin-bottom: 15px;
+                }
+
+                #flappyCanvas {
+                    background: linear-gradient(to bottom, #87CEEB 0%, #98D8E8 70%, #90EE90 100%);
+                    border: 2px solid #4682B4;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    display: block;
+                }
+
+                .game-over {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(255, 255, 255, 0.95);
+                    padding: 20px;
+                    border-radius: 10px;
+                    border: 2px solid #FF6B6B;
+                    text-align: center;
+                    display: none;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                }
+
+                .game-over.show {
+                    display: block;
+                    animation: fadeIn 0.3s ease;
+                }
+
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                }
+
+                .game-over h4 {
+                    color: #FF6B6B;
+                    margin: 0 0 10px 0;
+                }
+
+                .game-over button {
+                    background: #4CAF50;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    margin-top: 10px;
+                }
+
+                .game-over button:hover {
+                    background: #45a049;
+                }
+
+                .game-controls button {
+                    background: #FF6B6B;
+                    color: white;
+                    border: none;
+                    padding: 12px 25px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    font-weight: bold;
+                    transition: all 0.3s;
+                }
+
+                .game-controls button:hover {
+                    background: #FF5252;
+                    transform: translateY(-2px);
+                }
+
+                .instructions {
+                    margin-top: 10px;
+                    color: #2F4F4F;
+                    font-size: 14px;
+                    font-style: italic;
+                }
+            </style>
+
+            <script>
+                (function() {
+                    const canvas = document.getElementById('flappyCanvas');
+                    const ctx = canvas.getContext('2d');
+                    const gameOverDiv = document.getElementById('gameOver');
+                    const scoreElement = document.getElementById('score');
+                    const highScoreElement = document.getElementById('highScore');
+                    const finalScoreElement = document.getElementById('finalScore');
+                    const startBtn = document.getElementById('startBtn');
+
+                    let gameRunning = false;
+                    let score = 0;
+                    let highScore = localStorage.getItem('flappyHighScore') || 0;
+                    highScoreElement.textContent = highScore;
+
+                    // Game objects
+                    const bird = {
+                        x: 50,
+                        y: canvas.height / 2,
+                        width: 20,
+                        height: 20,
+                        velocity: 0,
+                        gravity: 0.5,
+                        jumpPower: -8
+                    };
+
+                    const pipes = [];
+                    const pipeWidth = 50;
+                    const pipeGap = 120;
+                    let pipeTimer = 0;
+
+                    // Game functions
+                    function drawBird() {
+                        ctx.fillStyle = '#FFD700';
+                        ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+                        
+                        // Bird eye
+                        ctx.fillStyle = '#000';
+                        ctx.fillRect(bird.x + 12, bird.y + 5, 3, 3);
+                        
+                        // Bird beak
+                        ctx.fillStyle = '#FF8C00';
+                        ctx.fillRect(bird.x + bird.width, bird.y + 8, 6, 4);
+                    }
+
+                    function drawPipes() {
+                        ctx.fillStyle = '#228B22';
+                        pipes.forEach(pipe => {
+                            // Top pipe
+                            ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
+                            // Bottom pipe
+                            ctx.fillRect(pipe.x, pipe.topHeight + pipeGap, pipeWidth, canvas.height - pipe.topHeight - pipeGap);
+                            
+                            // Pipe caps
+                            ctx.fillStyle = '#32CD32';
+                            ctx.fillRect(pipe.x - 5, pipe.topHeight - 20, pipeWidth + 10, 20);
+                            ctx.fillRect(pipe.x - 5, pipe.topHeight + pipeGap, pipeWidth + 10, 20);
+                            ctx.fillStyle = '#228B22';
+                        });
+                    }
+
+                    function updateBird() {
+                        bird.velocity += bird.gravity;
+                        bird.y += bird.velocity;
+
+                        // Ground collision
+                        if (bird.y + bird.height >= canvas.height || bird.y <= 0) {
+                            endGame();
+                        }
+                    }
+
+                    function updatePipes() {
+                        // Move pipes
+                        pipes.forEach(pipe => {
+                            pipe.x -= 2;
+                        });
+
+                        // Remove off-screen pipes
+                        if (pipes.length > 0 && pipes[0].x + pipeWidth < 0) {
+                            pipes.shift();
+                            score++;
+                            scoreElement.textContent = score;
+                        }
+
+                        // Add new pipes
+                        pipeTimer++;
+                        if (pipeTimer > 90) {
+                            const topHeight = Math.random() * (canvas.height - pipeGap - 100) + 50;
+                            pipes.push({
+                                x: canvas.width,
+                                topHeight: topHeight
+                            });
+                            pipeTimer = 0;
+                        }
+                    }
+
+                    function checkCollisions() {
+                        pipes.forEach(pipe => {
+                            // Check collision with top pipe
+                            if (bird.x < pipe.x + pipeWidth &&
+                                bird.x + bird.width > pipe.x &&
+                                bird.y < pipe.topHeight) {
+                                endGame();
+                            }
+                            
+                            // Check collision with bottom pipe
+                            if (bird.x < pipe.x + pipeWidth &&
+                                bird.x + bird.width > pipe.x &&
+                                bird.y + bird.height > pipe.topHeight + pipeGap) {
+                                endGame();
+                            }
+                        });
+                    }
+
+                    function drawBackground() {
+                        // Sky gradient
+                        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                        gradient.addColorStop(0, '#87CEEB');
+                        gradient.addColorStop(0.7, '#98D8E8');
+                        gradient.addColorStop(1, '#90EE90');
+                        ctx.fillStyle = gradient;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                        // Clouds
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                        ctx.beginPath();
+                        ctx.arc(80, 50, 20, 0, Math.PI * 2);
+                        ctx.arc(100, 50, 25, 0, Math.PI * 2);
+                        ctx.arc(120, 50, 20, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.beginPath();
+                        ctx.arc(280, 80, 15, 0, Math.PI * 2);
+                        ctx.arc(295, 80, 20, 0, Math.PI * 2);
+                        ctx.arc(310, 80, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    function gameLoop() {
+                        if (!gameRunning) return;
+
+                        // Clear canvas
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        
+                        // Draw background
+                        drawBackground();
+                        
+                        // Update game objects
+                        updateBird();
+                        updatePipes();
+                        checkCollisions();
+                        
+                        // Draw game objects
+                        drawPipes();
+                        drawBird();
+
+                        requestAnimationFrame(gameLoop);
+                    }
+
+                    function jump() {
+                        if (gameRunning) {
+                            bird.velocity = bird.jumpPower;
+                        }
+                    }
+
+                    function endGame() {
+                        gameRunning = false;
+                        
+                        // Update high score
+                        if (score > highScore) {
+                            highScore = score;
+                            localStorage.setItem('flappyHighScore', highScore);
+                            highScoreElement.textContent = highScore;
+                        }
+                        
+                        finalScoreElement.textContent = score;
+                        gameOverDiv.classList.add('show');
+                        startBtn.textContent = 'Start Game';
+                    }
+
+                    window.startGame = function() {
+                        if (gameRunning) return;
+                        
+                        // Reset game state
+                        bird.y = canvas.height / 2;
+                        bird.velocity = 0;
+                        pipes.length = 0;
+                        pipeTimer = 0;
+                        score = 0;
+                        scoreElement.textContent = score;
+                        
+                        gameOverDiv.classList.remove('show');
+                        gameRunning = true;
+                        startBtn.textContent = 'Playing...';
+                        
+                        gameLoop();
+                    };
+
+                    window.restartGame = function() {
+                        gameOverDiv.classList.remove('show');
+                        startGame();
+                    };
+
+                    // Event listeners
+                    canvas.addEventListener('click', jump);
+                    
+                    document.addEventListener('keydown', function(e) {
+                        if (e.code === 'Space') {
+                            e.preventDefault();
+                            jump();
+                        }
+                    });
+
+                    // Initial draw
+                    drawBackground();
+                    drawBird();
+                })();
+            </script>
+        </div>
+        </div>
 
         <!-- == SLOT 97 == -->
         <div id="slot-97"></div>
@@ -3749,256 +3968,7 @@
         <div id="slot-98"></div>
 
         <!-- == SLOT 99 == -->
-        <div id="slot-99">
-          <div class="ocw99-wrap">
-            <div class="ocw99-hero">
-              <div class="ocw99-badge">Slot 99</div>
-              <h2 class="ocw99-title">Cảm ơn anh đã tạo ra trang web này</h2>
-              <p class="ocw99-subtitle">
-                <a href="https://www.facebook.com/Fidoublenn" target="_blank" rel="noopener" class="ocw99-link">
-                  Hải Phúc
-                </a>
-                tự hào là một phần trong anh :)) &lt;3
-              </p>
-        
-              <!-- Loading 99% -->
-              <div class="ocw99-progress">
-                <div class="ocw99-progress-track">
-                  <div class="ocw99-progress-bar" style="--p: 99;"></div>
-                </div>
-                <div class="ocw99-progress-label">Đang yêu đời… 99%</div>
-              </div>
-            </div>
-        
-            <!-- QR APP -->
-            <div class="ocw99-card">
-              <h3 class="ocw99-card-title">Tạo mã QR từ liên kết</h3>
-              <p class="ocw99-hint">Dán URL vào ô bên dưới, nhấn <strong>Tạo QR</strong> và tải về PNG.</p>
-        
-              <div class="ocw99-form">
-                <input
-                  id="ocw99-input"
-                  class="ocw99-input"
-                  type="url"
-                  placeholder="https://ví-dụ.com/đường-dẫn-của-bạn"
-                  inputmode="url"
-                  aria-label="Nhập liên kết để tạo QR"
-                />
-                <div class="ocw99-actions">
-                  <button id="ocw99-generate" class="ocw99-btn">Tạo QR</button>
-                  <button id="ocw99-download" class="ocw99-btn ocw99-btn-ghost" disabled>Tải PNG</button>
-                </div>
-              </div>
-        
-              <div class="ocw99-preview">
-                <div id="ocw99-qrcode" class="ocw99-qrcode" aria-live="polite" aria-label="Kết quả mã QR sẽ xuất hiện tại đây"></div>
-              </div>
-              <p class="ocw99-footnote">Tip: dùng link ngắn để QR sắc nét hơn.</p>
-            </div>
-          </div>
-        
-          <!-- Toast (nội bộ slot) -->
-          <div class="ocw99-toast" id="ocw99-toast" role="status" aria-live="polite"></div>
-        
-          <!-- Styles (scoped) -->
-          <style>
-            /* ===== SLOT 99 STYLES ===== */
-            #slot-99 {
-              --ocw99-bg: radial-gradient(1200px 800px at 10% 10%, #e8f0ff 0%, #f7f9ff 40%, #ffffff 65%);
-              --ocw99-primary-600: #4f46e5;
-              --ocw99-primary-700: #4338ca;
-              --ocw99-ring: rgba(79, 70, 229, 0.25);
-              --ocw99-text: #0f172a;
-              --ocw99-muted: #475569;
-              --ocw99-border: #e2e8f0;
-              --ocw99-card: rgba(255,255,255,0.7);
-              --ocw99-shadow: 0 8px 30px rgba(2, 6, 23, 0.08);
-        
-              font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
-              color: var(--ocw99-text);
-              position: relative;
-              margin: 48px auto;
-              padding: 24px;
-              max-width: 980px;
-              border-radius: 20px;
-              background: var(--ocw99-bg);
-              border: 1px solid var(--ocw99-border);
-              box-shadow: var(--ocw99-shadow);
-              overflow: clip;
-              isolation: isolate;
-            }
-            #slot-99 .ocw99-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; }
-            @media (max-width: 900px) { #slot-99 .ocw99-wrap { grid-template-columns: 1fr; } }
-        
-            /* Hero */
-            #slot-99 .ocw99-hero { padding: 24px 12px 12px; position: relative; }
-            #slot-99 .ocw99-badge {
-              display: inline-block; padding: 6px 10px; font-size: 12px; font-weight: 700; letter-spacing: .04em;
-              text-transform: uppercase; color: #0f172a; background: #e0e7ff; border: 1px dashed #c7d2fe; border-radius: 999px;
-            }
-            #slot-99 .ocw99-title {
-              margin: 14px 0 6px; font-family: "Nunito", ui-rounded, system-ui, -apple-system, Segoe UI;
-              font-weight: 900; font-size: clamp(24px, 3.2vw, 40px); letter-spacing: -0.02em; line-height: 1.12;
-            }
-            #slot-99 .ocw99-subtitle { margin: 0 0 16px; color: var(--ocw99-muted); font-size: 15px; }
-            #slot-99 .ocw99-link {
-              color: var(--ocw99-primary-600); text-decoration: none; border-bottom: 2px solid transparent;
-              transition: border-color .2s, color .2s, background .2s; padding: 0 4px; border-radius: 6px;
-              background: rgba(79, 70, 229, 0.06);
-            }
-            #slot-99 .ocw99-link:hover { color: var(--ocw99-primary-700); border-color: var(--ocw99-primary-600); background: rgba(79, 70, 229, 0.12); }
-        
-            /* Progress 99% */
-            #slot-99 .ocw99-progress { margin-top: 18px; }
-            #slot-99 .ocw99-progress-track {
-              width: 100%; height: 12px; background: #eef2ff; border: 1px solid #e0e7ff; border-radius: 999px;
-              overflow: hidden; position: relative; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
-            }
-            #slot-99 .ocw99-progress-bar {
-              --p: 99; height: 100%; width: calc(var(--p) * 1%);
-              background: linear-gradient(90deg, #818cf8, #4f46e5 55%, #312e81); border-right: 1px solid rgba(255,255,255,0.6);
-              position: relative; animation: ocw99-sheen 2.5s linear infinite;
-            }
-            #slot-99 .ocw99-progress-bar::after {
-              content: ""; position: absolute; inset: 0 -80% 0 -40%;
-              background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.35) 20%, transparent 40%);
-              transform: translateX(-60%); animation: ocw99-gloss 2.6s ease-in-out infinite; pointer-events: none;
-            }
-            #slot-99 .ocw99-progress-label { margin-top: 8px; font-size: 13px; color: #334155; font-weight: 600; }
-            @keyframes ocw99-sheen { 0% { filter: brightness(1); } 50% { filter: brightness(1.04); } 100% { filter: brightness(1); } }
-            @keyframes ocw99-gloss { 0% { transform: translateX(-65%); opacity: .7; } 60% { transform: translateX(10%); opacity: .95; } 100% { transform: translateX(40%); opacity: 0; } }
-        
-            /* Card */
-            #slot-99 .ocw99-card {
-              background: var(--ocw99-card); backdrop-filter: saturate(140%) blur(8px); border: 1px solid var(--ocw99-border);
-              border-radius: 18px; padding: 20px; box-shadow: var(--ocw99-shadow);
-            }
-            #slot-99 .ocw99-card-title { margin: 0 0 8px; font-weight: 800; font-size: 18px; letter-spacing: -.01em; }
-            #slot-99 .ocw99-hint { margin: 0 0 14px; font-size: 13px; color: var(--ocw99-muted); }
-        
-            /* Form */
-            #slot-99 .ocw99-form { display: grid; gap: 10px; }
-            #slot-99 .ocw99-input {
-              width: 100%; height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--ocw99-border); background: #ffffff;
-              font-size: 14px; color: var(--ocw99-text); outline: none; box-shadow: 0 1px 0 rgba(2,6,23,0.02), 0 1px 8px rgba(2,6,23,0.04) inset;
-              transition: box-shadow .2s, border-color .2s;
-            }
-            #slot-99 .ocw99-input:focus { border-color: var(--ocw99-primary-600); box-shadow: 0 0 0 6px var(--ocw99-ring); }
-            #slot-99 .ocw99-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-            #slot-99 .ocw99-btn {
-              appearance: none; border: 1px solid var(--ocw99-primary-600);
-              background: linear-gradient(180deg, #6366f1, #4f46e5); color: #fff; font-weight: 700; letter-spacing: .01em;
-              padding: 10px 14px; border-radius: 12px; cursor: pointer; transition: transform .06s ease, box-shadow .2s ease, filter .2s ease;
-              box-shadow: 0 6px 20px rgba(79,70,229,0.25), inset 0 -2px 0 rgba(0,0,0,0.15);
-            }
-            #slot-99 .ocw99-btn:hover { filter: brightness(1.05); }
-            #slot-99 .ocw99-btn:active { transform: translateY(1px); }
-            #slot-99 .ocw99-btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; filter: grayscale(.1); }
-            #slot-99 .ocw99-btn-ghost {
-              background: #fff; border: 1px solid var(--ocw99-border); color: var(--ocw99-primary-700);
-              box-shadow: 0 6px 20px rgba(2,6,23,0.06), inset 0 -2px 0 rgba(0,0,0,0.04);
-            }
-            #slot-99 .ocw99-btn-ghost:hover { background: #f8fafc; border-color: #dbeafe; }
-        
-            /* Preview */
-            #slot-99 .ocw99-preview {
-              margin-top: 14px; display: grid; place-items: center; min-height: 220px; border: 1px dashed #cbd5e1;
-              border-radius: 14px; background: linear-gradient(180deg, #ffffff 20%, #f8fafc);
-            }
-            #slot-99 .ocw99-qrcode canvas, #slot-99 .ocw99-qrcode img {
-              image-rendering: pixelated; border-radius: 10px; box-shadow: 0 8px 28px rgba(2, 6, 23, 0.08);
-            }
-            #slot-99 .ocw99-footnote { margin: 10px 0 0; font-size: 12px; color: var(--ocw99-muted); text-align: center; }
-        
-            /* Toast */
-            #slot-99 .ocw99-toast {
-              position: fixed; inset: auto 16px 16px auto; z-index: 1;
-              max-width: 92vw; background: #111827; color: #fff; border: 1px solid #111827; border-radius: 12px;
-              padding: 10px 14px; font-size: 14px; box-shadow: 0 10px 30px rgba(2,6,23,.25);
-              opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .2s, transform .2s;
-            }
-            #slot-99 .ocw99-toast--show { opacity: 1; transform: translateY(0); }
-          </style>
-        
-          <!-- QRCode library (không ảnh hưởng slot khác) -->
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-        
-          <!-- Logic (scoped) -->
-          <script>
-            (function ocw99App() {
-              const ready = () => {
-                const input  = document.getElementById("ocw99-input");
-                const genBtn = document.getElementById("ocw99-generate");
-                const dlBtn  = document.getElementById("ocw99-download");
-                const box    = document.getElementById("ocw99-qrcode");
-                const toast  = document.getElementById("ocw99-toast");
-        
-                function ocw99IsValidUrl(str) {
-                  try { const u = new URL(str); return !!u.protocol && !!u.hostname; }
-                  catch { return false; }
-                }
-                function ocw99Toast(msg, ms = 2200) {
-                  console.log("[slot-99]", msg);
-                  toast.textContent = msg;
-                  toast.classList.add("ocw99-toast--show");
-                  clearTimeout(ocw99Toast._t);
-                  ocw99Toast._t = setTimeout(() => toast.classList.remove("ocw99-toast--show"), ms);
-                }
-                function ocw99ClearQR() {
-                  box.innerHTML = "";
-                  dlBtn.disabled = true;
-                }
-                function ocw99Generate() {
-                  const url = input.value.trim();
-                  if (!ocw99IsValidUrl(url)) {
-                    input.focus();
-                    input.setSelectionRange(0, input.value.length);
-                    ocw99Toast("Vui lòng nhập đúng URL (ví dụ: https://example.com).");
-                    return;
-                  }
-                  ocw99ClearQR();
-                  new QRCode(box, {
-                    text: url, width: 240, height: 240, colorDark: "#111827", colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H
-                  });
-                  setTimeout(() => { dlBtn.disabled = false; }, 120);
-                }
-                function ocw99DownloadPNG() {
-                  const canvas = box.querySelector("canvas");
-                  const img = box.querySelector("img");
-                  let dataURL;
-                  if (canvas) {
-                    dataURL = canvas.toDataURL("image/png");
-                  } else if (img) {
-                    const c = document.createElement("canvas");
-                    const s = Math.max(img.naturalWidth || 240, img.width || 240);
-                    c.width = s; c.height = s;
-                    const ctx = c.getContext("2d");
-                    ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, s, s);
-                    ctx.drawImage(img, 0, 0, s, s);
-                    dataURL = c.toDataURL("image/png");
-                  } else {
-                    ocw99Toast("Chưa có mã QR để tải.");
-                    return;
-                  }
-                  const a = document.createElement("a");
-                  a.href = dataURL; a.download = "openchaosweb-qr.png";
-                  document.body.appendChild(a); a.click(); a.remove();
-                }
-        
-                genBtn.addEventListener("click", ocw99Generate);
-                dlBtn.addEventListener("click", ocw99DownloadPNG);
-                input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); ocw99Generate(); } });
-        
-                if (!input.value) { input.value = "https://www.facebook.com/Fidoublenn"; }
-              };
-        
-              if (document.readyState === "complete" || document.readyState === "interactive") { setTimeout(ready, 0); }
-              else { document.addEventListener("DOMContentLoaded", ready); }
-            })();
-          </script>
-        </div>
-
+        <div id="slot-99"></div>
 
         <!-- == SLOT 100 == -->
         <div id="slot-100"></div>
