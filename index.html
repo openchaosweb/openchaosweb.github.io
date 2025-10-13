@@ -1738,7 +1738,19 @@
         <!-- == SLOT 18 == -->
         <div id="slot-18">
             <style>
-                @keyframes magicBlink {
+
+                #slot-18 {
+                    padding: 10em;
+                    text-align: center;
+                    background: #000;
+                    overflow: hidden;
+                    border: 2px solid #00ff00;
+                    border-radius: 8px;
+                    cursor: crosshair;
+                    font-family: 'Courier New', monospace;
+                }
+
+                @keyframes slot18-magicBlink {
         
                     0%,
                     100% {
@@ -1762,7 +1774,7 @@
                     }
                 }
         
-                @keyframes magicGlow {
+                @keyframes slot18-magicGlow {
         
                     0%,
                     100% {
@@ -1774,7 +1786,7 @@
                     }
                 }
         
-                @keyframes buttonMagic {
+                @keyframes slot18-buttonMagic {
         
                     0%,
                     100% {
@@ -1798,7 +1810,7 @@
                     }
                 }
         
-                @keyframes buttonGlow {
+                @keyframes slot18-buttonGlow {
         
                     0%,
                     100% {
@@ -1810,25 +1822,26 @@
                     }
                 }
         
-                #countdown-message {
-                    animation: magicBlink 1.5s ease-in-out infinite, magicGlow 1.5s ease-in-out infinite;
+                #slot-18 #countdown-message {
+                    animation: slot18-magicBlink 1.5s ease-in-out infinite, slot18-magicGlow 1.5s ease-in-out infinite;
                 }
         
-                #miracle-button {
-                    animation: buttonMagic 1s ease-in-out infinite, buttonGlow 1s ease-in-out infinite;
+                #slot-18 #miracle-button {
+                    margin: 0 auto;
+                    animation: slot18-buttonMagic 1s ease-in-out infinite, slot18-buttonGlow 1s ease-in-out infinite;
                 }
             </style>
             <p id="countdown-message"
-                style="position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                style="padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                 Điều kì diệu sẽ hiện ra sau 5 giây</p>
             <button id="miracle-button"
-                style="display: none; position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
+                style="display: none; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
                 vào đây để thấy điều kì diệu</button>
             <script>
                 (function () {
                     let countdown = 5;
-                    const messageElement = document.getElementById('countdown-message');
-                    const miracleButton = document.getElementById('miracle-button');
+                    const messageElement = document.querySelector('#slot-18 #countdown-message');
+                    const miracleButton = document.querySelector('#slot-18 #miracle-button');
 
                     const countdownInterval = setInterval(() => {
                         countdown--;
@@ -2231,7 +2244,15 @@
         <div id="slot-65"></div>
 
         <!-- == SLOT 66 == -->
-        <div id="slot-66"></div>
+        <div id="slot-66">
+            <button onclick="slot66Click()">Open Dialog Button</button>
+            <div id="back-66" style="display: none; background: black; z-index: 9999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh"></div>
+            <script>
+                function slot66Click() {
+                    document.getElementById('back-66').style.display = 'block';
+                }
+            </script>
+        </div>
 
         <!-- == SLOT 67 == -->
         <div id="slot-67"></div>
@@ -2250,7 +2271,7 @@
                     font-style: italic;
                 }
             </style>
-            <h1>Hello, wỏld</h1>
+            <h1>Nà ná Nà na, anh oii</h1>
             <p>My fít pẩgraph</p>
         </div>
 
