@@ -23,7 +23,7 @@
         <style>
             h3 {
                 font-family: "Nunito", sans-serif;
-                font-size: 1rem;
+                font-size: 0.85rem;
                 font-weight: 500;
             }
         </style>
@@ -36,16 +36,14 @@
                     justify-content: center;
                     align-items: center;
                     padding: 20px;
-                    background: #f0f0f0;
                 }
 
                 #slot-1 .slot1-flag-container {
                     width: 100%;
-                    max-width: 600px;
+                    max-width: 500px;
                     aspect-ratio: 3 / 2;
                     background: #000;
-                    border: 2px solid #333;
-                    border-radius: 8px;
+                    border-radius: 0px;
                     overflow: hidden;
                 }
 
@@ -355,7 +353,7 @@
             </p>
             <style>
                 #slot-2 {
-                    font-family: "Inter", sans-serif;
+                    font-family: "Nunito", sans-serif;
                     font-size: 1rem;
                    padding: 2px;
 
@@ -537,7 +535,7 @@
     <button id="slot4_restartbtn">Restart</button>
     <button id="slot4_zoombtn">Zoom</button>
     </div>
-    <div id="slot4_cursors">  
+    <div id="slot4_cursors">
 
     </div>
     <script>
@@ -599,11 +597,11 @@
                 for (let j = 0; j < slot4NumCols; j++) {
                     const neighbors = slot4_4(i, j);
                     if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
-                        newGrid[i][j] = 0; 
+                        newGrid[i][j] = 0;
                     } else if (grid[i][j] === 0 && neighbors === 3) {
-                        newGrid[i][j] = 1; 
+                        newGrid[i][j] = 1;
                     } else {
-                        newGrid[i][j] = grid[i][j]; 
+                        newGrid[i][j] = grid[i][j];
                     }
                 }
             }
@@ -2439,13 +2437,13 @@
 					margin: 10px auto;
 					text-align: center;
 				}
-		
+
 				#slot-16 h3 {
 					font-size: 1.8rem;
 					margin-bottom: 20px;
 					text-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
 				}
-		
+
 				/* Giao diện ban đầu - Các nút chọn */
 				#slot-16 .slot16-buttons-container {
 					display: flex;
@@ -2454,7 +2452,7 @@
 					width: 100%;
 					margin-bottom: 20px;
 				}
-		
+
 				#slot-16 .slot16-difficulty-btn {
 					padding: 15px 20px;
 					font-size: 1.2rem;
@@ -2470,49 +2468,49 @@
 					justify-content: center;
 					gap: 10px;
 				}
-		
+
 				#slot-16 .slot16-difficulty-btn:hover:not(:disabled) {
 					transform: scale(1.03);
 					box-shadow: 0 0 15px currentColor;
 				}
-		
+
 				#slot-16 .slot16-difficulty-btn:active:not(:disabled) {
 					transform: scale(0.98);
 				}
-		
+
 				#slot-16 .slot16-difficulty-btn:disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
 					transform: none;
 					box-shadow: none;
 				}
-		
+
 				#slot-16 .slot16-easy-btn {
 					background: #2e7d32;
 					border-color: #4caf50;
 				}
-		
+
 				#slot-16 .slot16-normal-btn {
 					background: #1565c0;
 					border-color: #2196f3;
 				}
-		
+
 				#slot-16 .slot16-hard-btn {
 					background: #c62828;
 					border-color: #f44336;
 				}
-		
+
 				#slot-16 .slot16-ai-btn {
 					background: #6a1b9a;
 					border-color: #9c27b0;
 					margin-top: 10px;
 					box-shadow: 0 0 10px #9c27b0;
 				}
-		
+
 				#slot-16 .slot16-ai-btn:hover:not(:disabled) {
 					box-shadow: 0 0 20px #9c27b0;
 				}
-		
+
 				/* Giao diện Terminal giả lập */
 				#slot-16 .slot16-analysis-terminal {
 					display: none;
@@ -2531,7 +2529,7 @@
 					box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.1);
 					margin: 10px 0;
 				}
-		
+
 				/* Giao diện kết quả */
 				#slot-16 .slot16-result-display {
 					display: none;
@@ -2539,56 +2537,56 @@
 					width: 100%;
 					padding: 20px;
 				}
-		
+
 				#slot-16 .slot16-result-display h2 {
 					font-size: 1.5rem;
 					margin-bottom: 10px;
 					color: #0f0;
 				}
-		
+
 				#slot-16 .slot16-result-display p {
 					margin: 8px 0;
 					font-size: 1rem;
 				}
-		
+
 				#slot-16 .slot16-result-display h1 {
 					font-size: 3rem;
 					margin: 20px 0;
 					color: #ffeb3b;
 					text-shadow: 0 0 15px rgba(255, 235, 59, 0.7);
 				}
-		
+
 				/* Hiệu ứng loading cho nút AI */
 				.slot16-loading {
 					animation: slot16-pulse 1.5s infinite;
 				}
-		
+
 				@keyframes slot16-pulse {
 					0% {
 						box-shadow: 0 0 10px currentColor;
 					}
-		
+
 					50% {
 						box-shadow: 0 0 20px currentColor;
 					}
-		
+
 					100% {
 						box-shadow: 0 0 10px currentColor;
 					}
 				}
 			</style>
-		
+
 			<p style="font-size: 14px; color: #888; margin-top: -10px; text-align: center;">
 				<em>Hệ Thống Phân Tích Tâm Lý Dựa Trên Thói Quen Trên Website</em>
 			</p>
-		
+
 			<hr>
-		
+
 			<div id="description-area" style="text-align: left; margin-bottom: 20px;">
 				<p>Để mang lại trải nghiệm được cá nhân hóa tối ưu, hệ thống của chúng tôi có thể tự động hiệu chỉnh độ khó
 					của trò chơi dựa trên phân tích hành vi người dùng trong phiên duyệt web hiện tại. Quá trình này hoàn
 					toàn bảo mật và không thu thập dữ liệu cá nhân.</p>
-		
+
 				<!-- Giao diện ban đầu: Các nút chọn độ khó -->
 				<div class="slot16-buttons-container" id="slot16ButtonsContainer">
 					<h3>CHỌN ĐỘ KHÓ</h3>
@@ -2605,17 +2603,17 @@
 						🤖 Để AI Phân Tích & Chọn Giúp
 					</button>
 				</div>
-		
+
 				<!-- Giao diện Terminal giả lập -->
 				<div class="slot16-analysis-terminal" id="slot16AnalysisTerminal">
 					<!-- Dòng log sẽ được thêm vào đây bằng JavaScript -->
 				</div>
-		
+
 				<!-- Giao diện kết quả -->
 				<div class="slot16-result-display" id="slot16ResultDisplay">
 					<!-- Nội dung sẽ được cập nhật bởi JavaScript -->
 				</div>
-		
+
 				<script>
 					(function () {
 						// --- Dữ liệu giả cho terminal ---
@@ -2745,7 +2743,7 @@
 
         <!-- == SLOT 17 == -->
         <div id="slot-17">
-           
+
             <style>
               #slot-17 {
                 background: #1a1a1a;
@@ -2756,25 +2754,25 @@
                 position: relative;
                 overflow: hidden;
               }
-          
+
               #slot-17 h1 {
                 font-size: 2.5rem;
                 margin-bottom: 30px;
               }
-          
+
               #slot-17 .bet-container {
                 position: absolute;
                 top: 120px;
               }
-          
+
               #slot-17 .bet-container.left {
                 left: 220px;
               }
-          
+
               #slot-17 .bet-container.right {
                 right: 220px;
               }
-          
+
               #slot-17 .bet-container button {
                 padding: 10px 20px;
                 border-radius: 9999px;
@@ -2785,26 +2783,26 @@
                 border: none;
                 transition: 0.2s;
               }
-          
+
               #slot-17 .bet-container button.active {
                 background-color: #dc2626;
               }
-          
+
               #slot-17 .bet-container button:not(.active) {
                 background-color: #9ca3af;
               }
-          
+
               #slot-17 .bet-container button:hover {
                 background-color: #ef4444;
               }
-          
+
               #slot-17 .dice-area {
                 position: relative;
                 display: inline-block;
                 margin: 20px;
                 padding-top: 35px;
               }
-          
+
               #slot-17 .dice-display {
                 font-size: 50px;
                 transition: opacity 0.3s;
@@ -2813,7 +2811,7 @@
                 align-items: center;
                 gap: 10px;
               }
-          
+
               #slot-17 .cup {
                 position: absolute;
                 top: 0;
@@ -2829,7 +2827,7 @@
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
                 transition: transform 0.3s;
                 }
-          
+
                 #slot-17 .cup-handle {
                 width: 90px;
                 height: 90px;
@@ -2841,7 +2839,7 @@
                 transform: translateX(-50%);
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
                 }
-          
+
               #slot-17 input {
                 width: 200px;
                 padding: 6px;
@@ -2850,7 +2848,7 @@
                 margin-top: 10px;
                 text-align: center;
               }
-          
+
               #slot-17 button#roll {
                 padding: 10px 20px;
                 font-size: 18px;
@@ -2862,38 +2860,38 @@
                 margin-top: 20px;
                 transition: 0.2s;
               }
-          
+
               #slot-17 button#roll:disabled {
                 background-color: #4b5563;
                 cursor: not-allowed;
               }
-          
+
               #slot-17 .result {
                 font-size: 24px;
                 margin-top: 20px;
               }
-          
+
               #slot-17 .win {
                 color: #4ade80;
               }
-          
+
               #slot-17 .lose {
                 color: #f87171;
               }
             </style>
             <h2>NamNT123 - FIS</h2>
             <h1>🎲 Game Tài Xỉu 🎲</h1>
-          
+
             <div class="bet-container left">
               <div class="text" style="font-size: 60px;">TÀI</div>
               <button id="bet-tai">Cược</button>
             </div>
-          
+
             <div class="bet-container right">
               <div class="text" style="font-size: 60px; color: gold;">XỈU</div>
               <button id="bet-xiu">Cược</button>
             </div>
-          
+
             <div class="dice-area">
               <div id="dice-display" class="dice-display" style="opacity: 0.2;">
                 <div style="display:flex;gap:10px;">
@@ -2902,31 +2900,31 @@
                 </div>
                 <div><span>🎲1</span></div>
               </div>
-          
+
               <div id="cup" class="cup">
                 <div class="cup-handle"></div>
               </div>
             </div>
-          
+
             <div>
               <p>💰 Số dư: <span id="balance">1000</span> đ</p>
               <input id="bet-amount" type="number" placeholder="Nhập số tiền cược" />
             </div>
-          
+
             <h2>Tổng: <span id="sum">?</span></h2>
             <h2>
               Kết quả:
               <span id="result" style="margin-left:5px;">?</span>
             </h2>
-          
+
             <div id="message" class="result"></div>
-          
+
             <button id="roll">Lắc Xí Ngầu</button>
-          
+
             <script>
               (function () {
                 const root = document.getElementById("slot-17");
-          
+
                 const diceDisplay = root.querySelector("#dice-display");
                 const cup = root.querySelector("#cup");
                 const rollBtn = root.querySelector("#roll");
@@ -2937,7 +2935,7 @@
                 const sumEl = root.querySelector("#sum");
                 const resultEl = root.querySelector("#result");
                 const messageEl = root.querySelector("#message");
-          
+
                 let dice = [1, 1, 1];
                 let sum = 3;
                 let result = "";
@@ -2948,31 +2946,31 @@
                 let isShaking = false;
                 let hasResultApplied = false;
                 let startPos = null;
-          
+
                 betTaiBtn.addEventListener("click", () => {
                   userBet = "Tài";
                   betTaiBtn.classList.add("active");
                   betXiuBtn.classList.remove("active");
                 });
-          
+
                 betXiuBtn.addEventListener("click", () => {
                   userBet = "Xỉu";
                   betXiuBtn.classList.add("active");
                   betTaiBtn.classList.remove("active");
                 });
-          
+
                 rollBtn.addEventListener("click", () => {
                   if (!userBet) {
                     alert("Vui lòng chọn cược Tài hoặc Xỉu trước!");
                     return;
                   }
-          
+
                   const bet = Number(betAmountEl.value);
                   if (bet <= 0 || bet > balance || isNaN(bet)) {
                     alert("Số tiền cược không hợp lệ!");
                     return;
                   }
-          
+
                   isCupOpen = false;
                   hasResultApplied = false;
                   cup.style.transform = "translate(0, 0)";
@@ -2983,7 +2981,7 @@
                   resultEl.textContent = "?";
                   rollBtn.disabled = true;
                   rollBtn.textContent = "Đang Lắc...";
-          
+
                   setTimeout(() => {
                     dice = [rand(), rand(), rand()];
                     sum = dice.reduce((a, b) => a + b, 0);
@@ -2995,11 +2993,11 @@
                     rollBtn.textContent = "Lắc Xí Ngầu";
                   }, 2500);
                 });
-          
+
                 function rand() {
                   return Math.floor(Math.random() * 6) + 1;
                 }
-          
+
                 function updateDice() {
                   diceDisplay.innerHTML = `
                     <div style="display:flex;gap:10px;">
@@ -3008,34 +3006,34 @@
                     </div>
                     <div><span>🎲${dice[2]}</span></div>`;
                 }
-          
+
                 cup.addEventListener("mousedown", startDrag);
                 cup.addEventListener("touchstart", startDrag);
-          
+
                 function startDrag(e) {
                   e.preventDefault();
                   if (!isReadyToOpen || isCupOpen || isShaking) return;
-          
+
                   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
                   startPos = { x: clientX, y: clientY };
-          
+
                   document.addEventListener("mousemove", moveHandler);
                   document.addEventListener("mouseup", endHandler);
                   document.addEventListener("touchmove", moveHandler);
                   document.addEventListener("touchend", endHandler);
                 }
-          
+
                 function moveHandler(event) {
                   if (!startPos) return;
-          
+
                   const currentX = event.touches ? event.touches[0].clientX : event.clientX;
                   const currentY = event.touches ? event.touches[0].clientY : event.clientY;
-          
+
                   const offsetX = currentX - startPos.x;
                   const offsetY = currentY - startPos.y;
                   cup.style.transform = `translate(calc( ${offsetX}px), ${offsetY}px)`;
-          
+
                   if (
                     (offsetY < -155 || offsetY > 155 || offsetX > 200 || offsetX < -200) &&
                     !isCupOpen &&
@@ -3044,7 +3042,7 @@
                     openCup();
                   }
                 }
-          
+
                 function endHandler() {
                   if (!isCupOpen) cup.style.transform = "translate(0, 0)";
                   startPos = null;
@@ -3053,31 +3051,31 @@
                   document.removeEventListener("touchmove", moveHandler);
                   document.removeEventListener("touchend", endHandler);
                 }
-          
+
                 function openCup() {
                   isCupOpen = true;
                   diceDisplay.style.opacity = 1;
                   sumEl.textContent = sum;
                   resultEl.textContent = result;
                   hasResultApplied = true;
-          
+
                   const isWin = userBet === result;
                   const bet = Number(betAmountEl.value);
-          
+
                   balance += isWin ? bet : -bet;
                   balanceEl.textContent = balance;
-          
+
                   messageEl.textContent = isWin
                     ? "🎉 Chúc mừng! Bạn đoán đúng!"
                     : "😥 Rất tiếc, bạn đoán sai!";
                   messageEl.className = "result " + (isWin ? "win" : "lose");
-          
+
                   endHandler();
                 }
               })();
             </script>
           </div>
-          
+
 
         <!-- == SLOT 18 == -->
         <div id="slot-18">
@@ -4271,15 +4269,15 @@
                     #slot-36 .slot36-title {
                         font-size: 2rem;
                     }
-                    
+
                     #slot-36 .slot36-emoji {
                         font-size: 3rem;
                     }
-                    
+
                     #slot-36 {
                         padding: 30px 15px;
                     }
-                    
+
                     #slot-36 .slot36-features {
                         grid-template-columns: 1fr;
                     }
@@ -4457,23 +4455,23 @@
                     rgba(255, 217, 61, 0.3)
                   ) 1;
                 }
-          
+
                 #slot-77 .slot-77-welcome {
                   text-align: center;
                   margin-bottom: 50px;
                 }
-                
+
                 #slot-77 .slot-77-welcome h1 {
                   font-size: 3.5rem;
                   color: #ffffff;
-                  text-shadow: 
+                  text-shadow:
                     0 0 20px rgba(255, 107, 107, 0.6),
                     0 0 40px rgba(78, 205, 196, 0.4),
                     0 4px 20px rgba(0, 0, 0, 0.3);
                   font-weight: 900;
                   letter-spacing: 3px;
                   background: linear-gradient(
-                    135deg, 
+                    135deg,
                     #ff6b6b 0%,
                     #ffd93d 20%,
                     #6bcf7f 40%,
@@ -4487,22 +4485,22 @@
                   background-clip: text;
                   animation: slot77Shimmer 4s ease-in-out infinite;
                 }
-          
+
                 @keyframes slot77Shimmer {
                   0%, 100% { background-position: 0% 50%; }
                   50% { background-position: 100% 50%; }
                 }
-                
+
                 #slot-77-canvas {
                   width: 100%;
                   height: 550px;
                   border-radius: 20px;
-                  background: 
+                  background:
                     radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3), transparent 50%),
                     radial-gradient(circle at 80% 20%, rgba(255, 77, 77, 0.2), transparent 50%),
                     radial-gradient(circle at 40% 40%, rgba(30, 60, 114, 0.3), transparent 50%),
                     linear-gradient(135deg, #0f2027 0%, #203a43 40%, #2c5364 100%);
-                  box-shadow: 
+                  box-shadow:
                     inset 0 0 60px rgba(0, 0, 0, 0.4),
                     0 8px 30px rgba(0, 0, 0, 0.3),
                     0 0 0 1px rgba(255, 255, 255, 0.1);
@@ -4510,13 +4508,13 @@
                   cursor: crosshair;
                   position: relative;
                 }
-                
+
                 #slot-77 .slot-77-canvas-container {
                   position: relative;
                   margin: 0 auto;
                   max-width: 900px;
                 }
-          
+
                 #slot-77 .slot-77-canvas-container-hint {
                   position: absolute;
                   top: 50%;
@@ -4525,7 +4523,7 @@
                   font-size: 2rem;
                   font-weight: 800;
                   color: #ffffff;
-                  text-shadow: 
+                  text-shadow:
                     0 0 10px rgba(255, 107, 107, 0.8),
                     0 0 20px rgba(255, 217, 61, 0.6),
                     0 0 30px rgba(107, 207, 127, 0.5),
@@ -4541,16 +4539,16 @@
                   user-select: none;
                   z-index: 10;
                 }
-          
+
                 #slot-77 .slot-77-canvas-container-hint.hidden {
                   opacity: 0;
                   pointer-events: none;
                   animation: slot77FadeOut 0.6s ease-out forwards;
                 }
-          
+
                 @keyframes slot77RainbowGlow {
                   0%, 100% {
-                    text-shadow: 
+                    text-shadow:
                       0 0 10px rgba(255, 107, 107, 0.8),
                       0 0 20px rgba(255, 217, 61, 0.6),
                       0 0 30px rgba(107, 207, 127, 0.5),
@@ -4558,7 +4556,7 @@
                       0 2px 5px rgba(0, 0, 0, 0.5);
                   }
                   25% {
-                    text-shadow: 
+                    text-shadow:
                       0 0 10px rgba(255, 217, 61, 0.8),
                       0 0 20px rgba(107, 207, 127, 0.6),
                       0 0 30px rgba(78, 205, 196, 0.5),
@@ -4566,7 +4564,7 @@
                       0 2px 5px rgba(0, 0, 0, 0.5);
                   }
                   50% {
-                    text-shadow: 
+                    text-shadow:
                       0 0 10px rgba(107, 207, 127, 0.8),
                       0 0 20px rgba(78, 205, 196, 0.6),
                       0 0 30px rgba(199, 125, 255, 0.5),
@@ -4574,7 +4572,7 @@
                       0 2px 5px rgba(0, 0, 0, 0.5);
                   }
                   75% {
-                    text-shadow: 
+                    text-shadow:
                       0 0 10px rgba(78, 205, 196, 0.8),
                       0 0 20px rgba(199, 125, 255, 0.6),
                       0 0 30px rgba(255, 107, 107, 0.5),
@@ -4582,7 +4580,7 @@
                       0 2px 5px rgba(0, 0, 0, 0.5);
                   }
                 }
-          
+
                 @keyframes slot77Pulse {
                   0%, 100% {
                     transform: translate(-50%, -50%) scale(1);
@@ -4593,41 +4591,41 @@
                     opacity: 1;
                   }
                 }
-                
+
                 @keyframes slot77FadeOut {
                   to {
                     opacity: 0;
                     transform: translate(-50%, -50%) scale(0.9);
                   }
                 }
-                
+
                 @media (max-width: 768px) {
                   #slot-77 .slot-77-welcome h1 {
                     font-size: 2.5rem;
                     letter-spacing: 2px;
                   }
-                  
+
                   #slot-77-canvas {
                     height: 400px;
                     border-radius: 15px;
                   }
-                  
+
                   #slot-77 .slot-77-canvas-container-hint {
                     font-size: 1.5rem;
                     padding: 15px;
                     letter-spacing: 1px;
                   }
                 }
-                
+
                 @media (max-width: 480px) {
                   #slot-77 .slot-77-welcome h1 {
                     font-size: 2rem;
                   }
-          
+
                   #slot-77-canvas {
                     height: 350px;
                   }
-                  
+
                   #slot-77 .slot-77-canvas-container-hint {
                     font-size: 1.2rem;
                     letter-spacing: 1px;
@@ -4644,29 +4642,29 @@
               <script>
                 const slot77Canvas = document.getElementById('slot-77-canvas');
                 const slot77Ctx = slot77Canvas.getContext('2d');
-                
+
                 function resizeCanvas() {
                   const rect = slot77Canvas.getBoundingClientRect();
                   slot77Canvas.width = rect.width;
                   slot77Canvas.height = rect.height;
                 }
-                
+
                 resizeCanvas();
-                
+
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                   clearTimeout(resizeTimeout);
                   resizeTimeout = setTimeout(resizeCanvas, 100);
                 });
-                
+
                 const gravity = 0.4;
                 const friction = 0.995;
                 const particles = [];
-                
+
                 function rand(min, max) {
                   return Math.random() * (max - min) + min;
                 }
-          
+
                 class Particle {
                   constructor(x, y, vx, vy, size, color) {
                     this.x = x;
@@ -4678,85 +4676,85 @@
                     this.life = 1;
                     this.decay = rand(0.01,0.02);
                   }
-          
+
                   update() {
                     this.vy += gravity;
-                    this.x += this.vx; 
+                    this.x += this.vx;
                     this.y += this.vy;
-                    this.vx *= friction; 
+                    this.vx *= friction;
                     this.vy *= friction;
                     this.life -= this.decay;
                   }
-          
+
                   draw(ctx) {
-                    ctx.beginPath(); 
-                    ctx.fillStyle = this.color; 
+                    ctx.beginPath();
+                    ctx.fillStyle = this.color;
                     ctx.globalAlpha = Math.max(0, this.life);
-                    ctx.arc(this.x,this.y,this.size,0,Math.PI*2); 
-                    ctx.fill(); 
+                    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+                    ctx.fill();
                     ctx.globalAlpha = 1;
                   }
                 }
-          
+
                 function makeParticles(x, y, count) {
                   for (let i = 0; i < count; i++) {
                     const angle = Math.random()*Math.PI*2;
                     const speed = Math.random()*10 + 5;
                     particles.push(
                       new Particle(
-                        x, 
-                        y, 
-                        Math.cos(angle)*speed, 
-                        Math.sin(angle)*speed, 
-                        Math.random()*4 + 2, 
+                        x,
+                        y,
+                        Math.cos(angle)*speed,
+                        Math.sin(angle)*speed,
+                        Math.random()*4 + 2,
                         `hsl(${Math.floor(rand(0,360))} ${Math.floor(rand(60,90))}% ${Math.floor(rand(50,70))}%)`)
                       );
                   }
                 }
-                
+
                 function loop() {
                   slot77Ctx.clearRect(0, 0, slot77Canvas.width, slot77Canvas.height);
-                  
+
                   for (let i = particles.length - 1; i >= 0; i--) {
                     particles[i].update();
                     particles[i].draw(slot77Ctx);
-                    
+
                     if (particles[i].life <= 0) {
                       particles.splice(i, 1);
                     }
                   }
-                  
+
                   requestAnimationFrame(loop);
                 }
-          
+
                 loop();
-          
+
                 let drawing = false;
                 let hintHidden = false;
-          
+
                 function getCanvasCoordinates(e) {
                   const rect = slot77Canvas.getBoundingClientRect();
                   const scaleX = slot77Canvas.width / rect.width;
                   const scaleY = slot77Canvas.height / rect.height;
-                  
+
                   return {
                     x: (e.clientX - rect.left) * scaleX,
                     y: (e.clientY - rect.top) * scaleY
                   };
                 }
-                
+
                 slot77Canvas.addEventListener('pointerdown', (e) => {
                   if (!hintHidden) {
                     const hint = document.querySelector('.slot-77-canvas-container-hint');
                     hint.classList.add('hidden');
                     hintHidden = true;
                   }
-                  
+
                   const coords = getCanvasCoordinates(e);
                   makeParticles(coords.x, coords.y, 100);
                   drawing = true;
                 });
-                
+
                 slot77Canvas.addEventListener('pointermove', (e) => {
                   if (drawing) {
                     const coords = getCanvasCoordinates(e);
@@ -4766,7 +4764,7 @@
                 window.addEventListener('pointerup', () => {
                   drawing = false;
                 });
-          
+
               </script>
         </div>
 
@@ -5347,7 +5345,7 @@
             function spinCylinder() {
                 if (isSpinning) return;
                 isSpinning = true;
-                
+
                 // Reset lại số lần bóp cò
                 pullsMade = 0;
 
@@ -5358,7 +5356,7 @@
                 // 2. *** THAY ĐỔI QUAN TRỌNG ***
                 // Chọn ngẫu nhiên một lỗ đạn sẽ dừng lại ở trên cùng
                 const stoppingChamberIndex = Math.floor(Math.random() * chamberCount);
-                
+
                 // Tính toán góc quay cuối cùng phải là một bội số của 60 độ
                 const finalAngle = stoppingChamberIndex * anglePerChamber;
                 const randomSpins = Math.floor(Math.random() * 5) + 5; // Số vòng quay hiệu ứng
@@ -5380,7 +5378,7 @@
 
             function pullTrigger() {
                 if (isSpinning) return;
-                
+
                 // Logic kiểm tra xem lỗ đạn hiện tại có đạn không
                 if (currentChamber === bulletChamber) {
                     message.textContent = "BÙM! Chúc mừng, bạn đã trúng thưởng!";
@@ -5389,11 +5387,11 @@
                     setTimeout(resetGame, 2000);
                     return; // Dừng lại ngay khi trúng đạn
                 }
-                
+
                 // Nếu không trúng, tiếp tục
                 pullsMade++;
                 message.textContent = "Cạch... Bạn vẫn an toàn!";
-                
+
                 // Logic chuyển sang lỗ đạn tiếp theo
                 currentChamber = (currentChamber + 1) % chamberCount;
 
