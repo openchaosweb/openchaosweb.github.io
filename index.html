@@ -1348,110 +1348,198 @@
         <!-- == SLOT 18 == -->
         <div id="slot-18">
             <style>
-
+                /* Scoped styles for slot 18 */
                 #slot-18 {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+
+                #slot-18 .slot-18-header {
+                    text-align: center;
+                    padding: 20px;
+                    margin: 20px 0;
+                    border-top: 2px solid #667eea;
+                    border-bottom: 2px solid #667eea;
+                }
+
+                #slot-18 .slot-18-header h2 {
+                    color: #667eea;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 600;
+                }
+
+                #slot-18 .slot-18-feature-1 {
                     padding: 10em;
                     text-align: center;
-                    background: #000;
+                    background-color: #e5e5f7;
+                    opacity: 0.8;
+                    background-image: radial-gradient(circle at center center, #444cf7, #e5e5f7), repeating-radial-gradient(circle at center center, #444cf7, #444cf7, 10px, transparent 20px, transparent 10px);
+                    background-blend-mode: multiply;
                     overflow: hidden;
                     border: 2px solid #00ff00;
                     border-radius: 8px;
                     cursor: crosshair;
                     font-family: 'Courier New', monospace;
+                    margin-bottom: 0.5em;
                 }
 
                 @keyframes slot18-magicBlink {
-        
-                    0%,
-                    100% {
+                    0%, 100% {
                         opacity: 1;
                         transform: scale(1);
                     }
-        
                     25% {
                         opacity: 0.7;
                         transform: scale(1.05);
                     }
-        
                     50% {
                         opacity: 1;
                         transform: scale(1.1);
                     }
-        
                     75% {
                         opacity: 0.7;
                         transform: scale(1.05);
                     }
                 }
-        
+
                 @keyframes slot18-magicGlow {
-        
-                    0%,
-                    100% {
+                    0%, 100% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 10px rgba(68, 68, 255, 0.5);
                     }
-        
                     50% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 25px rgba(68, 68, 255, 1), 0 0 40px rgba(68, 68, 255, 0.8);
                     }
                 }
-        
+
                 @keyframes slot18-buttonMagic {
-        
-                    0%,
-                    100% {
+                    0%, 100% {
                         opacity: 1;
                         transform: scale(1) rotate(0deg);
                     }
-        
                     25% {
                         opacity: 0.8;
                         transform: scale(1.08) rotate(-2deg);
                     }
-        
                     50% {
                         opacity: 1;
                         transform: scale(1.15) rotate(2deg);
                     }
-        
                     75% {
                         opacity: 0.8;
                         transform: scale(1.08) rotate(-2deg);
                     }
                 }
-        
+
                 @keyframes slot18-buttonGlow {
-        
-                    0%,
-                    100% {
+                    0%, 100% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 68, 68, 0.6);
                     }
-        
                     50% {
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 68, 68, 1), 0 0 50px rgba(255, 68, 68, 0.8);
                     }
                 }
-        
-                #slot-18 #countdown-message {
+
+                #slot-18 .slot-18-countdown {
+                    padding: 15px 30px;
+                    background-color: #4444ff;
+                    color: white;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
                     animation: slot18-magicBlink 1.5s ease-in-out infinite, slot18-magicGlow 1.5s ease-in-out infinite;
                 }
-        
-                #slot-18 #miracle-button {
+
+                #slot-18 .slot-18-miracle-btn {
+                    display: none;
+                    padding: 15px 30px;
+                    background-color: #ff4444;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
                     margin: 0 auto;
                     animation: slot18-buttonMagic 1s ease-in-out infinite, slot18-buttonGlow 1s ease-in-out infinite;
                 }
+
+                #slot-18 .slot-18-miracle-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 68, 68, 1), 0 0 50px rgba(255, 68, 68, 0.8);
+                }
+
+                #slot-18 .slot-18-iframe {
+                    width: 100%;
+                    height: 800px;
+                    border: none;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+
+                #slot-18 .slot-18-btn-container {
+                    text-align: center;
+                }
+
+                #slot-18 .slot-18-btn {
+                    margin: 10px auto;
+                    padding: 12px 24px;
+                    background-color: #667eea;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                    transition: all 0.3s ease;
+                }
+
+                #slot-18 .slot-18-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+                }
+
+                #slot-18 .slot-18-youtube-btn {
+                    margin: 10px auto;
+                    padding: 12px 24px;
+                    background-color: #ff0000;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                #slot-18 .slot-18-youtube-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+                }
             </style>
-            <p id="countdown-message"
-                style="padding: 15px 30px; background-color: #4444ff; color: white; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                Điều kì diệu sẽ hiện ra sau 5 giây</p>
-            <button id="miracle-button"
-                style="display: none; padding: 15px 30px; background-color: #ff4444; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Ấn
-                vào đây để thấy điều kì diệu</button>
+
+            <!-- Header -->
+            <div class="slot-18-header">
+                <h2>Welcome to slot 18</h2>
+            </div>
+
+            <!-- Feature 1: Countdown & Miracle Button -->
+            <div class="slot-18-feature-1">
+                <p class="slot-18-countdown">Điều kì diệu sẽ hiện ra sau 5 giây</p>
+                <button class="slot-18-miracle-btn">Ấn vào đây để thấy điều kì diệu</button>
+            </div>
+
             <script>
                 (function () {
                     let countdown = 5;
-                    const messageElement = document.querySelector('#slot-18 #countdown-message');
-                    const miracleButton = document.querySelector('#slot-18 #miracle-button');
+                    const messageElement = document.querySelector('#slot-18 .slot-18-countdown');
+                    const miracleButton = document.querySelector('#slot-18 .slot-18-miracle-btn');
 
                     const countdownInterval = setInterval(() => {
                         countdown--;
@@ -1469,6 +1557,59 @@
                     });
                 })();
             </script>
+
+            <!-- Feature 2: Timelapse Iframe -->
+            <div>
+                <iframe 
+                    src="https://noctrlz1110.github.io/timelapse"
+                    class="slot-18-iframe"
+                    title="Timelapse">
+                </iframe>
+                
+                <div class="slot-18-btn-container">
+                    <button class="slot-18-btn slot-18-fullscreen-btn">
+                        Xem toàn màn hình
+                    </button>
+                    <button 
+                        class="slot-18-btn"
+                        onclick="window.open('https://noctrlz1110.github.io/timelapse', '_blank')">
+                        Mở trong cửa sổ mới
+                    </button>
+                </div>
+
+                <div class="slot-18-btn-container">
+                    <button 
+                        class="slot-18-youtube-btn"
+                        onclick="window.open('https://bit.ly/van-huy-dev-youtube', '_blank')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
+                        Đăng ký kênh ủng hộ của mình
+                    </button>
+                </div>
+
+                <script>
+                    (function () {
+                        const fullscreenBtn = document.querySelector('#slot-18 .slot-18-fullscreen-btn');
+                        const iframe = document.querySelector('#slot-18 .slot-18-iframe');
+
+                        fullscreenBtn.addEventListener('click', () => {
+                            if (iframe.requestFullscreen) {
+                                iframe.requestFullscreen();
+                            } else if (iframe.webkitRequestFullscreen) {
+                                iframe.webkitRequestFullscreen();
+                            } else if (iframe.msRequestFullscreen) {
+                                iframe.msRequestFullscreen();
+                            }
+                        });
+                    })();
+                </script>
+            </div>
+
+            <!-- Footer -->
+            <div class="slot-18-header">
+                <h2>Cảm ơn bạn đã ghé thăm Slot 18! ✨</h2>
+            </div>
         </div>
 
         <!-- == SLOT 19 == -->
