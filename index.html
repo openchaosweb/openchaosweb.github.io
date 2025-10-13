@@ -2209,236 +2209,294 @@
 
         <!-- == SLOT 20 == -->
         <div id="slot-20">
-            <div id="flashcard-widget">
-              <style>
-                /* === Scoped CSS === */
-                #flashcard-widget {
-                  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  gap: 16px;
-                  padding: 20px;
-                  background: linear-gradient(180deg, #f9fafb, #fff);
-                  border: 1px solid #e5e7eb;
-                  border-radius: 16px;
-                  max-width: 400px;
-                  margin: 0 auto;
-                  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                }
-            
-                #flashcard-widget .card {
-                  width: 100%;
-                  height: 200px;
-                  border-radius: 16px;
-                  perspective: 1000px;
-                  cursor: pointer;
-                  position: relative;
-                }
-            
-                #flashcard-widget .card-inner {
-                  position: relative;
-                  width: 100%;
-                  height: 100%;
-                  transition: transform 0.6s;
-                  transform-style: preserve-3d;
-                }
-            
-                #flashcard-widget .card.flipped .card-inner {
-                  transform: rotateY(180deg);
-                }
-            
-                #flashcard-widget .card-face {
-                  position: absolute;
-                  width: 100%;
-                  height: 100%;
-                  border-radius: 16px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  backface-visibility: hidden;
-                  font-size: 22px;
-                  font-weight: 600;
-                  user-select: none;
-                  padding: 16px;
-                  box-sizing: border-box;
-                }
-            
-                #flashcard-widget .front {
-                  background: #111;
-                  color: #fff;
-                }
-            
-                #flashcard-widget .back {
-                  background: #f3f4f6;
-                  color: #111;
-                  transform: rotateY(180deg);
-                }
-            
-                #flashcard-widget .controls {
-                  display: flex;
-                  justify-content: space-between;
-                  width: 100%;
-                  gap: 12px;
-                }
-            
-                #flashcard-widget button {
-                  flex: 1;
-                  padding: 10px 14px;
-                  border: none;
-                  border-radius: 12px;
-                  background: #111;
-                  color: #fff;
-                  font-weight: 600;
-                  cursor: pointer;
-                  transition: opacity 0.2s;
-                }
-            
-                #flashcard-widget button:hover {
-                  opacity: 0.85;
-                }
-            
-                #flashcard-widget .link-btn {
-                  background: #2563eb;
-                  text-decoration: none;
-                  text-align: center;
-                  color: #fff;
-                  padding: 10px 14px;
-                  border-radius: 12px;
-                  font-weight: 600;
-                  flex: 1;
-                  width: 100%;
-                }
-            
-                #flashcard-widget .note {
-                  font-size: 13px;
-                  color: #555;
-                  text-align: center;
-                  line-height: 1.5;
-                  background: #f9fafb;
-                  border-top: 1px dashed #ddd;
-                  padding-top: 10px;
-                }
-            
-                #flashcard-widget .note a {
-                  color: #2563eb;
-                  font-weight: 600;
-                  text-decoration: none;
-                }
-            
-                #flashcard-widget .note a:hover {
-                  text-decoration: underline;
-                }
-              </style>
-            
-              <div class="card" id="fc-card">
-                <div class="card-inner">
-                  <div class="card-face front" id="fc-front"></div>
-                  <div class="card-face back" id="fc-back"></div>
-                </div>
+          <style>
+            #slot-20 {
+              position: relative;
+              overflow: hidden;
+              width: 100%;                 /* nền full bề ngang */
+              padding: 32px 0;             /* chừa khoảng cho nội dung */
+              border-radius: 20px;         /* nếu parent có nền khác vẫn bo đẹp */
+              background: radial-gradient(circle at top left, #e0e7ff, #fdf2f8 40%, #fefce8 80%);
+              box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+              border: 1px solid rgba(255,255,255,0.4);
+            }
+        
+            /* Lớp nền động phủ toàn bộ chiều ngang slot */
+            #slot-20 .fc-bg {
+              position: absolute;
+              inset: 0;     /* full width + full height của #slot-20 */
+              overflow: hidden;
+              z-index: 0;
+            }
+            #slot-20 .fc-blob {
+              position: absolute;
+              border-radius: 50%;
+              filter: blur(60px);
+              opacity: 0.6;
+              animation: slot20Move 16s infinite ease-in-out alternate;
+            }
+            #slot-20 .fc-blob:nth-child(1) {
+              width: 220px; height: 220px;
+              top: -60px; left: -60px;
+              background: radial-gradient(circle, #6366f1, #ec4899);
+              animation-delay: 0s;
+            }
+            #slot-20 .fc-blob:nth-child(2) {
+              width: 260px; height: 260px;
+              bottom: -80px; right: -80px;
+              background: radial-gradient(circle, #f59e0b, #f97316);
+              animation-delay: 4s;
+            }
+            #slot-20 .fc-blob:nth-child(3) {
+              width: 180px; height: 180px;
+              top: 35%; left: 25%;
+              background: radial-gradient(circle, #22d3ee, #3b82f6);
+              animation-delay: 8s;
+            }
+            @keyframes slot20Move {
+              0%   { transform: translate(0, 0) scale(1);   opacity: 0.6; }
+              50%  { transform: translate(60px,-40px) scale(1.1); opacity: 0.75; }
+              100% { transform: translate(-50px,50px) scale(0.92); opacity: 0.6; }
+            }
+        
+            #slot-20 .fc-content {
+              position: relative;
+              z-index: 1;
+              width: 100%;
+              max-width: 460px;           /* kích thước mini app giữ nguyên */
+              margin: 0 auto;             /* canh giữa */
+              padding: 0 20px;            /* an toàn trên màn hình nhỏ */
+              font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 16px;
+            }
+        
+            #slot-20 .fc-card {
+              width: 100%;
+              height: 240px;
+              border-radius: 18px;
+              perspective: 1000px;
+              position: relative;
+              cursor: pointer;
+              background: linear-gradient(160deg, #6366f1, #ec4899, #f59e0b);
+              background-size: 300% 300%;
+              animation: slot20BgShift 6s ease infinite;
+              box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            }
+            @keyframes slot20BgShift {
+              0% { background-position: 0% 50%; }
+              50% { background-position: 100% 50%; }
+              100% { background-position: 0% 50%; }
+            }
+        
+            #slot-20 .fc-card-inner {
+              width: 100%; height: 100%;
+              position: relative;
+              transition: transform 0.8s;
+              transform-style: preserve-3d;
+            }
+            #slot-20 .fc-card.flipped .fc-card-inner { transform: rotateY(180deg); }
+        
+            #slot-20 .fc-face {
+              position: absolute;
+              inset: 0;
+              border-radius: 18px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              backface-visibility: hidden;
+              text-align: center;
+              font-weight: 700;
+              user-select: none;
+              font-size: 26px;
+              padding: 20px;
+              box-sizing: border-box;
+              color: #fff;
+            }
+            #slot-20 .fc-front {
+              background: linear-gradient(135deg, rgba(17,24,39,0.9), rgba(30,58,138,0.8));
+              box-shadow: inset 0 0 40px rgba(255,255,255,0.1);
+            }
+            #slot-20 .fc-back {
+              background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,240,245,0.9));
+              color: #1e293b;
+              transform: rotateY(180deg);
+              font-weight: 600;
+              font-size: 20px;
+            }
+        
+            #slot-20 .fc-controls {
+              display: flex;
+              gap: 12px;
+              width: 100%;
+            }
+            #slot-20 .fc-btn {
+              flex: 1;
+              padding: 12px 14px;
+              border: 0;
+              border-radius: 14px;
+              background: linear-gradient(120deg, #6366f1, #ec4899);
+              color: #fff;
+              font-weight: 700;
+              cursor: pointer;
+              box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+              transition: transform 0.15s ease, box-shadow 0.3s ease, opacity 0.2s;
+            }
+            #slot-20 .fc-btn:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 8px 20px rgba(236,72,153,0.4);
+            }
+        
+            #slot-20 .fc-link {
+              width: 100%;
+              display: block;
+              text-align: center;
+              text-decoration: none;
+              background: linear-gradient(120deg, #f59e0b, #f97316);
+              color: #fff;
+              padding: 12px 16px;
+              border-radius: 14px;
+              font-weight: 700;
+              box-shadow: 0 6px 18px rgba(249,115,22,0.3);
+              transition: transform 0.15s ease, box-shadow 0.3s ease;
+            }
+            #slot-20 .fc-link:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 8px 28px rgba(249,115,22,0.45);
+            }
+        
+            #slot-20 .fc-note {
+              font-size: 14px;
+              color: #333;
+              text-align: center;
+              line-height: 1.6;
+              background: rgba(255,255,255,0.6);
+              border-top: 1px dashed rgba(0,0,0,0.15);
+              border-radius: 0 0 12px 12px;
+              padding-top: 10px;
+              width: 100%;
+            }
+            #slot-20 .fc-note a { color: #2563eb; font-weight: 700; text-decoration: none; }
+            #slot-20 .fc-note a:hover { text-decoration: underline; }
+          </style>
+        
+          <div class="fc-bg">
+            <div class="fc-blob"></div>
+            <div class="fc-blob"></div>
+            <div class="fc-blob"></div>
+          </div>
+        
+          <div class="fc-content">
+            <div class="fc-card" id="slot-20-card" aria-label="Flashcard">
+              <div class="fc-card-inner">
+                <div class="fc-face fc-front" id="slot-20-front"></div>
+                <div class="fc-face fc-back" id="slot-20-back"></div>
               </div>
-            
-              <div class="controls">
-                <button id="prev-btn">⟨ Trước</button>
-                <button id="next-btn">Sau ⟩</button>
-              </div>
-            
-              <a href="https://theeng.org" target="_blank" rel="noopener noreferrer" class="link-btn">
-                Mở theeng.org
-              </a>
-            
-              <div class="note">
-                📘 Em sẽ cập nhật thêm dữ liệu từ vựng sau này<br>
-                hoặc vào <a href="https://theeng.org" target="_blank" rel="noopener noreferrer">theeng.org</a> để học nhiều từ hơn!
-              </div>
-            
-              <script>
-                (function() {
-                  const mockData = [
-                      { word: "abandon", meaning: "từ bỏ, ruồng bỏ" },
-                      { word: "brilliant", meaning: "xuất sắc, rực rỡ" },
-                      { word: "courage", meaning: "sự can đảm" },
-                      { word: "delight", meaning: "niềm vui sướng" },
-                      { word: "eager", meaning: "háo hức, hăng hái" },
-                      { word: "flourish", meaning: "phát triển mạnh mẽ" },
-                      { word: "grateful", meaning: "biết ơn" },
-                      { word: "humble", meaning: "khiêm tốn" },
-                      { word: "inspire", meaning: "truyền cảm hứng" },
-                      { word: "justice", meaning: "công lý" },
-                      { word: "keen", meaning: "sắc sảo, hăng hái" },
-                      { word: "loyal", meaning: "trung thành" },
-                      { word: "modest", meaning: "khiêm nhường" },
-                      { word: "nurture", meaning: "nuôi dưỡng" },
-                      { word: "optimistic", meaning: "lạc quan" },
-                      { word: "patient", meaning: "kiên nhẫn" },
-                      { word: "reliable", meaning: "đáng tin cậy" },
-                      { word: "sincere", meaning: "chân thành" },
-                      { word: "thrive", meaning: "phát triển, thịnh vượng" },
-                      { word: "unique", meaning: "độc nhất" },
-                      { word: "vivid", meaning: "sống động, sinh động" },
-                      { word: "wisdom", meaning: "sự khôn ngoan" },
-                      { word: "youthful", meaning: "trẻ trung" },
-                      { word: "zealous", meaning: "nhiệt huyết" },
-                      { word: "ambitious", meaning: "tham vọng" },
-                      { word: "benevolent", meaning: "nhân từ, rộng lượng" },
-                      { word: "curious", meaning: "tò mò" },
-                      { word: "diligent", meaning: "chăm chỉ" },
-                      { word: "empathy", meaning: "đồng cảm" },
-                      { word: "fearless", meaning: "dũng cảm, không sợ hãi" },
-                      { word: "generous", meaning: "hào phóng" },
-                      { word: "honest", meaning: "trung thực" },
-                      { word: "imagine", meaning: "tưởng tượng" },
-                      { word: "joyful", meaning: "vui vẻ" },
-                      { word: "knowledge", meaning: "kiến thức" },
-                      { word: "limitless", meaning: "vô hạn" },
-                      { word: "mindful", meaning: "chú tâm, để tâm" },
-                      { word: "noble", meaning: "cao quý" },
-                      { word: "passionate", meaning: "đam mê" },
-                      { word: "resilient", meaning: "kiên cường" },
-                      { word: "serene", meaning: "bình yên" },
-                      { word: "tolerant", meaning: "khoan dung" },
-                      { word: "uplift", meaning: "nâng tinh thần" },
-                      { word: "vulnerable", meaning: "dễ bị tổn thương" },
-                      { word: "wonder", meaning: "kỳ diệu, ngạc nhiên" },
-                      { word: "yearn", meaning: "khao khát" },
-                      { word: "zephyr", meaning: "làn gió nhẹ" }
-                    ];
-
-            
-                  let current = 0;
-                  const card = document.getElementById("fc-card");
-                  const front = document.getElementById("fc-front");
-                  const back = document.getElementById("fc-back");
-                  const prevBtn = document.getElementById("prev-btn");
-                  const nextBtn = document.getElementById("next-btn");
-            
-                  function render() {
-                    const { word, meaning } = mockData[current];
-                    front.textContent = word;
-                    back.textContent = meaning;
-                  }
-            
-                  card.addEventListener("click", () => {
-                    card.classList.toggle("flipped");
-                  });
-            
-                  nextBtn.addEventListener("click", () => {
-                    card.classList.remove("flipped");
-                    current = (current + 1) % mockData.length;
-                    render();
-                  });
-            
-                  prevBtn.addEventListener("click", () => {
-                    card.classList.remove("flipped");
-                    current = (current - 1 + mockData.length) % mockData.length;
-                    render();
-                  });
-            
-                  render();
-                })();
-              </script>
             </div>
+        
+            <div class="fc-controls">
+              <button class="fc-btn" id="slot-20-prev">⟨ Trước</button>
+              <button class="fc-btn" id="slot-20-next">Sau ⟩</button>
+            </div>
+        
+            <a class="fc-link" href="https://theeng.org" target="_blank" rel="noopener noreferrer">
+              ✨ Mở theeng.org ✨
+            </a>
+        
+            <div class="fc-note">
+              📘 Em sẽ cập nhật thêm dữ liệu từ vựng sau này<br>
+              hoặc vào <a href="https://theeng.org" target="_blank" rel="noopener noreferrer">theeng.org</a> để học nhiều từ hơn!
+            </div>
+          </div>
+        
+          <script>
+            (function(){
+              const slot20Root = document.getElementById("slot-20");
+              if (!slot20Root) return console.log("[slot-20] Root not found");
+        
+              const slot20Data = [
+                  { word: "abandon", meaning: "từ bỏ, ruồng bỏ" },
+                  { word: "brilliant", meaning: "xuất sắc, rực rỡ" },
+                  { word: "courage", meaning: "sự can đảm" },
+                  { word: "delight", meaning: "niềm vui sướng" },
+                  { word: "eager", meaning: "háo hức, hăng hái" },
+                  { word: "flourish", meaning: "phát triển mạnh mẽ" },
+                  { word: "grateful", meaning: "biết ơn" },
+                  { word: "humble", meaning: "khiêm tốn" },
+                  { word: "inspire", meaning: "truyền cảm hứng" },
+                  { word: "justice", meaning: "công lý" },
+                  { word: "keen", meaning: "sắc sảo, hăng hái" },
+                  { word: "loyal", meaning: "trung thành" },
+                  { word: "modest", meaning: "khiêm nhường" },
+                  { word: "nurture", meaning: "nuôi dưỡng" },
+                  { word: "optimistic", meaning: "lạc quan" },
+                  { word: "patient", meaning: "kiên nhẫn" },
+                  { word: "reliable", meaning: "đáng tin cậy" },
+                  { word: "sincere", meaning: "chân thành" },
+                  { word: "thrive", meaning: "phát triển, thịnh vượng" },
+                  { word: "unique", meaning: "độc nhất" },
+                  { word: "vivid", meaning: "sống động, sinh động" },
+                  { word: "wisdom", meaning: "sự khôn ngoan" },
+                  { word: "youthful", meaning: "trẻ trung" },
+                  { word: "zealous", meaning: "nhiệt huyết" },
+                  { word: "ambitious", meaning: "tham vọng" },
+                  { word: "benevolent", meaning: "nhân từ, rộng lượng" },
+                  { word: "curious", meaning: "tò mò" },
+                  { word: "diligent", meaning: "chăm chỉ" },
+                  { word: "empathy", meaning: "đồng cảm" },
+                  { word: "fearless", meaning: "dũng cảm, không sợ hãi" },
+                  { word: "generous", meaning: "hào phóng" },
+                  { word: "honest", meaning: "trung thực" },
+                  { word: "imagine", meaning: "tưởng tượng" },
+                  { word: "joyful", meaning: "vui vẻ" },
+                  { word: "knowledge", meaning: "kiến thức" },
+                  { word: "limitless", meaning: "vô hạn" },
+                  { word: "mindful", meaning: "chú tâm, để tâm" },
+                  { word: "noble", meaning: "cao quý" },
+                  { word: "passionate", meaning: "đam mê" },
+                  { word: "resilient", meaning: "kiên cường" },
+                  { word: "serene", meaning: "bình yên" },
+                  { word: "tolerant", meaning: "khoan dung" },
+                  { word: "uplift", meaning: "nâng tinh thần" },
+                  { word: "vulnerable", meaning: "dễ bị tổn thương" },
+                  { word: "wonder", meaning: "kỳ diệu, ngạc nhiên" },
+                  { word: "yearn", meaning: "khao khát" },
+                  { word: "zephyr", meaning: "làn gió nhẹ" }
+                ];
+
+        
+              const card = slot20Root.querySelector("#slot-20-card");
+              const front = slot20Root.querySelector("#slot-20-front");
+              const back = slot20Root.querySelector("#slot-20-back");
+              const prev = slot20Root.querySelector("#slot-20-prev");
+              const next = slot20Root.querySelector("#slot-20-next");
+        
+              let index = 0;
+              function render() {
+                const item = slot20Data[index];
+                front.textContent = item.word;
+                back.textContent = item.meaning;
+              }
+        
+              card.addEventListener("click", () => card.classList.toggle("flipped"));
+              next.addEventListener("click", () => {
+                card.classList.remove("flipped");
+                index = (index + 1) % slot20Data.length;
+                render();
+              });
+              prev.addEventListener("click", () => {
+                card.classList.remove("flipped");
+                index = (index - 1 + slot20Data.length) % slot20Data.length;
+                render();
+              });
+        
+              render();
+            })();
+          </script>
         </div>
+
 
         <!-- == SLOT 21 == -->
         <div id="slot-21"></div>
