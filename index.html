@@ -7467,6 +7467,390 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
   </script>
 </div>
 <!-- END SLOT 102 -->
+<!--Slot 103-->
+<div id="chaos-slot" style="font-family: 'Inter', 'Nunito', sans-serif; padding: 20px;">
+    <style>
+        #chaos-slot * {
+            box-sizing: border-box;
+        }
+
+        #chaos-slot {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 16px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .chaos-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chaos-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .meter-label span:last-child {
+            font-size: 20px;
+            color: #667eea;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 28px;
+            background: #e9ecef;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 2px solid #dee2e6;
+            margin-bottom: 25px;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50 0%, #ffc107 50%, #ff5722 100%);
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-weight: bold;
+            color: white;
+            font-size: 11px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .meter-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: chaos-shimmer 2s infinite;
+        }
+
+        @keyframes chaos-shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .chaos-btn {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #ff5722, #ff7043);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 87, 34, 0.5);
+        }
+
+        .btn-add:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-reset:active {
+            transform: translateY(0);
+        }
+
+        .effects-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .effects-label {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .effect-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #666;
+            padding: 5px 0;
+        }
+
+        .effect-item.active {
+            color: #ff5722;
+            font-weight: 600;
+        }
+
+        .effect-icon {
+            font-size: 14px;
+        }
+
+        .stats-box {
+            background: #f0f4ff;
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px dashed #667eea;
+            font-size: 12px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .stat-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+            color: #333;
+            font-size: 13px;
+            display: none;
+            animation: chaos-pulse 0.5s ease;
+        }
+
+        .warning.show {
+            display: block;
+        }
+
+        .warning.critical {
+            background: #f8d7da;
+            border-color: #f5222d;
+            color: #721c24;
+        }
+
+        @keyframes chaos-pulse {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
+    <h2 class="chaos-title">⚡ CHAOS METER</h2>
+     <h3 class="chaos-title">Đây là trạng thái của <a href="https://www.facebook.com/haquocthai.hongnhi/" target="_blank"> TUI</a> ở mỗi giai đoạn khi nốc sinh tố lúa mạch và bị bắt ra fix bug. </h3>
+    <p class="chaos-subtitle">Y chang nhìn gái trên tiktok lắc mông :v</p>
+
+    <div class="warning" id="chaosWarning"></div>
+
+    <div class="meter-label">
+        <span>Chaos Level</span>
+        <span id="chaosPercent">0%</span>
+    </div>
+    <div class="meter-bar">
+        <div class="meter-fill" id="meterFill"></div>
+    </div>
+
+    <div class="buttons-grid">
+        <button class="chaos-btn btn-add" onclick="chaos_addChaos(5)">+5% CHAOS</button>
+        <button class="chaos-btn btn-add" onclick="chaos_addChaos(10)">+10% CHAOS</button>
+        <button class="chaos-btn btn-reset" onclick="chaos_reset()">RESET -10%</button>
+        <button class="chaos-btn btn-reset" onclick="chaos_maxOut()">MAX 🔥</button>
+    </div>
+
+    <div class="effects-box">
+        <div class="effects-label">🎨 Active Effects</div>
+        <div id="effectsList">
+            <div class="effect-item">
+                <span class="effect-icon">✓</span>
+                <span>No effects active</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-box">
+        <div class="stat-row">
+            <span class="stat-label">Total Added:</span>
+            <span class="stat-value" id="totalAdded">0%</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Resets Used:</span>
+            <span class="stat-value" id="resetsUsed">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Session Time:</span>
+            <span class="stat-value" id="sessionTime">0s</span>
+        </div>
+    </div>
+
+    <script>
+        let chaos_value = 0;
+        let chaos_totalAdded = 0;
+        let chaos_resetsUsed = 0;
+        let chaos_sessionStart = Date.now();
+        let chaos_currentEffects = [];
+        let chaos_isAnimating = false;
+
+        const chaos_effects = [
+            { level: 20, name: 'Text Rotation', icon: '🔄' },
+            { level: 40, name: 'Color Invert', icon: '🎨' },
+            { level: 50, name: 'Hue Shift', icon: '🌈' },
+            { level: 60, name: 'Blur Effect', icon: '👀' },
+            { level: 75, name: 'Scale Chaos', icon: '📏' },
+            { level: 85, name: 'Glitch Mode', icon: '⚠️' },
+            { level: 100, name: 'TOTAL CHAOS', icon: '💥' }
+        ];
+
+        function chaos_updateMeter() {
+            const meterFill = document.getElementById('meterFill');
+            const chaosPercent = document.getElementById('chaosPercent');
+            const warning = document.getElementById('chaosWarning');
+
+            chaos_value = Math.max(0, Math.min(100, chaos_value));
+            meterFill.style.width = chaos_value + '%';
+            chaosPercent.textContent = Math.round(chaos_value) + '%';
+
+            // Update effects
+            chaos_currentEffects = chaos_effects.filter(e => chaos_value >= e.level);
+            chaos_updateEffectsList();
+
+            // Warning system
+            if (chaos_value >= 100) {
+                warning.textContent = '🚨 MAXIMUM CHAOS REACHED 🚨';
+                warning.classList.add('show', 'critical');
+            } else if (chaos_value >= 75) {
+                warning.textContent = '⚠️ CRITICAL CHAOS - Prepare for madness';
+                warning.classList.add('show');
+                warning.classList.remove('critical');
+            } else {
+                warning.classList.remove('show');
+            }
+
+            // Update stats
+            document.getElementById('totalAdded').textContent = chaos_totalAdded + '%';
+            document.getElementById('resetsUsed').textContent = chaos_resetsUsed;
+
+            // Apply visual effects to page
+            chaos_applyEffects();
+        }
+
+        function chaos_updateEffectsList() {
+            const list = document.getElementById('effectsList');
+            if (chaos_currentEffects.length === 0) {
+                list.innerHTML = '<div class="effect-item"><span class="effect-icon">✓</span><span>No effects active</span></div>';
+            } else {
+                list.innerHTML = chaos_currentEffects.map(e => 
+                    `<div class="effect-item active"><span class="effect-icon">${e.icon}</span><span>${e.name}</span></div>`
+                ).join('');
+            }
+        }
+
+        function chaos_applyEffects() {
+            const body = document.body;
+            let transforms = [];
+            let filters = [];
+
+            if (chaos_value >= 20) transforms.push(`rotate(${Math.sin(Date.now() / 500) * 3}deg)`);
+            if (chaos_value >= 40) filters.push('invert(0.2)');
+            if (chaos_value >= 50) filters.push('hue-rotate(' + (Date.now() / 50 % 360) + 'deg)');
+            if (chaos_value >= 60) filters.push('blur(1px)');
+            if (chaos_value >= 75) transforms.push(`scale(${0.99 + Math.sin(Date.now() / 300) * 0.01})`);
+            if (chaos_value >= 85) filters.push('contrast(1.15) brightness(1.05)');
+
+            if (transforms.length) body.style.transform = transforms.join(' ');
+            if (filters.length) body.style.filter = filters.join(' ');
+
+            if (chaos_value > 0) requestAnimationFrame(chaos_applyEffects);
+        }
+
+        function chaos_addChaos(amount) {
+            chaos_value += amount;
+            chaos_totalAdded += amount;
+            chaos_updateMeter();
+        }
+
+        function chaos_reset() {
+            if (chaos_value > 0) {
+                chaos_value = Math.max(0, chaos_value - 10);
+                chaos_resetsUsed++;
+                chaos_updateMeter();
+            }
+        }
+
+        function chaos_maxOut() {
+            const increase = 100 - chaos_value;
+            chaos_totalAdded += increase;
+            chaos_value = 100;
+            chaos_updateMeter();
+        }
+
+        // Update session time
+        setInterval(() => {
+            const elapsed = Math.floor((Date.now() - chaos_sessionStart) / 1000);
+            document.getElementById('sessionTime').textContent = elapsed + 's';
+        }, 1000);
+
+        // Initial setup
+        chaos_updateMeter();
+    </script>
+</div>
+<!--End Slot 103-->
 
     </body>
 </html>
