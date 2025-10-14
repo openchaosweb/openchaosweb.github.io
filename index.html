@@ -7467,6 +7467,149 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
   </script>
 </div>
 <!-- END SLOT 102 -->
+    <!-- SLOT 103 -->
+    <div id="slot-103">
+        <style>
+            #slot-103 {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            text-align: center;
+            }
+            #slot-103 h2 {
+            color: #569cd6;
+            margin-bottom: 10px;
+            }
+            #slot-103 p {
+            font-size: 1.1em;
+            margin: 10px 0;
+            }
+            #slot-103 button {
+            background-color: #007acc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            }
+            #slot-103 button:hover {
+            background-color: #005f99;
+            }
+        </style>
+        <h2>Khu vực nguy hiểm</h2>
+        <p>Đừng chọt vào cục xanh xanh</p>
+        <button id="simulate-btn">Đừng chọt</button>
+        <p id="outputz"></p>
+        <style>
+            #ghost-modal {
+                position: fixed;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 240ms ease, visibility 240ms ease;
+                z-index: 99999;
+                pointer-events: none;
+            }
+            #ghost-modal.show {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+            }
+            #ghost-backdrop {
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,0.65);
+            }
+            .ghost-content {
+                position: relative;
+                z-index: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                padding: 18px;
+                background: transparent;
+                border-radius: 12px;
+                user-select: none;
+            }
+            .ghost-img {
+                font-size: 10rem;
+                line-height: 1;
+                transform: scale(0.6);
+                filter: drop-shadow(0 10px 30px rgba(0,0,0,0.6));
+                animation: ghost-pop 360ms cubic-bezier(.2,.9,.2,1) forwards;
+            }
+            @keyframes ghost-pop { to { transform: scale(1); } }
+            .ghost-caption {
+                color: #fff;
+                font-weight: 700;
+                text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+                font-family: sans-serif;
+            }
+            .ghost-close {
+                appearance: none;
+                border: none;
+                background: #ffffffee;
+                color: #111;
+                padding: 8px 12px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+        </style>
+        <div id="ghost-modal" aria-hidden="true">
+            <div id="ghost-backdrop" data-role="backdrop"></div>
+            <div class="ghost-content" role="dialog" aria-modal="true">
+                <div class="ghost-img" aria-hidden="true">👻</div>
+                <div class="ghost-caption">Oà! 👻</div>
+                <button id="ghost-close" class="ghost-close" aria-label="Close ghost">Close</button>
+            </div>
+        </div>
+        <script>
+            (function() {
+                const btn = document.getElementById('simulate-btn');
+                const outputz = document.getElementById('outputz');
+                const modal = document.getElementById('ghost-modal');
+                const backdrop = document.querySelector('#ghost-backdrop');
+                const closeBtn = document.getElementById('ghost-close');
+                let hideTimeout = null;
+
+                function showGhost(duration = 3000) {
+                    if (!modal) return;
+                    modal.classList.add('show');
+                    modal.setAttribute('aria-hidden', 'false');
+                    clearTimeout(hideTimeout);
+                    hideTimeout = setTimeout(hideGhost, duration);
+                }
+
+                function hideGhost() {
+                    if (!modal) return;
+                    modal.classList.remove('show');
+                    modal.setAttribute('aria-hidden', 'true');
+                    clearTimeout(hideTimeout);
+                }
+                btn.addEventListener('click', () => {
+                    setTimeout(() => {
+                        showGhost(3600);
+                    }, 600);
+                });
+                backdrop && backdrop.addEventListener('click', hideGhost);
+                closeBtn && closeBtn.addEventListener('click', hideGhost);
+                window.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') hideGhost();
+                });
+            })();
+        </script>
+    </div>
+    </div>
+    <!-- END SLOT 103 -->
 
     </body>
 </html>
