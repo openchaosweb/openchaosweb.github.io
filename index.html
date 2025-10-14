@@ -14,16 +14,14 @@
             <h1 class="neon-text">Welcome to OpenChaosWeb</h1>
         </div>
         <style>
-            h1 {
+            h1.neon-text {
                 font-family: "Nunito", sans-serif;
-            }
-            .neon-text {
-                font-size: 4rem;
+                font-size: 1.25rem;
+                text-align: center;
                 color: #fff;
                 text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e, 0 0 40px #ff005e, 0 0 80px #ff005e;
                 animation: glow 1.5s infinite alternate;
             }
-
             @keyframes glow {
                 0% {
                     text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e, 0 0 40px #ff005e, 0 0 80px #ff005e;
@@ -32,14 +30,115 @@
                     text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 40px #00d4ff, 0 0 80px #00d4ff, 0 0 160px #00d4ff;
                 }
             }
+
+            @media (min-width:320px) { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ }
+            @media (min-width:480px) { /* smartphones, Android phones, landscape iPhone */ }
+            @media (min-width:600px) { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+            h1.neon-text {
+                 font-size: 4rem;
+            }
+
+            }
+            @media (min-width:801px) { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+            @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
+            @media (min-width:1281px) { /* hi-res laptops and desktops */ }
+
         </style>
-        <h3>The world’s most unpredictable homepage</h3>
+        <h3 id= "sub_title">The world’s most unpredictable homepage</h3>
         <style>
-            h3 {
+            #sub_title {
                 font-family: "Nunito", sans-serif;
                 font-size: 0.85rem;
                 font-weight: 500;
+                text-align: center;
+                position: fixed;
+                width: 150px;
+                height: 150px;
+                bottom: 10px;
+                color: #f8f6f1;
+                padding-top: 50px;
+                padding-left: 20px;
+                background-color: #ff4282;
+                left: 10px;
+                border: 2px dotted #ffc107;
+                outline: 2px dashed #ffc107;
+                outline-offset: 6px;
+                border-top-right-radius: 50%;
+                border-bottom-left-radius: 50%;
+                animation: scale 3s infinite;
+                font-family: 'Viaoda Libre', cursive;
+                font-size: 18px;
+                font-weight: bold;
+                z-index: 1000;
             }
+
+            @keyframes scale {
+              0% {
+                transform: scale(1);
+                outline: 3px dashed #ffc107;
+              }
+
+              50% {
+                transform: scale(1.051);
+                outline: 6px dashed #f2ac46;
+              }
+
+              100% {
+                transform: scale(1);
+                outline: 2px dashed #ffc107;
+              }
+            }
+
+            #sub_title:before {
+                 content: "";
+                 background-color: blue;
+                 position: absolute;
+                 background-color: bisque;
+                 width: 50px;
+                 height: 50px;
+                 left: 103px;
+                 top: -7px;
+                 /* z-index: -5; */
+                 border-top-right-radius: 50%;
+                 border-bottom-left-radius: 50%;
+                 animation: rotating 4s infinite;
+               }
+
+               @keyframes rotating {
+                 0% {
+                   transform: rotate(0deg);
+                 }
+
+                 100% {
+                   transform: rotate(3600deg);
+                 }
+
+               }
+
+               #sub_title:after {
+                 content: "";
+                 background-color: blue;
+                 position: absolute;
+                 background-color: bisque;
+                 width: 50px;
+                 height: 50px;
+                 left: -8px;
+                 top: 104px;
+                 border-top-right-radius: 50%;
+                 border-bottom-left-radius: 50%;
+                 animation: rotatingreverse 3s alternate infinite;
+               }
+
+               @keyframes rotatingreverse {
+                 0% {
+                   transform: rotate(0deg);
+                 }
+
+                 100% {
+                   transform: rotate(3600deg);
+                 }
+
+               }
         </style>
 
         <!-- == SLOT 1 == -->
@@ -974,6 +1073,12 @@
                     Bấm mấy phím mũi tên để chơi nha mấy anh em
                 </div>
             </div>
+
+
+			<!-- == SLOT 43 == -->
+			<div id="slot-083" class="slot">
+			  <button onclick="alert('Why did you click the do not click button?')">Don't Click</button>
+			</div>
 
             <script>
                 (function() {
@@ -2059,7 +2164,112 @@
         </div>
 
         <!-- == SLOT 8 == -->
-        <div id="slot-8"></div>
+        <div id="slot-8">
+            <style>
+                /* Scoped styles for Habit Tree banner inside slot-8 */
+                #slot-8 .banner-inner-area {
+                    padding: 270px 0 200px;
+                    position: relative;
+                    overflow: hidden;
+                    background: #DCFAE6;
+                }
+                #slot-8 .container {
+                    max-width: 1140px;
+                    margin: 0 auto;
+                    padding: 0 15px;
+                }
+                #slot-8 .row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                }
+                #slot-8 .banner-text-inner h1 {
+                    margin-bottom: 33px;
+                    font-size: 50px;
+                    line-height: 55px;
+                    font-weight: 600;
+                    color: #222;
+                }
+                #slot-8 .banner-text-inner p {
+                    margin-bottom: 43px;
+                    font-size: 16px;
+                    line-height: 30px;
+                    color: #404040;
+                }
+                #slot-8 .banner-text-inner a img {
+                    height: 40px;
+                    vertical-align: middle;
+                }
+                #slot-8 .banner-text-inner a + a img {
+                    margin-left: 10px;
+                }
+                #slot-8 .banner-image img {
+                    display: block;
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 24px;
+                }
+                /* Simple grid replacements for Bootstrap classes used */
+                #slot-8 [class^="col-"],
+                #slot-8 [class*=" col-"] {
+                    position: relative;
+                    width: 100%;
+                    padding-right: 15px;
+                    padding-left: 15px;
+                }
+                /* md breakpoint */
+                @media (min-width: 768px) {
+                    #slot-8 .col-md-8 { flex: 0 0 66.6667%; max-width: 66.6667%; }
+                    #slot-8 .col-md-4 { flex: 0 0 33.3333%; max-width: 33.3333%; }
+                }
+                /* lg breakpoint */
+                @media (min-width: 992px) {
+                    #slot-8 .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
+                    #slot-8 .col-lg-5 { flex: 0 0 41.6667%; max-width: 41.6667%; }
+                    #slot-8 .offset-lg-1 { margin-left: 8.3333%; }
+                    #slot-8 .banner-text-inner h1 { font-size: 40px; }
+                }
+                /* xl breakpoint */
+                @media (min-width: 1200px) {
+                    #slot-8 .col-xl-5 { flex: 0 0 41.6667%; max-width: 41.6667%; }
+                }
+                /* Small devices adjustments */
+                @media (max-width: 575.98px) {
+                    #slot-8 .banner-inner-area { padding: 150px 0 96px; }
+                    #slot-8 .banner-text-inner { padding-bottom: 80px; }
+                    #slot-8 .banner-text-inner h1 { font-size: 32px; line-height: 50px; }
+                }
+            </style>
+            <div class="banner-area-inner">
+                <div class="banner-inner-area banner-area1">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-8 col-lg-6 col-xl-5">
+                                <!-- banner text -->
+                                <div class="banner-text-inner">
+                                    <h1>Welcome to<br>Habit Tree app!</h1>
+                                    <p>🌱 Each habit is a tree, nurture it daily to watch your forest of success grow! 🌳🌳🌳</p>
+                                    <a href="https://apps.apple.com/app/id6740733412" target="_blank">
+                                        <img src="https://habittree.xyz/assets/img/download/app_store.webp" alt="App Store">
+                                    </a>
+                                    <a href="https://play.google.com/store/apps/details?id=com.areser.habittree" target="_blank">
+                                        <img src="https://habittree.xyz/assets/img/download/play_store.webp" alt="Google Play">
+                                    </a>
+                                </div>
+                                <!-- banner text -->
+                            </div>
+                            <div class="col-lg-5 offset-lg-1 col-md-4 offse-xl-2">
+                                <!-- banner image-->
+                                <div class="banner-image">
+                                    <img src="https://habittree.xyz/assets/img/screenshot/icon_no_bg.webp" alt="">
+                                </div>
+                                <!--End of banner image-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- == SLOT 9 == -->
         <div id="slot-9">
@@ -2321,7 +2531,7 @@
         <!-- == SLOT 10 == -->
         <div id="slot-10">
             <h1>hehehehe</h1>
-            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzI3b2lqaW1mZnY3d3QwcTY5MGpnaTdxanl4NnFkYnpvM3BndWZteSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lJNoBCvQYp7nq/giphy.gif" alt="Description of GIF" />            
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzI3b2lqaW1mZnY3d3QwcTY5MGpnaTdxanl4NnFkYnpvM3BndWZteSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lJNoBCvQYp7nq/giphy.gif" alt="Description of GIF" />
         </div>
 
         <!-- == SLOT 11 == -->
@@ -4638,13 +4848,13 @@
                     cursor: pointer;
                     transition: transform 1.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
                 }
-            
+
                 #dvd-logo {
                     width: 120px;
                     display: block;
                     fill: #ffffff;
                 }
-            
+
                 #dvd-message {
                     position: absolute;
                     top: 50%;
@@ -4663,15 +4873,15 @@
                     transition: opacity 0.3s ease;
                     font-family: 'Press Start 2P', cursive;
                 }
-            
+
                 #dvd-message.visible {
                     opacity: 1;
                 }
-            
+
                 #dvd-logo-wrapper.escaping {
                     transform: translate(150vw, -150vh) rotate(1080deg) scale(0);
                 }
-            
+
                 #final-message {
                     display: none;
                     position: absolute;
@@ -4689,7 +4899,7 @@
                     margin: 0 auto;
                     text-align: center;
                 }
-            
+
                 #final-message h2 {
                     color: #ff4d4d;
                     font-size: 2.3em;
@@ -4697,7 +4907,7 @@
                     line-height: 1.4;
                     animation: fadeIn 1s ease-in;
                 }
-            
+
                 @keyframes fadeIn {
                     from {
                         opacity: 0;
@@ -4724,7 +4934,7 @@
                         <script xmlns="" />
                     </svg>
                 </div>
-            
+
                 <div id="final-message">
                     <h2>NICE TRY! Now the screen is saven't</h2>
                 </div>
@@ -4924,7 +5134,93 @@
         </div>
 
         <!-- == SLOT 67 == -->
-        <div id="slot-67"></div>
+        <div id="slot-67">
+            <style>
+                .numbers-container {
+                    position: relative;
+                    width: 100%;
+                    height: 500px;
+                    overflow: hidden;
+                    background: #222;
+                    cursor: pointer;
+                }
+
+                .numbers-container span {
+                    position: absolute;
+                    font-family: Arial, sans-serif;
+                    font-weight: bold;
+                    color: hsl(var(--hue), 80%, 60%);
+                    font-size: var(--size);
+                    left: var(--x);
+                    top: var(--y);
+                    pointer-events: none;
+                    user-select: none;
+                    animation: floatRotate var(--duration) linear infinite;
+                }
+
+                @keyframes floatRotate {
+                    0% {
+                    transform: translate(0, 0) rotate(0deg);
+                    }
+                    50% {
+                    transform: translate(var(--tx), var(--ty)) rotate(180deg);
+                    }
+                    100% {
+                    transform: translate(0, 0) rotate(360deg);
+                    }
+                }
+
+                .overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: #000;
+                    opacity: 0;
+                    transition: opacity 0.2s ease-in;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 999;
+                }
+
+                .numbers-container:hover .overlay {
+                    opacity: 1;
+                }
+
+                .overlay iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                }
+            </style>
+
+            <div class="numbers-container" id="numbers">
+            <div class="overlay">
+                <div class="tenor-gif-embed" data-postid="3349401281762803381" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+                <a href="https://tenor.com/view/67-67-kid-edit-analog-horror-phonk-gif-3349401281762803381">67 67 Kid GIF</a>
+                from <a href="https://tenor.com/search/67-gifs">67 GIFs</a>
+                </div>
+            </div>
+            </div>
+
+            <script async src="https://tenor.com/embed.js"></script>
+
+            <script>
+            const cc = document.getElementById("numbers");
+
+            for (let i = 0; i < 67; i++) {
+                const span = document.createElement("span");
+                span.textContent = "67";
+                span.style.setProperty("--x", Math.random() * 90 + "%");
+                span.style.setProperty("--y", Math.random() * 90 + "%");
+                span.style.setProperty("--size", Math.random() * 5 + 1 + "rem");
+                span.style.setProperty("--hue", Math.floor(Math.random() * 360));
+                span.style.setProperty("--tx", (Math.random() * 40 - 20) + "px");
+                span.style.setProperty("--ty", (Math.random() * 40 - 20) + "px");
+                span.style.setProperty("--duration", (Math.random() * 5 + 5) + "s");
+                cc.appendChild(span);
+            }
+            </script>
+        </div>
 
         <!-- == SLOT 68 == -->
         <div id="slot-68"></div>
@@ -5891,7 +6187,7 @@
             <div class="s98-galaxy-container">
                 <div class="s98-loading" id="s98-loading">Loading Galaxy...</div>
                 <canvas class="s98-canvas" id="s98-canvas"></canvas>
-                
+
                 <div class="s98-controls">
                     <div class="s98-control-panel">
                         <div class="s98-control-group">
@@ -5953,7 +6249,7 @@
                     let s98_time = 0;
                     let s98_isMinimized = false;
                     let s98_scrollControlActive = false;
-                    
+
                     // Solar system configuration
                     let s98_config = {
                         asteroids: 500,
@@ -6058,7 +6354,7 @@
                         // Ensure minimum size for visibility, but scale properly
                         const scaledSize = Math.max(planetData.size * s98_planetScale, 0.1);
                         const geometry = new THREE.SphereGeometry(scaledSize, 32, 32);
-                        
+
                         let material;
                         if (planetData.name === 'Sun') {
                             // Sun with emissive glow
@@ -6071,7 +6367,7 @@
                             // Saturn with rings
                             material = new THREE.MeshLambertMaterial({ color: planetData.color });
                             const planet = new THREE.Mesh(geometry, material);
-                            
+
                             // Add Saturn's rings - scale with planet
                             const ringGeometry = new THREE.RingGeometry(scaledSize * 1.5, scaledSize * 2.5, 32);
                             const ringMaterial = new THREE.MeshLambertMaterial({
@@ -6083,7 +6379,7 @@
                             const rings = new THREE.Mesh(ringGeometry, ringMaterial);
                             rings.rotation.x = Math.PI / 2;
                             planet.add(rings);
-                            
+
                             return planet;
                         } else {
                             material = new THREE.MeshLambertMaterial({ color: planetData.color });
@@ -6108,14 +6404,14 @@
                         const beltInnerRadius = 25; // Just outside Mars orbit
                         const beltOuterRadius = 32; // Just inside Jupiter orbit
                         const beltThickness = 2; // Vertical thickness of the belt
-                        
+
                         for (let i = 0; i < s98_config.asteroids; i++) {
                             const i3 = i * 3;
-                            
+
                             // More realistic asteroid belt distribution
                             const distance = beltInnerRadius + Math.random() * (beltOuterRadius - beltInnerRadius);
                             const angle = Math.random() * Math.PI * 2;
-                            
+
                             // Position asteroids in a more confined belt
                             positions[i3] = Math.cos(angle) * distance;
                             positions[i3 + 1] = (Math.random() - 0.5) * beltThickness; // Confined vertically
@@ -6173,7 +6469,7 @@
 
                     function s98_setupEventListeners() {
                         const canvas = document.getElementById('s98-canvas');
-                        
+
                         // Mouse events
                         canvas.addEventListener('mousedown', (e) => {
                             s98_mousePressed = true;
@@ -6185,10 +6481,10 @@
                             if (s98_mousePressed) {
                                 const deltaX = e.clientX - s98_mouse.x;
                                 const deltaY = e.clientY - s98_mouse.y;
-                                
+
                                 s98_solarSystem.rotation.y += deltaX * 0.01;
                                 s98_solarSystem.rotation.x += deltaY * 0.01;
-                                
+
                                 s98_mouse.x = e.clientX;
                                 s98_mouse.y = e.clientY;
                             }
@@ -6205,7 +6501,7 @@
 
                         // Touch events for mobile
                         let s98_lastTouch = null;
-                        
+
                         canvas.addEventListener('touchstart', (e) => {
                             e.preventDefault();
                             s98_lastTouch = {
@@ -6219,10 +6515,10 @@
                             if (s98_lastTouch) {
                                 const deltaX = e.touches[0].clientX - s98_lastTouch.x;
                                 const deltaY = e.touches[0].clientY - s98_lastTouch.y;
-                                
+
                                 s98_solarSystem.rotation.y += deltaX * 0.01;
                                 s98_solarSystem.rotation.x += deltaY * 0.01;
-                                
+
                                 s98_lastTouch = {
                                     x: e.touches[0].clientX,
                                     y: e.touches[0].clientY
@@ -6254,7 +6550,7 @@
                         const slot98Element = document.getElementById('slot-98');
                         const canvas = document.getElementById('s98-canvas');
                         const scrollControl = document.getElementById('s98-scroll-control');
-                        
+
                         if (visibilityRatio > 0.5) {
                             // More than 50% visible - enable scroll control
                             s98_scrollControlActive = true;
@@ -6284,12 +6580,12 @@
                                 behavior: 'smooth',
                                 block: 'start'
                             });
-                            
+
                             // Set height to fit screen if not already
                             if (!slot98Element.classList.contains('s98-fit-screen')) {
                                 slot98Element.style.height = '100vh';
                                 slot98Element.classList.add('s98-fit-screen');
-                                
+
                                 // Trigger resize to adjust canvas
                                 setTimeout(() => {
                                     s98_onWindowResize();
@@ -6303,7 +6599,7 @@
                         const baseDistance = 100; // Base camera distance
                         const zoomFactor = s98_zoomLevel / 100;
                         const targetDistance = baseDistance / zoomFactor;
-                        
+
                         // Maintain camera direction but adjust distance
                         const direction = s98_camera.position.clone().normalize();
                         s98_camera.position.copy(direction.multiplyScalar(targetDistance));
@@ -6313,7 +6609,7 @@
                         // Speed control
                         const speedSlider = document.getElementById('s98-speed');
                         const speedValue = document.getElementById('s98-speed-value');
-                        
+
                         speedSlider.addEventListener('input', (e) => {
                             s98_animationSpeed = parseFloat(e.target.value);
                             speedValue.textContent = s98_animationSpeed.toFixed(1);
@@ -6322,7 +6618,7 @@
                         // Asteroids control
                         const asteroidsSlider = document.getElementById('s98-asteroids');
                         const asteroidsCount = document.getElementById('s98-asteroids-count');
-                        
+
                         asteroidsSlider.addEventListener('input', (e) => {
                             s98_config.asteroids = parseInt(e.target.value);
                             asteroidsCount.textContent = s98_config.asteroids;
@@ -6332,17 +6628,17 @@
                         // Planet size control - fixed to properly update planets
                         const planetScaleSlider = document.getElementById('s98-planet-scale');
                         const planetSizeValue = document.getElementById('s98-planet-size');
-                        
+
                         planetScaleSlider.addEventListener('input', (e) => {
                             s98_planetScale = parseFloat(e.target.value);
                             planetSizeValue.textContent = s98_planetScale.toFixed(1);
-                            
+
                             // Update existing planets instead of recreating everything
                             s98_planets.forEach((planetObj) => {
                                 const scaledSize = Math.max(planetObj.data.size * s98_planetScale, 0.1);
                                 planetObj.mesh.geometry.dispose();
                                 planetObj.mesh.geometry = new THREE.SphereGeometry(scaledSize, 32, 32);
-                                
+
                                 // Update Saturn's rings if applicable
                                 if (planetObj.data.name === 'Saturn') {
                                     const rings = planetObj.mesh.children.find(child => child.geometry.type === 'RingGeometry');
@@ -6357,7 +6653,7 @@
                         // Zoom control
                         const zoomSlider = document.getElementById('s98-zoom');
                         const zoomValue = document.getElementById('s98-zoom-value');
-                        
+
                         zoomSlider.addEventListener('input', (e) => {
                             s98_zoomLevel = parseInt(e.target.value);
                             zoomValue.textContent = s98_zoomLevel;
@@ -6369,7 +6665,7 @@
                             s98_camera.position.set(0, 50, 100);
                             s98_camera.lookAt(0, 0, 0);
                             s98_solarSystem.rotation.set(0, 0, 0);
-                            
+
                             // Reset zoom level
                             s98_zoomLevel = 100;
                             zoomSlider.value = 100;
@@ -6393,13 +6689,13 @@
                         s98_planets.forEach((planet, index) => {
                             if (planet.data.distance > 0) { // Don't move the sun
                                 planet.angle += planet.data.speed * 0.01 * s98_animationSpeed;
-                                
+
                                 planet.mesh.position.x = Math.cos(planet.angle) * planet.data.distance;
                                 planet.mesh.position.z = Math.sin(planet.angle) * planet.data.distance;
-                                
+
                                 // Planet rotation
                                 planet.mesh.rotation.y += 0.02 * s98_animationSpeed;
-                                
+
                                 // Apply axial tilt
                                 planet.mesh.rotation.z = THREE.MathUtils.degToRad(planet.data.tilt);
                             } else {
