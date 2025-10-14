@@ -5029,7 +5029,93 @@
         </div>
 
         <!-- == SLOT 67 == -->
-        <div id="slot-67"></div>
+        <div id="slot-67">
+            <style>
+                .numbers-container {
+                    position: relative;
+                    width: 100%;
+                    height: 500px;
+                    overflow: hidden;
+                    background: #222;
+                    cursor: pointer;
+                }
+
+                .numbers-container span {
+                    position: absolute;
+                    font-family: Arial, sans-serif;
+                    font-weight: bold;
+                    color: hsl(var(--hue), 80%, 60%);
+                    font-size: var(--size);
+                    left: var(--x);
+                    top: var(--y);
+                    pointer-events: none;
+                    user-select: none;
+                    animation: floatRotate var(--duration) linear infinite;
+                }
+
+                @keyframes floatRotate {
+                    0% {
+                    transform: translate(0, 0) rotate(0deg);
+                    }
+                    50% {
+                    transform: translate(var(--tx), var(--ty)) rotate(180deg);
+                    }
+                    100% {
+                    transform: translate(0, 0) rotate(360deg);
+                    }
+                }
+
+                .overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: #000;
+                    opacity: 0;
+                    transition: opacity 0.2s ease-in;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 999;
+                }
+
+                .numbers-container:hover .overlay {
+                    opacity: 1;
+                }
+
+                .overlay iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                }
+            </style>
+
+            <div class="numbers-container" id="numbers">
+            <div class="overlay">
+                <div class="tenor-gif-embed" data-postid="3349401281762803381" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+                <a href="https://tenor.com/view/67-67-kid-edit-analog-horror-phonk-gif-3349401281762803381">67 67 Kid GIF</a>
+                from <a href="https://tenor.com/search/67-gifs">67 GIFs</a>
+                </div>
+            </div>
+            </div>
+
+            <script async src="https://tenor.com/embed.js"></script>
+
+            <script>
+            const cc = document.getElementById("numbers");
+
+            for (let i = 0; i < 67; i++) {
+                const span = document.createElement("span");
+                span.textContent = "67";
+                span.style.setProperty("--x", Math.random() * 90 + "%");
+                span.style.setProperty("--y", Math.random() * 90 + "%");
+                span.style.setProperty("--size", Math.random() * 5 + 1 + "rem");
+                span.style.setProperty("--hue", Math.floor(Math.random() * 360));
+                span.style.setProperty("--tx", (Math.random() * 40 - 20) + "px");
+                span.style.setProperty("--ty", (Math.random() * 40 - 20) + "px");
+                span.style.setProperty("--duration", (Math.random() * 5 + 5) + "s");
+                cc.appendChild(span);
+            }
+            </script>
+        </div>
 
         <!-- == SLOT 68 == -->
         <div id="slot-68"></div>
