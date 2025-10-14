@@ -6816,32 +6816,32 @@
             setupChambers();
         })();</script></div>
 
-       <!-- SLOT 102: Hội Anh Em Sợ Vợ -->
+       <!-- SLOT 102: Hội Những Người Yêu Vợ Có Kỷ Luật 💐 -->
 <div id="slot-102">
   <style>
     #slot-102 {
       font-family: "Comic Sans MS", cursive;
       text-align: center;
-      background: radial-gradient(circle at top, #fff3e0, #ffe0b2);
+      background: radial-gradient(circle at top, #fff3e0, #fff0f5);
       border-radius: 20px;
       padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      animation: slot102-shake 3s infinite;
+      box-shadow: 0 0 15px rgba(255,182,193,0.3);
+      animation: slot102-bounce 3s infinite;
       margin: 10px;
       position: relative;
     }
     #slot-102 h2 {
-      color: #e65100;
+      color: #d81b60;
       font-size: 1.8em;
       margin-bottom: 0.5em;
     }
     #slot-102 p {
-      color: #4e342e;
+      color: #6a1b9a;
       font-size: 1.1em;
       margin: 0.5em 0;
     }
     #slot-102 input {
-      border: 2px solid #ffb74d;
+      border: 2px solid #f8bbd0;
       border-radius: 10px;
       padding: 8px;
       width: 80%;
@@ -6850,7 +6850,7 @@
       outline: none;
     }
     #slot-102 button {
-      background: #ff9800;
+      background: #ec407a;
       border: none;
       color: white;
       padding: 10px 20px;
@@ -6861,7 +6861,7 @@
       margin-top: 10px;
     }
     #slot-102 button:hover {
-      background: #f57c00;
+      background: #d81b60;
       transform: scale(1.05);
     }
     #slot102-board {
@@ -6869,14 +6869,14 @@
       text-align: left;
       max-height: 350px;
       overflow-y: auto;
-      background: #fff8e1;
+      background: #fce4ec;
       padding: 10px;
       border-radius: 12px;
-      border: 2px solid #ffcc80;
+      border: 2px solid #f8bbd0;
       position: relative;
     }
     .slot102-entry {
-      background: #ffe0b2;
+      background: #f8bbd0;
       margin: 5px 0;
       padding: 10px 12px;
       border-radius: 10px;
@@ -6884,7 +6884,7 @@
       animation: slot102-fadein 0.6s ease-in-out;
       position: relative;
     }
-    .slot102-entry strong { color: #e65100; }
+    .slot102-entry strong { color: #c2185b; }
     .slot102-reactions {
       margin-top: 5px;
       display: flex;
@@ -6897,17 +6897,12 @@
       cursor: pointer;
       font-size: 1.3em;
       transition: 0.2s;
-      position: relative;
     }
-    .slot102-reactions button:hover {
-      transform: scale(1.3);
-    }
+    .slot102-reactions button:hover { transform: scale(1.3); }
     .slot102-count {
       font-size: 0.9em;
-      color: #4e342e;
+      color: #6a1b9a;
     }
-
-    /* Hiệu ứng bay kiểu Facebook */
     .floating {
       position: absolute;
       animation: float-random 1.3s ease-out forwards;
@@ -6919,41 +6914,37 @@
       50% { transform: translate(var(--x), -40px) scale(1.2); opacity: 0.9; }
       100% { transform: translate(calc(var(--x)*1.5), -80px) scale(0.8); opacity: 0; }
     }
-
-    @keyframes slot102-shake {
-      0%,100%{transform:rotate(0deg);}
-      25%{transform:rotate(1deg);}
-      50%{transform:rotate(-1deg);}
-      75%{transform:rotate(1deg);}
+    @keyframes slot102-bounce {
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-2px);}
     }
     @keyframes slot102-fadein {
       from{opacity:0;transform:translateY(10px);}
       to{opacity:1;transform:translateY(0);}
     }
-
     #slot102-message {
       margin-top: 15px;
-      color: #d84315;
+      color: #ad1457;
       font-weight: bold;
       font-size: 1.1em;
       animation: slot102-fadein 0.8s ease-in-out;
     }
   </style>
 
-  <h2>👨‍🦱 Hội Anh Em Sợ Vợ 😱</h2>
-  <p>“Thà để vợ càm ràm còn hơn bị vợ im lặng...”</p>
-  <p><em>- Triết lý sống của hội -</em></p>
+  <h2>💞 Hội Những Người Yêu Vợ Có Kỷ Luật 💐</h2>
+  <p>“Không sợ vợ, chỉ là tôn trọng ý kiến cấp trên.”</p>
+  <p><em>- Tuyên ngôn sống còn của anh em văn minh -</em></p>
 
-  <input id="slot102-name" type="text" placeholder="Tên của bạn là gì? 👇">
+  <input id="slot102-name" type="text" placeholder="Tên bạn là gì? 👇">
   <br>
-  <input id="slot102-input" type="text" placeholder="Bạn tự hào điều gì về vợ bạn? 💬">
+  <input id="slot102-input" type="text" placeholder="Điều khiến bạn tự hào về vợ là gì? 💬">
   <br>
-  <button id="slot102-btn">Tuyên thệ gia nhập</button>
+  <button id="slot102-btn">Tuyên thệ yêu vợ</button>
 
   <p id="slot102-message"></p>
 
   <div id="slot102-board">
-    <h4>💌 Những lời tuyên thệ và chia sẻ của anh em:</h4>
+    <h4>🌸 Lời ngợi ca của các anh hùng gia đình:</h4>
     <div id="slot102-list"></div>
   </div>
 
@@ -6965,37 +6956,32 @@
     const msg102 = document.getElementById("slot102-message");
 
     const quotes = [
-      "Em ơi anh sai rồi 😭",
-      "Lỗi tại anh tất cả 😔",
-      "Anh chỉ nghe lời em thôi 🫡",
-      "Hội trưởng phê duyệt: Sợ vợ là đỉnh cao!",
-      "Đàn ông không sợ vợ thì sợ ai? 😎",
-      "Tình yêu là tạm thời, sợ vợ là mãi mãi 💍"
+      "Phía sau người đàn ông thành công là người vợ dậy sớm nấu ăn 💪",
+      "Anh không sợ vợ, anh sợ mất vợ ❤️",
+      "Mỗi khi cô ấy nói 'Tùy anh', là anh biết anh sắp sai 😭",
+      "Yêu vợ là kỹ năng sinh tồn cấp cao 😎",
+      "Cô ấy không giận đâu... chỉ đang thu thập bằng chứng thôi 📸",
+      "Hạnh phúc là khi vợ không đọc commit log 💍"
     ];
 
-    // Load cũ
     window.addEventListener("load", () => {
       const saved = JSON.parse(localStorage.getItem("slot102Entries") || "[]");
       saved.forEach((entry) => addEntryToBoard(entry));
     });
 
-    // Nhấn tuyên thệ
     btn102.addEventListener("click", () => {
       const name = name102.value.trim();
       const text = input102.value.trim();
       if (!name || !text)
-        return alert("Anh em điền tên và chia sẻ đi chứ 😆");
+        return alert("Anh điền đầy đủ đi, vợ mà thấy là mệt à nha 😆");
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
       const entry = { name, text, quote: randomQuote, likes: 0, haha: 0, hearts: 0 };
-
       addEntryToBoard(entry);
       const saved = JSON.parse(localStorage.getItem("slot102Entries") || "[]");
       saved.push(entry);
       localStorage.setItem("slot102Entries", JSON.stringify(saved));
-
-      msg102.textContent = `🎉 ${name} đã tuyên thệ gia nhập Hội Anh Em Sợ Vợ! 
-Chúng tôi sẽ giữ bí mật với vợ bạn 🤫`;
-
+      msg102.textContent = `💐 ${name} vừa tuyên thệ: “Yêu vợ đến cuối commit!”  
+      Chúng tôi hứa giữ bí mật và sẽ nịnh thay nếu cần 🤫`;
       name102.value = "";
       input102.value = "";
     });
@@ -7018,7 +7004,6 @@ Chúng tôi sẽ giữ bí mật với vợ bạn 🤫`;
       `;
       const [likeBtn, likeCount, hahaBtn, hahaCount, heartBtn, heartCount] =
         div.querySelectorAll("button, .slot102-count");
-
       likeBtn.addEventListener("click", () =>
         updateReaction(entry, "likes", likeCount, "👍")
       );
@@ -7028,7 +7013,6 @@ Chúng tôi sẽ giữ bí mật với vợ bạn 🤫`;
       heartBtn.addEventListener("click", () =>
         updateReaction(entry, "hearts", heartCount, "❤️")
       );
-
       list102.appendChild(div);
     }
 
@@ -7045,7 +7029,6 @@ Chúng tôi sẽ giữ bí mật với vợ bạn 🤫`;
       createFloatingEmoji(countEl, emoji);
     }
 
-    // Emoji bay ngẫu nhiên kiểu Facebook
     function createFloatingEmoji(target, emoji) {
       const rect = target.getBoundingClientRect();
       const el = document.createElement("div");
