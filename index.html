@@ -4313,7 +4313,7 @@
         <!-- == SLOT 42 == -->
         <div id="slot-42">
             <style>
-                #screensaver-container {
+                #screensaver-container_42 {
                     width: 90%;
                     max-width: 90%;
                     height: 50vh;
@@ -4326,21 +4326,21 @@
                     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
                 }
 
-                #dvd-logo-wrapper {
+                #dvd-logo-wrapper_42 {
                     position: absolute;
                     top: 50px;
                     left: 50px;
                     cursor: pointer;
                     transition: transform 1.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
                 }
-            
-                #dvd-logo {
+
+                #dvd-logo_42 {
                     width: 120px;
                     display: block;
                     fill: #ffffff;
                 }
-            
-                #dvd-message {
+
+                #dvd-message_42 {
                     position: absolute;
                     top: 50%;
                     right: 100%;
@@ -4358,16 +4358,16 @@
                     transition: opacity 0.3s ease;
                     font-family: 'Press Start 2P', cursive;
                 }
-            
-                #dvd-message.visible {
+
+                #dvd-message_42.visible {
                     opacity: 1;
                 }
-            
-                #dvd-logo-wrapper.escaping {
+
+                #dvd-logo-wrapper_42.escaping {
                     transform: translate(150vw, -150vh) rotate(1080deg) scale(0);
                 }
-            
-                #final-message {
+
+                #final-message_42 {
                     display: none;
                     position: absolute;
                     top: 0;
@@ -4384,8 +4384,8 @@
                     margin: 0 auto;
                     text-align: center;
                 }
-            
-                #final-message h2 {
+
+                #final-message_42 h2 {
                     color: #ff4d4d;
                     font-size: 2.3em;
                     text-align: center;
@@ -4405,10 +4405,10 @@
                 }
             </style>
             <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-            <div id="screensaver-container">
-                <div id="dvd-logo-wrapper">
-                    <p id="dvd-message"></p>
-                    <svg id="dvd-logo" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1058.4 465.84">
+            <div id="screensaver-container_42">
+                <div id="dvd-logo-wrapper_42">
+                    <p id="dvd-message_42"></p>
+                    <svg id="dvd-logo_42" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1058.4 465.84">
                         <g>
                             <path
                                 d="m91.053 0-13.719 57.707 102.28 0.039063h24c65.747 0 105.91 26.44 94.746 73.4-12.147 51.133-69.613 73.4-130.67 73.4h-22.947l29.787-125.45h-102.27l-43.521 183.2h145.05c109.07 0 212.76-57.573 231.01-131.15 3.3467-13.507 2.8806-47.253-5.3594-67.359-0.21299-0.787-0.42594-1.4-1.1855-3-0.293-0.653-0.56012-3.6412 1.1465-4.2812 0.947-0.36 2.7069 1.4944 2.9336 2.041 0.853 2.24 1.5059 3.9062 1.5059 3.9062l92.293 260.6 234.97-265.21 99.535-0.089844h24c65.76 0 106.25 26.44 95.092 73.4-12.147 51.133-69.947 73.4-131 73.4h-22.959l29.799-125.47h-102.27l-43.533 183.21h145.07c109.05 0 213.48-57.4 231-131.15 17.52-73.75-59.107-131.15-168.69-131.15h-216.4s-57.319 67.88-67.959 80.693c-57.12 68.787-67.241 87.226-68.961 91.986 0.24-4.8-1.8138-23.412-26.174-92.959-6.48-18.52-27.359-79.721-27.359-79.721h-389.25zm408.77 324.16c-276.04 0-499.83 31.72-499.83 70.84s223.79 70.84 499.83 70.84c276.04 0 499.83-31.72 499.83-70.84s-223.79-70.84-499.83-70.84zm-18.094 48.627c63.04 0 114.13 10.573 114.13 23.613s-51.095 23.613-114.13 23.613c-63.027 0-114.13-10.573-114.13-23.613s51.106-23.613 114.13-23.613z" />
@@ -4420,28 +4420,28 @@
                     </svg>
                 </div>
             
-                <div id="final-message">
+                <div id="final-message_42">
                     <h2>NICE TRY! Now the screen is saven't</h2>
                 </div>
             </div>
             <script>
-                const container = document.getElementById('screensaver-container');
-                const logoWrapper = document.getElementById('dvd-logo-wrapper');
-                const logo = document.getElementById('dvd-logo');
-                const message = document.getElementById('dvd-message');
-                const finalMessage = document.getElementById('final-message');
+                const container_42 = document.getElementById('screensaver-container_42');
+                const logoWrapper_42 = document.getElementById('dvd-logo-wrapper_42');
+                const logo_42 = document.getElementById('dvd-logo_42');
+                const message_42 = document.getElementById('dvd-message_42');
+                const finalMessage_42 = document.getElementById('final-message_42');
 
-                let x = Math.random() * 50;
-                let y = Math.random() * 50;
-                let baseSpeed = 0.7;
+                let x_42 = Math.random() * 50;
+                let y_42 = Math.random() * 50;
+                let baseSpeed_42 = 0.7;
                 let boostTimeoutId = null;
-                let vx = baseSpeed;
-                let vy = baseSpeed;
-                let hue = 0;
-                let clickCount = 0;
+                let vx_42 = baseSpeed_42;
+                let vy_42 = baseSpeed_42;
+                let hue_42 = 0;
+                let clickCount_42 = 0;
                 let isEscaping = false;
 
-                const messages = [
+                const messages_42 = [
                     "Oh... You see me?",
                     "Hey, don't touch me!😠",
                     "Stop it! 😳",
@@ -4449,83 +4449,90 @@
                     "I'm out of here!😡"
                 ];
 
-                function changeColor() {
-                    hue = (hue + 55) % 360;
-                    logo.style.fill = `hsl(${hue}, 100%, 50%)`;
+                function changeColor_42() {
+                    hue_42 = (hue_42 + 55) % 360;
+                    logo_42.style.fill = `hsl(${hue_42}, 100%, 50%)`;
                 }
 
-                function animate() {
+                function showmsg_42(text) {
+                    message_42.textContent = text;
+                    message_42.classList.add('visible');
+                    setTimeout(() => {
+                        message_42.classList.remove('visible');
+                    }, 3500);
+                }
+
+                function animate_42() {
                     if (isEscaping) return;
-                    const containerWidth = container.clientWidth;
-                    const containerHeight = container.clientHeight;
-                    const logoWidth = logoWrapper.offsetWidth;
-                    const logoHeight = logoWrapper.offsetHeight;
-                    x += vx;
-                    y += vy;
+                    const containerWidth = container_42.clientWidth;
+                    const containerHeight = container_42.clientHeight;
+                    const logoWidth = logoWrapper_42.offsetWidth;
+                    const logoHeight = logoWrapper_42.offsetHeight;
+                    x_42 += vx_42;
+                    y_42 += vy_42;
                     let hitEdge = false;
-                    if (x + logoWidth >= containerWidth) {
-                        vx = -vx;
-                        x = containerWidth - logoWidth;
+                    if (x_42 + logoWidth >= containerWidth) {
+                        vx_42 = -vx_42;
+                        x_42 = containerWidth - logoWidth;
                         hitEdge = true;
-                    } else if (x <= 0) {
-                        vx = -vx;
-                        x = 0;
+                    } else if (x_42 <= 0) {
+                        vx_42 = -vx_42;
+                        x_42 = 0;
                         hitEdge = true;
                     }
-                    if (y + logoHeight >= containerHeight) {
-                        vy = -vy;
-                        y = containerHeight - logoHeight;
+                    if (y_42 + logoHeight >= containerHeight) {
+                        vy_42 = -vy_42;
+                        y_42 = containerHeight - logoHeight;
                         hitEdge = true;
-                    } else if (y <= 0) {
-                        vy = -vy;
-                        y = 0;
+                    } else if (y_42 <= 0) {
+                        vy_42 = -vy_42;
+                        y_42 = 0;
                         hitEdge = true;
                     }
                     if (hitEdge) {
-                        changeColor();
+                        changeColor_42();
                     }
-                    logoWrapper.style.left = `${x}px`;
-                    logoWrapper.style.top = `${y}px`;
-                    requestAnimationFrame(animate);
+                    logoWrapper_42.style.left = `${x_42}px`;
+                    logoWrapper_42.style.top = `${y_42}px`;
+                    requestAnimationFrame(animate_42);
                 }
 
-                logoWrapper.addEventListener('click', () => {
+                logoWrapper_42.addEventListener('click', () => {
                     if (isEscaping) return;
-                    clickCount++;
+                    clickCount_42++;
                     if (boostTimeoutId) {
                         clearTimeout(boostTimeoutId);
                     }
-                    const speedIncrement = 0.4;
+                    const speedIncrement_42 = 0.4;
                     const boostFactor = 2.5;
                     const boostDuration = 1200;
-                    baseSpeed += speedIncrement;
-                    vx = Math.sign(vx) * baseSpeed * boostFactor;
-                    vy = Math.sign(vy) * baseSpeed * boostFactor;
+                    baseSpeed_42 += speedIncrement_42;
+                    vx_42 = Math.sign(vx_42) * baseSpeed_42 * boostFactor;
+                    vy_42 = Math.sign(vy_42) * baseSpeed_42 * boostFactor;
                     boostTimeoutId = setTimeout(() => {
-                        vx = Math.sign(vx) * baseSpeed;
-                        vy = Math.sign(vy) * baseSpeed;
+                        vx_42 = Math.sign(vx_42) * baseSpeed_42;
+                        vy_42 = Math.sign(vy_42) * baseSpeed_42;
                         boostTimeoutId = null;
                     }, boostDuration);
 
-                    if (clickCount === 1) {
-                        message.textContent = messages[0];
-                        message.classList.add('visible');
-                    } else if (clickCount === 2) {
-                        message.textContent = messages[1];
-                    } else if (clickCount === 3) {
-                        message.textContent = messages[2];
-                    } else if (clickCount === 4) {
-                        message.textContent = messages[3];
-                    } else if (clickCount === 5) {
+                    if (clickCount_42 === 1) {
+                        showmsg_42(messages_42[0]);
+                    } else if (clickCount_42 === 2) {
+                        showmsg_42(messages_42[1]);
+                    } else if (clickCount_42 === 3) {
+                        showmsg_42(messages_42[2]);
+                    } else if (clickCount_42 === 4) {
+                        showmsg_42(messages_42[3]);
+                    } else if (clickCount_42 === 5) {
                         if (boostTimeoutId) {
                             clearTimeout(boostTimeoutId);
                         }
                         isEscaping = true;
-                        message.textContent = messages[4];
+                        showmsg_42(messages_42[4]);
                         setTimeout(() => {
-                            logoWrapper.classList.add('escaping');
+                            logoWrapper_42.classList.add('escaping');
                             setTimeout(() => {
-                                logoWrapper.style.display = 'none';
+                                logoWrapper_42.style.display = 'none';
                                 finalMessage.style.display = 'flex';
                             }, 1500);
 
@@ -4533,8 +4540,8 @@
                     }
                 });
 
-                changeColor();
-                animate();
+                changeColor_42();
+                animate_42();
             </script>
         </div>
 
