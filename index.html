@@ -783,8 +783,294 @@
 
     </script>
         </div>
-        </div>
+        <div id="slot4_doom">
+            <style>
+                #slot-4 #slot4_focushint {
+    font-size: 2rem;
+}
 
+#slot-4 .slot4_container {
+    display: flex;
+}
+
+#slot-4 .slot4_big-holder {
+    position: relative;
+    width: 68vw; /* Allow it to resize based on parent/container */
+    height: 41vw; /* Maintain 16:10 aspect ratio */
+}
+
+#slot-4 #slot4_screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.01; /* Hide the canvas */
+}
+
+#slot-4 #slot4_gradientScreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    pointer-events: none; /* Allow clicks to pass through */
+    background-size: 200% 200%; /* Scale the gradient to 640x400 */
+}
+
+/* Media query for screen width less than 700px */
+@media (max-width: 1024px) {
+    #slot-4 .slot4-big-holder {
+        width: 94vw; /* 90% of viewport width */
+        height: calc(94vw * 10 / 16); /* Maintain 16:10 aspect ratio */
+    }
+}
+
+
+            </style>
+        <h1>DooM</h1>
+    <p></p>
+    <p id="slot4_focushint"></p>
+    <p>
+      Use <button tabindex="-1" aria-label="enter" role="presentation">&#x23CE;</button> to start the game, arrow
+      keys <button tabindex="-1" aria-label="left" role="presentation">&#x2190;</button>
+      <button tabindex="-1" aria-label="up" role="presentation">&#x2191;</button>
+      <button tabindex="-1" aria-label="down" role="presentation">&#x2193;</button>
+      <button tabindex="-1" aria-label="right" role="presentation">&#x2192;</button> to move,
+      <button tabindex="-1" aria-label="ctrl" role="presentation">ctrl</button> to shoot, spacebar
+      <button tabindex="-1" aria-label="space" role="presentation">&nbsp;&nbsp;&nbsp;&nbsp;</button> to open gates,
+      <button tabindex="-1" aria-label="alt" role="presentation">alt</button> 
+    </p>
+<p><strong>If you see grey lines across the game window, please adjust the window width </strong></p>
+    <div class="slot4_container">
+      <div class="slot4_big-holder">
+        <div id="slot4_gradientScreen"></div>
+        <canvas id="slot4_screen" tabindex="0">This is where the DooM screen should render.</canvas>
+      </div>
+      <span>&nbsp;</span>
+    </div>
+    <script >
+var slot4_memory = new WebAssembly.Memory({ initial: 108 })
+
+/*stdout and stderr goes here*/
+const slot4_output = document.getElementById("slot4_output")
+
+function slot4_readWasmString(offset, length) {
+  const bytes = new Uint8Array(slot4_memory.buffer, offset, length)
+  return new TextDecoder("utf8").decode(bytes)
+}
+
+function slot4_consoleLogString(offset, length) {
+  const string = slot4_readWasmString(offset, length)
+  console.log('"' + string + '"')
+}
+
+function slot4_appendOutput(style) {
+  return function (offset, length) {}
+}
+
+function slot4_getMilliseconds() {
+  return performance.now()
+}
+
+/*doom is rendered here*/
+const canvas = document.getElementById("slot4_screen")
+const doom_screen_width = 320 * 2
+const doom_screen_height = 200 * 2
+
+function slot4_rgbaToHex(r, g, b) {
+  return (
+    "#" +
+    [r, g, b].map((x) => Math.round(x).toString(16).padStart(2, "0")).join("")
+  )
+}
+
+function slot4_averageBlockColour(data, startX, startY, width, blockSize) {
+  let r = 0, g = 0, b = 0;
+
+  for (let y = startY; y < startY + blockSize; y++) {
+    for (let x = startX; x < startX + blockSize; x++) {
+      const i = (y * width + x) * 4;
+      r += data[i];
+      g += data[i + 1];
+      b += data[i + 2];
+    }
+  }
+
+  const size = blockSize * blockSize;
+  return slot4_rgbaToHex(r / size, g / size, b / size);
+}
+
+function slot4_drawCanvas(ptr) {
+  const doom_screen = new Uint8ClampedArray(
+    slot4_memory.buffer,
+    ptr,
+    doom_screen_width * doom_screen_height * 4
+  )
+
+  const gradientDiv = document.getElementById("slot4_gradientScreen")
+
+  const blockSize = 2 // downsample 2x2 pixels 320x200
+  const scaledWidth = doom_screen_width / blockSize
+  const scaledHeight = doom_screen_height / blockSize
+
+  const layers = []
+  const positions = []
+  const sizes = []
+
+  const vwu = 100 / scaledWidth
+  const vhu = 100 / scaledHeight
+
+  for (let y = 0; y < doom_screen_height; y += blockSize) {
+    let stops = []
+    let prevColor = null
+    let segmentStart = 0
+
+    for (let x = 0; x < doom_screen_width; x += blockSize) {
+      const avgColor = slot4_averageBlockColour(
+        doom_screen,
+        x,
+        y,
+        doom_screen_width,
+        blockSize
+      )
+
+      if (prevColor === null) {
+        prevColor = avgColor
+        segmentStart = x / blockSize
+      } else if (avgColor !== prevColor) {
+        stops.push(
+          `${prevColor} ${segmentStart * vwu}%, ${prevColor} ${
+            (x * vwu) / blockSize
+          }%`
+        )
+        segmentStart = x / blockSize
+        prevColor = avgColor
+      }
+    }
+    stops.push(
+      `${prevColor} ${segmentStart * vwu}%, ${prevColor} ${scaledWidth * vwu}%`
+    )
+
+    layers.push(`linear-gradient(to right, ${stops.join(", ")})`)
+    positions.push(`0px ${(y * vhu * 0.99) / blockSize}%`)
+    sizes.push(`${scaledWidth * vwu}% ${vhu}%`)
+  }
+
+  // Apply layers as CSS background
+  gradientDiv.style.backgroundImage = layers.join(", ")
+  gradientDiv.style.backgroundPosition = positions.join(", ")
+  gradientDiv.style.backgroundSize = sizes.join(", ")
+  gradientDiv.style.backgroundRepeat = "no-repeat"
+}
+
+/*These functions will be available in WebAssembly. We also share the memory to share larger amounts of data with javascript, e.g. strings of the video output.*/
+var importObject = {
+  js: {
+    js_console_log: slot4_appendOutput("log"),
+    js_stdout: slot4_appendOutput("stdout"),
+    js_stderr: slot4_appendOutput("stderr"),
+    js_milliseconds_since_start: slot4_getMilliseconds,
+    js_draw_screen: slot4_drawCanvas,
+  },
+  env: {
+    memory: slot4_memory,
+  },
+}
+
+document.addEventListener("contextmenu", (e) => {
+  
+    e.preventDefault()
+
+})
+
+WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wasm"), importObject).then(
+  (obj) => {
+    obj.instance.exports.main();
+
+    /*input handling*/
+    let doomKeyCode = function (keyCode) {
+      // Doom seems to use mostly the same keycodes, except for the following (maybe I'm missing a few.)
+      switch (keyCode) {
+        case 8:
+          return 127 // KEY_BACKSPACE
+        case 17:
+          return 0x80 + 0x1d // KEY_RCTRL
+        case 18:
+          return 0x80 + 0x38 // KEY_RALT
+        case 37:
+          return 0xac // KEY_LEFTARROW
+        case 38:
+          return 0xad // KEY_UPARROW
+        case 39:
+          return 0xae // KEY_RIGHTARROW
+        case 40:
+          return 0xaf // KEY_DOWNARROW
+        default:
+          if (keyCode >= 65 /*A*/ && keyCode <= 90 /*Z*/) {
+            return keyCode + 32 // ASCII to lower case
+          }
+          if (keyCode >= 112 /*F1*/ && keyCode <= 123 /*F12*/) {
+            return keyCode + 75 // KEY_F1
+          }
+          return keyCode
+      }
+    }
+    let keyDown = function (keyCode) {
+      obj.instance.exports.add_browser_event(0 /*KeyDown*/, keyCode)
+    }
+    let keyUp = function (keyCode) {
+      obj.instance.exports.add_browser_event(1 /*KeyUp*/, keyCode)
+    }
+
+    /*keyboard input*/
+    canvas.addEventListener(
+      "keydown",
+      function (event) {
+        keyDown(doomKeyCode(event.keyCode))
+        event.preventDefault()
+      },
+      false
+    )
+    canvas.addEventListener(
+      "keyup",
+      function (event) {
+        keyUp(doomKeyCode(event.keyCode))
+        event.preventDefault()
+      },
+      false
+    )
+    /*hint that the canvas should have focus to capute keyboard events*/
+    const focushint = document.getElementById("slot4_focushint")
+    const slot4_printFocusInHint = function (e) {
+      focushint.innerText =
+        "Doom focused, if input stops working focus the game again"
+      focushint.style.fontWeight = "normal"
+    }
+    canvas.addEventListener("focusin", slot4_printFocusInHint, false)
+
+    canvas.addEventListener(
+      "focusout",
+      function (e) {
+        focushint.innerText =
+          "Click on the Doom game to capute input and start playing."
+        focushint.style.fontWeight = "bold"
+      },
+      false
+    )
+
+    canvas.focus()
+    slot4_printFocusInHint()
+
+    /*Main game loop*/
+    function slot4_step(timestamp) {
+      obj.instance.exports.doom_loop_step()
+      window.requestAnimationFrame(slot4_step)
+    }
+    window.requestAnimationFrame(slot4_step)
+  }
+).catch(err => {
+  console.error("Failed to load WebAssembly:", err);
+});</script>
+        </div>
+        </div>
         <!-- == SLOT 5 == -->
         <div id="slot-5">
             <h2>
