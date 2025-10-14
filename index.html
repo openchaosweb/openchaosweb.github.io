@@ -6733,5 +6733,76 @@
 
             setupChambers();
         })();</script></div>
+
+        <!-- SLOT 102: Hội Anh Em Sợ Vợ -->
+<div id="slot-069">
+  <style>
+    #slot-069 {
+      font-family: "Comic Sans MS", cursive;
+      text-align: center;
+      background: radial-gradient(circle at top, #fff3e0, #ffe0b2);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      animation: slot69-shake 3s infinite;
+    }
+    #slot-069 h2 {
+      color: #e65100;
+      font-size: 1.8em;
+      margin-bottom: 0.5em;
+    }
+    #slot-069 p {
+      color: #4e342e;
+      font-size: 1.1em;
+      margin: 0.5em 0;
+    }
+    #slot-069 button {
+      background: #ff9800;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 1em;
+    }
+    #slot-069 button:hover {
+      background: #f57c00;
+      transform: scale(1.05);
+    }
+    @keyframes slot69-shake {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(1deg); }
+      50% { transform: rotate(-1deg); }
+      75% { transform: rotate(1deg); }
+    }
+  </style>
+
+  <h2>👨‍🦱 Hội Anh Em Sợ Vợ 😱</h2>
+  <p>“Thà để vợ càm ràm còn hơn bị vợ im lặng...”</p>
+  <p><em>- Triết lý sống của hội -</em></p>
+  <button id="slot69-btn">Tuyên thệ gia nhập</button>
+  <p id="slot69-status"></p>
+
+  <script>
+    const btn69 = document.getElementById("slot69-btn");
+    const status69 = document.getElementById("slot69-status");
+
+    btn69.addEventListener("click", () => {
+      const quotes = [
+        "Em ơi anh sai rồi 😭",
+        "Lỗi tại anh tất cả 😔",
+        "Anh chỉ nghe lời em thôi 🫡",
+        "Hội trưởng phê duyệt: Sợ vợ là đỉnh cao!",
+        "Đàn ông không sợ vợ thì sợ ai? 😎"
+      ];
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      status69.textContent = randomQuote;
+      status69.style.fontWeight = "bold";
+    });
+  </script>
+</div>
+<!-- END SLOT 102 -->
+
     </body>
 </html>
