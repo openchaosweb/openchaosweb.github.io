@@ -5042,7 +5042,789 @@
         <div id="slot-97"></div>
 
         <!-- == SLOT 98 == -->
-        <div id="slot-98"></div>
+        <div id="slot-98">
+            <style>
+                #slot-98 {
+                    width: 100%;
+                    height: 100vh;
+                    position: relative;
+                    background: #000;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    transition: height 0.3s ease;
+                }
+
+                #slot-98.s98-minimized {
+                    height: 50vh;
+                }
+
+                #slot-98.s98-fit-screen {
+                    height: 100vh !important;
+                    position: relative;
+                }
+
+                .s98-galaxy-container {
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                }
+
+                .s98-canvas {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    cursor: grab;
+                }
+
+                .s98-canvas:active {
+                    cursor: grabbing;
+                }
+
+                .s98-canvas.s98-scroll-disabled {
+                    pointer-events: none;
+                }
+
+                #slot-98 {
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .s98-scroll-control {
+                    position: absolute;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 100;
+                    background: rgba(0, 0, 0, 0.8);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    border-radius: 25px;
+                    padding: 10px 15px;
+                    display: none;
+                    align-items: center;
+                    gap: 10px;
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+                }
+
+                .s98-scroll-control.s98-active {
+                    display: flex;
+                }
+
+                .s98-fit-screen-btn {
+                    background: rgba(74, 158, 255, 0.8);
+                    border: none;
+                    border-radius: 20px;
+                    padding: 8px 16px;
+                    color: white;
+                    cursor: pointer;
+                    font-size: 12px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: 'Inter', sans-serif;
+                }
+
+                .s98-fit-screen-btn:hover {
+                    background: rgba(74, 158, 255, 1);
+                    transform: translateY(-1px);
+                }
+
+                .s98-scroll-info {
+                    color: white;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 11px;
+                    opacity: 0.8;
+                }
+
+                .s98-controls {
+                    position: absolute;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 10;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .s98-control-panel {
+                    background: rgba(0, 0, 0, 0.8);
+                    padding: 15px;
+                    border-radius: 10px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    color: white;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 12px;
+                    backdrop-filter: blur(10px);
+                }
+
+                .s98-control-group {
+                    margin-bottom: 10px;
+                }
+
+                .s98-control-group:last-child {
+                    margin-bottom: 0;
+                }
+
+                .s98-control-label {
+                    display: block;
+                    margin-bottom: 5px;
+                    color: #ccc;
+                    font-weight: 500;
+                }
+
+                .s98-slider {
+                    width: 150px;
+                    height: 4px;
+                    background: rgba(255, 255, 255, 0.2);
+                    border-radius: 2px;
+                    outline: none;
+                    -webkit-appearance: none;
+                    appearance: none;
+                }
+
+                .s98-slider::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 16px;
+                    height: 16px;
+                    background: #4a9eff;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    border: 2px solid #fff;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                }
+
+                .s98-slider::-moz-range-thumb {
+                    width: 16px;
+                    height: 16px;
+                    background: #4a9eff;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    border: 2px solid #fff;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                }
+
+                .s98-button {
+                    background: rgba(74, 158, 255, 0.8);
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 6px;
+                    color: white;
+                    cursor: pointer;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 11px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    margin-right: 8px;
+                    margin-bottom: 4px;
+                }
+
+                .s98-button:hover {
+                    background: rgba(74, 158, 255, 1);
+                    transform: translateY(-1px);
+                }
+
+                .s98-button:active {
+                    transform: translateY(0);
+                }
+
+                .s98-info {
+                    position: absolute;
+                    bottom: 20px;
+                    left: 20px;
+                    color: rgba(255, 255, 255, 0.7);
+                    font-family: 'Inter', sans-serif;
+                    font-size: 11px;
+                    line-height: 1.4;
+                    max-width: 300px;
+                }
+
+                .s98-loading {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 14px;
+                    z-index: 5;
+                }
+
+                @media (max-width: 768px) {
+                    .s98-controls {
+                        top: 10px;
+                        left: 10px;
+                    }
+
+                    .s98-control-panel {
+                        padding: 10px;
+                        font-size: 11px;
+                    }
+
+                    .s98-slider {
+                        width: 120px;
+                    }
+
+                    .s98-info {
+                        bottom: 10px;
+                        left: 10px;
+                        font-size: 10px;
+                        max-width: 250px;
+                    }
+                }
+            </style>
+
+            <div class="s98-galaxy-container">
+                <div class="s98-loading" id="s98-loading">Loading Galaxy...</div>
+                <canvas class="s98-canvas" id="s98-canvas"></canvas>
+                
+                <div class="s98-controls">
+                    <div class="s98-control-panel">
+                        <div class="s98-control-group">
+                            <label class="s98-control-label">Orbit Speed: <span id="s98-speed-value">1.0</span></label>
+                            <input type="range" class="s98-slider" id="s98-speed" min="0" max="3" value="1" step="0.1">
+                        </div>
+                        <div class="s98-control-group">
+                            <label class="s98-control-label">Asteroid Belt: <span id="s98-asteroids-count">500</span></label>
+                            <input type="range" class="s98-slider" id="s98-asteroids" min="0" max="2000" value="500" step="100">
+                        </div>
+                        <div class="s98-control-group">
+                            <label class="s98-control-label">Planet Size: <span id="s98-planet-size">1.0</span></label>
+                            <input type="range" class="s98-slider" id="s98-planet-scale" min="0.5" max="3" value="1" step="0.1">
+                        </div>
+                        <div class="s98-control-group">
+                            <label class="s98-control-label">Zoom Level: <span id="s98-zoom-value">100</span></label>
+                            <input type="range" class="s98-slider" id="s98-zoom" min="50" max="300" value="100" step="10">
+                        </div>
+                        <div class="s98-control-group">
+                            <button class="s98-button" id="s98-reset">Reset View</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="s98-info">
+                    <strong>Interactive Solar System</strong><br>
+                    • Drag to rotate the view<br>
+                    • Scroll to zoom in/out<br>
+                    • Watch planets orbit the Sun<br>
+                    • Explore our cosmic neighborhood
+                </div>
+            </div>
+
+            <!-- Scroll Control Panel -->
+            <div class="s98-scroll-control" id="s98-scroll-control">
+                <div class="s98-scroll-info">Solar System</div>
+                <button class="s98-fit-screen-btn" id="s98-fit-screen" title="Fit to Screen">📺 Fit Screen</button>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+            <script>
+                (function() {
+                    // Disable right-click context menu
+                    document.getElementById('slot-98').addEventListener('contextmenu', function(e) {
+                        e.preventDefault();
+                        return false;
+                    });
+
+                    // Solar system parameters
+                    let s98_scene, s98_camera, s98_renderer, s98_solarSystem;
+                    let s98_mouse = { x: 0, y: 0 };
+                    let s98_mousePressed = false;
+                    let s98_autoRotate = true;
+                    let s98_animationSpeed = 1.0;
+                    let s98_planets = [];
+                    let s98_asteroidBelt = null;
+                    let s98_planetScale = 1.0;
+                    let s98_zoomLevel = 100;
+                    let s98_time = 0;
+                    let s98_isMinimized = false;
+                    let s98_scrollControlActive = false;
+                    
+                    // Solar system configuration
+                    let s98_config = {
+                        asteroids: 500,
+                        planetData: [
+                            { name: 'Sun', distance: 0, size: 4, color: 0xFDB813, speed: 0, tilt: 0 },
+                            { name: 'Mercury', distance: 8, size: 0.4, color: 0x8C7853, speed: 4.15, tilt: 0.034 },
+                            { name: 'Venus', distance: 12, size: 0.9, color: 0xFFC649, speed: 1.62, tilt: 177.4 },
+                            { name: 'Earth', distance: 16, size: 1, color: 0x6B93D6, speed: 1, tilt: 23.4 },
+                            { name: 'Mars', distance: 22, size: 0.5, color: 0xC1440E, speed: 0.53, tilt: 25.2 },
+                            { name: 'Jupiter', distance: 35, size: 2.5, color: 0xD8CA9D, speed: 0.084, tilt: 3.1 },
+                            { name: 'Saturn', distance: 45, size: 2.1, color: 0xFAD5A5, speed: 0.034, tilt: 26.7 },
+                            { name: 'Uranus', distance: 55, size: 1.4, color: 0x4FD0E3, speed: 0.012, tilt: 97.8 },
+                            { name: 'Neptune', distance: 65, size: 1.4, color: 0x4B70DD, speed: 0.006, tilt: 28.3 }
+                        ]
+                    };
+
+                    function s98_init() {
+                        const container = document.querySelector('.s98-galaxy-container');
+                        const canvas = document.getElementById('s98-canvas');
+                        const loading = document.getElementById('s98-loading');
+
+                        // Scene setup
+                        s98_scene = new THREE.Scene();
+                        s98_camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                        s98_renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+                        s98_renderer.setSize(container.clientWidth, container.clientHeight);
+                        s98_renderer.setPixelRatio(window.devicePixelRatio);
+
+                        // Camera position - positioned to see the whole solar system
+                        s98_camera.position.set(0, 50, 100);
+                        s98_camera.lookAt(0, 0, 0);
+
+                        // Create solar system
+                        s98_createSolarSystem();
+
+                        // Add lighting
+                        const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+                        s98_scene.add(ambientLight);
+
+                        const sunLight = new THREE.PointLight(0xffffff, 2, 500);
+                        sunLight.position.set(0, 0, 0);
+                        s98_scene.add(sunLight);
+
+                        // Event listeners
+                        s98_setupEventListeners();
+                        s98_setupControls();
+                        s98_setupScrollControl();
+
+                        // Hide loading
+                        loading.style.display = 'none';
+
+                        // Start animation
+                        s98_animate();
+                    }
+
+                    function s98_createSolarSystem() {
+                        // Clear existing solar system
+                        if (s98_solarSystem) {
+                            s98_scene.remove(s98_solarSystem);
+                        }
+                        s98_planets = [];
+
+                        s98_solarSystem = new THREE.Group();
+
+                        // Create planets
+                        s98_config.planetData.forEach((planetData, index) => {
+                            const planet = s98_createPlanet(planetData);
+                            s98_planets.push({
+                                mesh: planet,
+                                data: planetData,
+                                angle: Math.random() * Math.PI * 2 // Random starting position
+                            });
+                            s98_solarSystem.add(planet);
+
+                            // Add orbit ring for planets (not sun)
+                            if (planetData.distance > 0) {
+                                const orbitGeometry = new THREE.RingGeometry(planetData.distance - 0.1, planetData.distance + 0.1, 64);
+                                const orbitMaterial = new THREE.MeshBasicMaterial({
+                                    color: 0x444444,
+                                    transparent: true,
+                                    opacity: 0.1,
+                                    side: THREE.DoubleSide
+                                });
+                                const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+                                orbit.rotation.x = Math.PI / 2;
+                                s98_solarSystem.add(orbit);
+                            }
+                        });
+
+                        // Create asteroid belt
+                        s98_createAsteroidBelt();
+
+                        // Create background stars (only once)
+                        if (s98_scene.children.filter(child => child.type === 'Points' && child !== s98_asteroidBelt).length === 0) {
+                            s98_createStarField();
+                        }
+
+                        s98_scene.add(s98_solarSystem);
+                    }
+
+                    function s98_createPlanet(planetData) {
+                        // Ensure minimum size for visibility, but scale properly
+                        const scaledSize = Math.max(planetData.size * s98_planetScale, 0.1);
+                        const geometry = new THREE.SphereGeometry(scaledSize, 32, 32);
+                        
+                        let material;
+                        if (planetData.name === 'Sun') {
+                            // Sun with emissive glow
+                            material = new THREE.MeshBasicMaterial({
+                                color: planetData.color,
+                                emissive: planetData.color,
+                                emissiveIntensity: 0.3
+                            });
+                        } else if (planetData.name === 'Saturn') {
+                            // Saturn with rings
+                            material = new THREE.MeshLambertMaterial({ color: planetData.color });
+                            const planet = new THREE.Mesh(geometry, material);
+                            
+                            // Add Saturn's rings - scale with planet
+                            const ringGeometry = new THREE.RingGeometry(scaledSize * 1.5, scaledSize * 2.5, 32);
+                            const ringMaterial = new THREE.MeshLambertMaterial({
+                                color: 0xC4B5A0,
+                                transparent: true,
+                                opacity: 0.7,
+                                side: THREE.DoubleSide
+                            });
+                            const rings = new THREE.Mesh(ringGeometry, ringMaterial);
+                            rings.rotation.x = Math.PI / 2;
+                            planet.add(rings);
+                            
+                            return planet;
+                        } else {
+                            material = new THREE.MeshLambertMaterial({ color: planetData.color });
+                        }
+
+                        return new THREE.Mesh(geometry, material);
+                    }
+
+                    function s98_createAsteroidBelt() {
+                        if (s98_asteroidBelt) {
+                            s98_solarSystem.remove(s98_asteroidBelt);
+                        }
+
+                        if (s98_config.asteroids === 0) return;
+
+                        const geometry = new THREE.BufferGeometry();
+                        const positions = new Float32Array(s98_config.asteroids * 3);
+                        const colors = new Float32Array(s98_config.asteroids * 3);
+                        const sizes = new Float32Array(s98_config.asteroids);
+
+                        // Asteroid belt between Mars and Jupiter - more confined distribution
+                        const beltInnerRadius = 25; // Just outside Mars orbit
+                        const beltOuterRadius = 32; // Just inside Jupiter orbit
+                        const beltThickness = 2; // Vertical thickness of the belt
+                        
+                        for (let i = 0; i < s98_config.asteroids; i++) {
+                            const i3 = i * 3;
+                            
+                            // More realistic asteroid belt distribution
+                            const distance = beltInnerRadius + Math.random() * (beltOuterRadius - beltInnerRadius);
+                            const angle = Math.random() * Math.PI * 2;
+                            
+                            // Position asteroids in a more confined belt
+                            positions[i3] = Math.cos(angle) * distance;
+                            positions[i3 + 1] = (Math.random() - 0.5) * beltThickness; // Confined vertically
+                            positions[i3 + 2] = Math.sin(angle) * distance;
+
+                            // Varied gray-brown colors for asteroids
+                            const baseGray = 0.25 + Math.random() * 0.35;
+                            const brownTint = Math.random() * 0.15;
+                            colors[i3] = baseGray + brownTint * 0.3; // Red component
+                            colors[i3 + 1] = baseGray + brownTint * 0.2; // Green component
+                            colors[i3 + 2] = baseGray; // Blue component
+
+                            // Varied sizes for more realism
+                            sizes[i] = Math.random() * 0.15 + 0.03;
+                        }
+
+                        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                        geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+                        const material = new THREE.PointsMaterial({
+                            size: 0.3,
+                            sizeAttenuation: true,
+                            vertexColors: true,
+                            transparent: true,
+                            opacity: 0.9
+                        });
+
+                        s98_asteroidBelt = new THREE.Points(geometry, material);
+                        s98_solarSystem.add(s98_asteroidBelt);
+                    }
+
+                    function s98_createStarField() {
+                        const starsGeometry = new THREE.BufferGeometry();
+                        const starsCount = 2000;
+                        const positions = new Float32Array(starsCount * 3);
+
+                        for (let i = 0; i < starsCount * 3; i += 3) {
+                            positions[i] = (Math.random() - 0.5) * 400;
+                            positions[i + 1] = (Math.random() - 0.5) * 400;
+                            positions[i + 2] = (Math.random() - 0.5) * 400;
+                        }
+
+                        starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+                        const starsMaterial = new THREE.PointsMaterial({
+                            color: 0xffffff,
+                            size: 0.5,
+                            sizeAttenuation: false
+                        });
+
+                        const stars = new THREE.Points(starsGeometry, starsMaterial);
+                        s98_scene.add(stars);
+                    }
+
+                    function s98_setupEventListeners() {
+                        const canvas = document.getElementById('s98-canvas');
+                        
+                        // Mouse events
+                        canvas.addEventListener('mousedown', (e) => {
+                            s98_mousePressed = true;
+                            s98_mouse.x = e.clientX;
+                            s98_mouse.y = e.clientY;
+                        });
+
+                        canvas.addEventListener('mousemove', (e) => {
+                            if (s98_mousePressed) {
+                                const deltaX = e.clientX - s98_mouse.x;
+                                const deltaY = e.clientY - s98_mouse.y;
+                                
+                                s98_solarSystem.rotation.y += deltaX * 0.01;
+                                s98_solarSystem.rotation.x += deltaY * 0.01;
+                                
+                                s98_mouse.x = e.clientX;
+                                s98_mouse.y = e.clientY;
+                            }
+                        });
+
+                        canvas.addEventListener('mouseup', () => {
+                            s98_mousePressed = false;
+                        });
+
+                        // Scroll-to-zoom disabled to allow normal page scrolling
+                        // canvas.addEventListener('wheel', (e) => {
+                        //     // Scroll-to-zoom functionality removed
+                        // });
+
+                        // Touch events for mobile
+                        let s98_lastTouch = null;
+                        
+                        canvas.addEventListener('touchstart', (e) => {
+                            e.preventDefault();
+                            s98_lastTouch = {
+                                x: e.touches[0].clientX,
+                                y: e.touches[0].clientY
+                            };
+                        });
+
+                        canvas.addEventListener('touchmove', (e) => {
+                            e.preventDefault();
+                            if (s98_lastTouch) {
+                                const deltaX = e.touches[0].clientX - s98_lastTouch.x;
+                                const deltaY = e.touches[0].clientY - s98_lastTouch.y;
+                                
+                                s98_solarSystem.rotation.y += deltaX * 0.01;
+                                s98_solarSystem.rotation.x += deltaY * 0.01;
+                                
+                                s98_lastTouch = {
+                                    x: e.touches[0].clientX,
+                                    y: e.touches[0].clientY
+                                };
+                            }
+                        });
+
+                        canvas.addEventListener('touchend', () => {
+                            s98_lastTouch = null;
+                        });
+
+                        // Window resize
+                        window.addEventListener('resize', s98_onWindowResize);
+
+                        // Scroll detection for viewport visibility
+                        const slot98Element = document.getElementById('slot-98');
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                const visibilityRatio = entry.intersectionRatio;
+                                s98_handleViewportChange(visibilityRatio);
+                            });
+                        }, {
+                            threshold: [0, 0.1, 0.5, 0.9, 1.0]
+                        });
+                        observer.observe(slot98Element);
+                    }
+
+                    function s98_handleViewportChange(visibilityRatio) {
+                        const slot98Element = document.getElementById('slot-98');
+                        const canvas = document.getElementById('s98-canvas');
+                        const scrollControl = document.getElementById('s98-scroll-control');
+                        
+                        if (visibilityRatio > 0.5) {
+                            // More than 50% visible - enable scroll control
+                            s98_scrollControlActive = true;
+                            scrollControl.classList.add('s98-active');
+                            canvas.classList.remove('s98-scroll-disabled');
+                        } else if (visibilityRatio > 0.1) {
+                            // Partially visible - show fit screen option
+                            s98_scrollControlActive = false;
+                            scrollControl.classList.add('s98-active');
+                            canvas.classList.add('s98-scroll-disabled');
+                        } else {
+                            // Not visible - hide controls
+                            s98_scrollControlActive = false;
+                            scrollControl.classList.remove('s98-active');
+                            canvas.classList.add('s98-scroll-disabled');
+                        }
+                    }
+
+                    function s98_setupScrollControl() {
+                        const fitScreenBtn = document.getElementById('s98-fit-screen');
+                        const slot98Element = document.getElementById('slot-98');
+
+                        // Fit to screen button
+                        fitScreenBtn.addEventListener('click', () => {
+                            // Scroll the solar system section into view to fit the screen
+                            slot98Element.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                            
+                            // Set height to fit screen if not already
+                            if (!slot98Element.classList.contains('s98-fit-screen')) {
+                                slot98Element.style.height = '100vh';
+                                slot98Element.classList.add('s98-fit-screen');
+                                
+                                // Trigger resize to adjust canvas
+                                setTimeout(() => {
+                                    s98_onWindowResize();
+                                }, 300);
+                            }
+                        });
+                    }
+
+                    function s98_updateCameraZoom() {
+                        // Calculate zoom based on percentage (100% = default distance)
+                        const baseDistance = 100; // Base camera distance
+                        const zoomFactor = s98_zoomLevel / 100;
+                        const targetDistance = baseDistance / zoomFactor;
+                        
+                        // Maintain camera direction but adjust distance
+                        const direction = s98_camera.position.clone().normalize();
+                        s98_camera.position.copy(direction.multiplyScalar(targetDistance));
+                    }
+
+                    function s98_setupControls() {
+                        // Speed control
+                        const speedSlider = document.getElementById('s98-speed');
+                        const speedValue = document.getElementById('s98-speed-value');
+                        
+                        speedSlider.addEventListener('input', (e) => {
+                            s98_animationSpeed = parseFloat(e.target.value);
+                            speedValue.textContent = s98_animationSpeed.toFixed(1);
+                        });
+
+                        // Asteroids control
+                        const asteroidsSlider = document.getElementById('s98-asteroids');
+                        const asteroidsCount = document.getElementById('s98-asteroids-count');
+                        
+                        asteroidsSlider.addEventListener('input', (e) => {
+                            s98_config.asteroids = parseInt(e.target.value);
+                            asteroidsCount.textContent = s98_config.asteroids;
+                            s98_createAsteroidBelt();
+                        });
+
+                        // Planet size control - fixed to properly update planets
+                        const planetScaleSlider = document.getElementById('s98-planet-scale');
+                        const planetSizeValue = document.getElementById('s98-planet-size');
+                        
+                        planetScaleSlider.addEventListener('input', (e) => {
+                            s98_planetScale = parseFloat(e.target.value);
+                            planetSizeValue.textContent = s98_planetScale.toFixed(1);
+                            
+                            // Update existing planets instead of recreating everything
+                            s98_planets.forEach((planetObj) => {
+                                const scaledSize = Math.max(planetObj.data.size * s98_planetScale, 0.1);
+                                planetObj.mesh.geometry.dispose();
+                                planetObj.mesh.geometry = new THREE.SphereGeometry(scaledSize, 32, 32);
+                                
+                                // Update Saturn's rings if applicable
+                                if (planetObj.data.name === 'Saturn') {
+                                    const rings = planetObj.mesh.children.find(child => child.geometry.type === 'RingGeometry');
+                                    if (rings) {
+                                        rings.geometry.dispose();
+                                        rings.geometry = new THREE.RingGeometry(scaledSize * 1.5, scaledSize * 2.5, 32);
+                                    }
+                                }
+                            });
+                        });
+
+                        // Zoom control
+                        const zoomSlider = document.getElementById('s98-zoom');
+                        const zoomValue = document.getElementById('s98-zoom-value');
+                        
+                        zoomSlider.addEventListener('input', (e) => {
+                            s98_zoomLevel = parseInt(e.target.value);
+                            zoomValue.textContent = s98_zoomLevel;
+                            s98_updateCameraZoom();
+                        });
+
+                        // Reset button
+                        document.getElementById('s98-reset').addEventListener('click', () => {
+                            s98_camera.position.set(0, 50, 100);
+                            s98_camera.lookAt(0, 0, 0);
+                            s98_solarSystem.rotation.set(0, 0, 0);
+                            
+                            // Reset zoom level
+                            s98_zoomLevel = 100;
+                            zoomSlider.value = 100;
+                            zoomValue.textContent = '100';
+                        });
+                    }
+
+                    function s98_onWindowResize() {
+                        const container = document.querySelector('.s98-galaxy-container');
+                        s98_camera.aspect = container.clientWidth / container.clientHeight;
+                        s98_camera.updateProjectionMatrix();
+                        s98_renderer.setSize(container.clientWidth, container.clientHeight);
+                    }
+
+                    function s98_animate() {
+                        requestAnimationFrame(s98_animate);
+
+                        s98_time += 0.01 * s98_animationSpeed;
+
+                        // Animate planets orbiting
+                        s98_planets.forEach((planet, index) => {
+                            if (planet.data.distance > 0) { // Don't move the sun
+                                planet.angle += planet.data.speed * 0.01 * s98_animationSpeed;
+                                
+                                planet.mesh.position.x = Math.cos(planet.angle) * planet.data.distance;
+                                planet.mesh.position.z = Math.sin(planet.angle) * planet.data.distance;
+                                
+                                // Planet rotation
+                                planet.mesh.rotation.y += 0.02 * s98_animationSpeed;
+                                
+                                // Apply axial tilt
+                                planet.mesh.rotation.z = THREE.MathUtils.degToRad(planet.data.tilt);
+                            } else {
+                                // Sun rotation
+                                planet.mesh.rotation.y += 0.005 * s98_animationSpeed;
+                            }
+                        });
+
+                        // Rotate asteroid belt slowly
+                        if (s98_asteroidBelt) {
+                            s98_asteroidBelt.rotation.y += 0.002 * s98_animationSpeed;
+                        }
+
+                        // Auto rotate view if enabled
+                        if (s98_autoRotate) {
+                            s98_solarSystem.rotation.y += 0.002 * s98_animationSpeed;
+                        }
+
+                        s98_renderer.render(s98_scene, s98_camera);
+                    }
+
+                    // Initialize when Three.js is loaded
+                    function s98_checkThreeJS() {
+                        if (typeof THREE !== 'undefined') {
+                            s98_init();
+                        } else {
+                            setTimeout(s98_checkThreeJS, 100);
+                        }
+                    }
+
+                    s98_checkThreeJS();
+                })();
+            </script>
+        </div>
 
         <!-- == SLOT 99 == -->
         <div id="slot-99">
