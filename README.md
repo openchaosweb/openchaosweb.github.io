@@ -72,7 +72,7 @@ JS được phép, nhưng **đừng phá trình duyệt** người khác.
 
 * Xem cộng đồng tạo ra một trang web **ngẫu nhiên, điên rồ** nhưng **đẹp** đến mức nào.
 * Thử nghiệm xem một dự án **không có quản lý** sẽ **tiến hóa** ra sao.
-* **vui là chính**. 🎉
+* **Vui là chính**. 🎉
 
 ***
 
