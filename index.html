@@ -14,16 +14,14 @@
             <h1 class="neon-text">Welcome to OpenChaosWeb</h1>
         </div>
         <style>
-            h1 {
+            h1.neon-text {
                 font-family: "Nunito", sans-serif;
-            }
-            .neon-text {
-                font-size: 4rem;
+                font-size: 1.25rem;
+                text-align: center;
                 color: #fff;
                 text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e, 0 0 40px #ff005e, 0 0 80px #ff005e;
                 animation: glow 1.5s infinite alternate;
             }
-
             @keyframes glow {
                 0% {
                     text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e, 0 0 40px #ff005e, 0 0 80px #ff005e;
@@ -32,14 +30,115 @@
                     text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 40px #00d4ff, 0 0 80px #00d4ff, 0 0 160px #00d4ff;
                 }
             }
+
+            @media (min-width:320px) { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ }
+            @media (min-width:480px) { /* smartphones, Android phones, landscape iPhone */ }
+            @media (min-width:600px) { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+            h1.neon-text {
+                 font-size: 4rem;
+            }
+
+            }
+            @media (min-width:801px) { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+            @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
+            @media (min-width:1281px) { /* hi-res laptops and desktops */ }
+
         </style>
-        <h3>The world’s most unpredictable homepage</h3>
+        <h3 id= "sub_title">The world’s most unpredictable homepage</h3>
         <style>
-            h3 {
+            #sub_title {
                 font-family: "Nunito", sans-serif;
                 font-size: 0.85rem;
                 font-weight: 500;
+                text-align: center;
+                position: fixed;
+                width: 150px;
+                height: 150px;
+                bottom: 10px;
+                color: #f8f6f1;
+                padding-top: 50px;
+                padding-left: 20px;
+                background-color: #ff4282;
+                left: 10px;
+                border: 2px dotted #ffc107;
+                outline: 2px dashed #ffc107;
+                outline-offset: 6px;
+                border-top-right-radius: 50%;
+                border-bottom-left-radius: 50%;
+                animation: scale 3s infinite;
+                font-family: 'Viaoda Libre', cursive;
+                font-size: 18px;
+                font-weight: bold;
+                z-index: 1000;
             }
+
+            @keyframes scale {
+              0% {
+                transform: scale(1);
+                outline: 3px dashed #ffc107;
+              }
+
+              50% {
+                transform: scale(1.051);
+                outline: 6px dashed #f2ac46;
+              }
+
+              100% {
+                transform: scale(1);
+                outline: 2px dashed #ffc107;
+              }
+            }
+
+            #sub_title:before {
+                 content: "";
+                 background-color: blue;
+                 position: absolute;
+                 background-color: bisque;
+                 width: 50px;
+                 height: 50px;
+                 left: 103px;
+                 top: -7px;
+                 /* z-index: -5; */
+                 border-top-right-radius: 50%;
+                 border-bottom-left-radius: 50%;
+                 animation: rotating 4s infinite;
+               }
+
+               @keyframes rotating {
+                 0% {
+                   transform: rotate(0deg);
+                 }
+
+                 100% {
+                   transform: rotate(3600deg);
+                 }
+
+               }
+
+               #sub_title:after {
+                 content: "";
+                 background-color: blue;
+                 position: absolute;
+                 background-color: bisque;
+                 width: 50px;
+                 height: 50px;
+                 left: -8px;
+                 top: 104px;
+                 border-top-right-radius: 50%;
+                 border-bottom-left-radius: 50%;
+                 animation: rotatingreverse 3s alternate infinite;
+               }
+
+               @keyframes rotatingreverse {
+                 0% {
+                   transform: rotate(0deg);
+                 }
+
+                 100% {
+                   transform: rotate(3600deg);
+                 }
+
+               }
         </style>
 
         <!-- == SLOT 1 == -->
@@ -2327,7 +2426,7 @@
         <!-- == SLOT 10 == -->
         <div id="slot-10">
             <h1>hehehehe</h1>
-            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzI3b2lqaW1mZnY3d3QwcTY5MGpnaTdxanl4NnFkYnpvM3BndWZteSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lJNoBCvQYp7nq/giphy.gif" alt="Description of GIF" />            
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzI3b2lqaW1mZnY3d3QwcTY5MGpnaTdxanl4NnFkYnpvM3BndWZteSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lJNoBCvQYp7nq/giphy.gif" alt="Description of GIF" />
         </div>
 
         <!-- == SLOT 11 == -->
@@ -4644,13 +4743,13 @@
                     cursor: pointer;
                     transition: transform 1.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
                 }
-            
+
                 #dvd-logo {
                     width: 120px;
                     display: block;
                     fill: #ffffff;
                 }
-            
+
                 #dvd-message {
                     position: absolute;
                     top: 50%;
@@ -4669,15 +4768,15 @@
                     transition: opacity 0.3s ease;
                     font-family: 'Press Start 2P', cursive;
                 }
-            
+
                 #dvd-message.visible {
                     opacity: 1;
                 }
-            
+
                 #dvd-logo-wrapper.escaping {
                     transform: translate(150vw, -150vh) rotate(1080deg) scale(0);
                 }
-            
+
                 #final-message {
                     display: none;
                     position: absolute;
@@ -4695,7 +4794,7 @@
                     margin: 0 auto;
                     text-align: center;
                 }
-            
+
                 #final-message h2 {
                     color: #ff4d4d;
                     font-size: 2.3em;
@@ -4703,7 +4802,7 @@
                     line-height: 1.4;
                     animation: fadeIn 1s ease-in;
                 }
-            
+
                 @keyframes fadeIn {
                     from {
                         opacity: 0;
@@ -4730,7 +4829,7 @@
                         <script xmlns="" />
                     </svg>
                 </div>
-            
+
                 <div id="final-message">
                     <h2>NICE TRY! Now the screen is saven't</h2>
                 </div>
@@ -5897,7 +5996,7 @@
             <div class="s98-galaxy-container">
                 <div class="s98-loading" id="s98-loading">Loading Galaxy...</div>
                 <canvas class="s98-canvas" id="s98-canvas"></canvas>
-                
+
                 <div class="s98-controls">
                     <div class="s98-control-panel">
                         <div class="s98-control-group">
@@ -5959,7 +6058,7 @@
                     let s98_time = 0;
                     let s98_isMinimized = false;
                     let s98_scrollControlActive = false;
-                    
+
                     // Solar system configuration
                     let s98_config = {
                         asteroids: 500,
@@ -6064,7 +6163,7 @@
                         // Ensure minimum size for visibility, but scale properly
                         const scaledSize = Math.max(planetData.size * s98_planetScale, 0.1);
                         const geometry = new THREE.SphereGeometry(scaledSize, 32, 32);
-                        
+
                         let material;
                         if (planetData.name === 'Sun') {
                             // Sun with emissive glow
@@ -6077,7 +6176,7 @@
                             // Saturn with rings
                             material = new THREE.MeshLambertMaterial({ color: planetData.color });
                             const planet = new THREE.Mesh(geometry, material);
-                            
+
                             // Add Saturn's rings - scale with planet
                             const ringGeometry = new THREE.RingGeometry(scaledSize * 1.5, scaledSize * 2.5, 32);
                             const ringMaterial = new THREE.MeshLambertMaterial({
@@ -6089,7 +6188,7 @@
                             const rings = new THREE.Mesh(ringGeometry, ringMaterial);
                             rings.rotation.x = Math.PI / 2;
                             planet.add(rings);
-                            
+
                             return planet;
                         } else {
                             material = new THREE.MeshLambertMaterial({ color: planetData.color });
@@ -6114,14 +6213,14 @@
                         const beltInnerRadius = 25; // Just outside Mars orbit
                         const beltOuterRadius = 32; // Just inside Jupiter orbit
                         const beltThickness = 2; // Vertical thickness of the belt
-                        
+
                         for (let i = 0; i < s98_config.asteroids; i++) {
                             const i3 = i * 3;
-                            
+
                             // More realistic asteroid belt distribution
                             const distance = beltInnerRadius + Math.random() * (beltOuterRadius - beltInnerRadius);
                             const angle = Math.random() * Math.PI * 2;
-                            
+
                             // Position asteroids in a more confined belt
                             positions[i3] = Math.cos(angle) * distance;
                             positions[i3 + 1] = (Math.random() - 0.5) * beltThickness; // Confined vertically
@@ -6179,7 +6278,7 @@
 
                     function s98_setupEventListeners() {
                         const canvas = document.getElementById('s98-canvas');
-                        
+
                         // Mouse events
                         canvas.addEventListener('mousedown', (e) => {
                             s98_mousePressed = true;
@@ -6191,10 +6290,10 @@
                             if (s98_mousePressed) {
                                 const deltaX = e.clientX - s98_mouse.x;
                                 const deltaY = e.clientY - s98_mouse.y;
-                                
+
                                 s98_solarSystem.rotation.y += deltaX * 0.01;
                                 s98_solarSystem.rotation.x += deltaY * 0.01;
-                                
+
                                 s98_mouse.x = e.clientX;
                                 s98_mouse.y = e.clientY;
                             }
@@ -6211,7 +6310,7 @@
 
                         // Touch events for mobile
                         let s98_lastTouch = null;
-                        
+
                         canvas.addEventListener('touchstart', (e) => {
                             e.preventDefault();
                             s98_lastTouch = {
@@ -6225,10 +6324,10 @@
                             if (s98_lastTouch) {
                                 const deltaX = e.touches[0].clientX - s98_lastTouch.x;
                                 const deltaY = e.touches[0].clientY - s98_lastTouch.y;
-                                
+
                                 s98_solarSystem.rotation.y += deltaX * 0.01;
                                 s98_solarSystem.rotation.x += deltaY * 0.01;
-                                
+
                                 s98_lastTouch = {
                                     x: e.touches[0].clientX,
                                     y: e.touches[0].clientY
@@ -6260,7 +6359,7 @@
                         const slot98Element = document.getElementById('slot-98');
                         const canvas = document.getElementById('s98-canvas');
                         const scrollControl = document.getElementById('s98-scroll-control');
-                        
+
                         if (visibilityRatio > 0.5) {
                             // More than 50% visible - enable scroll control
                             s98_scrollControlActive = true;
@@ -6290,12 +6389,12 @@
                                 behavior: 'smooth',
                                 block: 'start'
                             });
-                            
+
                             // Set height to fit screen if not already
                             if (!slot98Element.classList.contains('s98-fit-screen')) {
                                 slot98Element.style.height = '100vh';
                                 slot98Element.classList.add('s98-fit-screen');
-                                
+
                                 // Trigger resize to adjust canvas
                                 setTimeout(() => {
                                     s98_onWindowResize();
@@ -6309,7 +6408,7 @@
                         const baseDistance = 100; // Base camera distance
                         const zoomFactor = s98_zoomLevel / 100;
                         const targetDistance = baseDistance / zoomFactor;
-                        
+
                         // Maintain camera direction but adjust distance
                         const direction = s98_camera.position.clone().normalize();
                         s98_camera.position.copy(direction.multiplyScalar(targetDistance));
@@ -6319,7 +6418,7 @@
                         // Speed control
                         const speedSlider = document.getElementById('s98-speed');
                         const speedValue = document.getElementById('s98-speed-value');
-                        
+
                         speedSlider.addEventListener('input', (e) => {
                             s98_animationSpeed = parseFloat(e.target.value);
                             speedValue.textContent = s98_animationSpeed.toFixed(1);
@@ -6328,7 +6427,7 @@
                         // Asteroids control
                         const asteroidsSlider = document.getElementById('s98-asteroids');
                         const asteroidsCount = document.getElementById('s98-asteroids-count');
-                        
+
                         asteroidsSlider.addEventListener('input', (e) => {
                             s98_config.asteroids = parseInt(e.target.value);
                             asteroidsCount.textContent = s98_config.asteroids;
@@ -6338,17 +6437,17 @@
                         // Planet size control - fixed to properly update planets
                         const planetScaleSlider = document.getElementById('s98-planet-scale');
                         const planetSizeValue = document.getElementById('s98-planet-size');
-                        
+
                         planetScaleSlider.addEventListener('input', (e) => {
                             s98_planetScale = parseFloat(e.target.value);
                             planetSizeValue.textContent = s98_planetScale.toFixed(1);
-                            
+
                             // Update existing planets instead of recreating everything
                             s98_planets.forEach((planetObj) => {
                                 const scaledSize = Math.max(planetObj.data.size * s98_planetScale, 0.1);
                                 planetObj.mesh.geometry.dispose();
                                 planetObj.mesh.geometry = new THREE.SphereGeometry(scaledSize, 32, 32);
-                                
+
                                 // Update Saturn's rings if applicable
                                 if (planetObj.data.name === 'Saturn') {
                                     const rings = planetObj.mesh.children.find(child => child.geometry.type === 'RingGeometry');
@@ -6363,7 +6462,7 @@
                         // Zoom control
                         const zoomSlider = document.getElementById('s98-zoom');
                         const zoomValue = document.getElementById('s98-zoom-value');
-                        
+
                         zoomSlider.addEventListener('input', (e) => {
                             s98_zoomLevel = parseInt(e.target.value);
                             zoomValue.textContent = s98_zoomLevel;
@@ -6375,7 +6474,7 @@
                             s98_camera.position.set(0, 50, 100);
                             s98_camera.lookAt(0, 0, 0);
                             s98_solarSystem.rotation.set(0, 0, 0);
-                            
+
                             // Reset zoom level
                             s98_zoomLevel = 100;
                             zoomSlider.value = 100;
@@ -6399,13 +6498,13 @@
                         s98_planets.forEach((planet, index) => {
                             if (planet.data.distance > 0) { // Don't move the sun
                                 planet.angle += planet.data.speed * 0.01 * s98_animationSpeed;
-                                
+
                                 planet.mesh.position.x = Math.cos(planet.angle) * planet.data.distance;
                                 planet.mesh.position.z = Math.sin(planet.angle) * planet.data.distance;
-                                
+
                                 // Planet rotation
                                 planet.mesh.rotation.y += 0.02 * s98_animationSpeed;
-                                
+
                                 // Apply axial tilt
                                 planet.mesh.rotation.z = THREE.MathUtils.degToRad(planet.data.tilt);
                             } else {
