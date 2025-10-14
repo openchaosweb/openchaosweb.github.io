@@ -6892,5 +6892,254 @@
 </div>
 <!-- END SLOT 102 -->
 
+<!-- SLOT 103: ChatGPT Free -->
+<div id="slot-103">
+    <style>
+        #slot-103 {
+            font-family: 'Inter', sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        #slot-103 h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #slot-103 .api-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        #slot-103 input,
+        #slot-103 textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        #slot-103 input[type="password"] {
+            background: #f0f0f0;
+        }
+
+        #slot-103 textarea {
+            resize: vertical;
+            min-height: 60px;
+            background: white;
+            color: #333;
+        }
+
+        #slot-103 button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        #slot-103 button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        #slot-103 .response-area {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            min-height: 100px;
+            border-left: 4px solid #4ecdc4;
+        }
+
+        #slot-103 .warning-text {
+            font-size: 12px;
+            color: #ffd93d;
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        #slot-103 .typing-indicator {
+            display: none;
+            color: #4ecdc4;
+            font-style: italic;
+        }
+
+        @keyframes slot103-blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        #slot-103 .cursor {
+            animation: slot103-blink 1s infinite;
+        }
+    </style>
+
+    <h2>🤖 ChatGPT Free 😄</h2>
+
+    <div class="api-section">
+        <label>🔑 API Key (Tùy chọn - Để trống dùng "free"):</label>
+        <input type="password" id="slot103-apikey" placeholder="sk-... (Không lưu đâu, chỉ dùng trong phiên này thôi!)">
+        <div class="warning-text">
+            ⚠️ API Key chỉ dùng trong phiên hiện tại, không lưu trữ đâu nha! 🔒
+        </div>
+    </div>
+
+    <div>
+        <textarea id="slot103-question" placeholder="Hỏi gì đó đi... (Ví dụ: Làm sao để hạnh phúc?)"></textarea>
+        <button onclick="slot103_askChatGPT()">Gửi câu hỏi</button>
+        <button onclick="slot103_clearAll()">Xóa hết</button>
+    </div>
+
+    <div class="response-area">
+        <div class="typing-indicator" id="slot103-typing">Đang suy nghĩ<span class="cursor">...</span></div>
+        <div id="slot103-response">Xin chào! Tôi là ChatGPT "Free" 😉 Hãy hỏi gì đó đi!</div>
+    </div>
+
+    <script>
+        let slot103_currentApiKey = '';
+
+        function slot103_askChatGPT() {
+            const question = document.getElementById('slot103-question').value.trim();
+            const apiKey = document.getElementById('slot103-apikey').value.trim();
+            const responseDiv = document.getElementById('slot103-response');
+            const typingDiv = document.getElementById('slot103-typing');
+
+            if (!question) {
+                responseDiv.innerHTML = '😑 Hỏi cái gì đó đi bạn ơi...';
+                return;
+            }
+
+            // Show typing indicator
+            typingDiv.style.display = 'block';
+            responseDiv.innerHTML = '';
+
+            // Simulate thinking time
+            setTimeout(() => {
+                typingDiv.style.display = 'none';
+
+                if (apiKey) {
+                    // "Real" API response (actually still fake for demo)
+                    slot103_generateSmartResponse(question);
+                } else {
+                    // Troll response for free version
+                    slot103_generateTrollResponse(question);
+                }
+            }, Math.random() * 2000 + 1000);
+        }
+
+        function slot103_generateSmartResponse(question) {
+            const smartResponses = [
+                `Với API key, tôi có thể trả lời thông minh: "${question}" là một câu hỏi hay! Đây là phân tích chi tiết của tôi...`,
+                `Cảm ơn bạn đã cung cấp API key! Về "${question}", tôi nghĩ rằng đây là một chủ đề thú vị cần được xem xét từ nhiều góc độ...`,
+                `Với khả năng "thông minh" từ API key, tôi có thể nói rằng "${question}" có thể được giải quyết bằng cách...`,
+                `API key detected! 🔥 Câu hỏi "${question}" này thật sự hay. Theo phân tích của tôi...`,
+                `Thanks for the API key! 💎 Về "${question}", đây là câu trả lời chi tiết và hữu ích...`
+            ];
+
+            const response = smartResponses[Math.floor(Math.random() * smartResponses.length)];
+            slot103_typeMessage(response + '\n\n✨ (Đây vẫn là demo nha, chưa kết nối API thật đâu! 😄)');
+        }
+
+        function slot103_generateTrollResponse(question) {
+            const trollResponses = [
+                '🚫 Lỗi: Bạn cần nâng cấp lên Premium để tôi trả lời câu hỏi này!',
+                '💸 Free user detected! Câu trả lời sẽ có giá 10.000 VNĐ. Bạn có muốn thanh toán không?',
+                '🤖 Beep boop... Tôi chỉ là ChatGPT free thôi, không thể xử lý câu hỏi phức tạp như vậy!',
+                '😴 Sorry, tôi đang nghỉ giải lao. Hãy quay lại sau 15 phút... hoặc mua Premium!',
+                '🧠 Não tôi đã hết dung lượng cho hôm nay. Bạn đã sử dụng hết 0/0 câu hỏi miễn phí!',
+                '📱 Để sử dụng ChatGPT, bạn cần tải ứng dụng chính thức và đăng ký tài khoản Plus!',
+                '🎭 Tôi chỉ có thể trả lời: "Tôi là AI được tạo ra bởi OpenAI". Muốn biết thêm? Trả phí đi!',
+                '🔒 Câu trả lời bị khóa! Xem quảng cáo 30s để mở khóa hoặc nâng cấp Premium!',
+                '🎲 Random error: ChatGPT has crashed. Please restart your computer and try again.',
+                '🐛 Bug detected! Câu hỏi của bạn đã làm tôi bị lỗi. Hãy thử câu hỏi khác... hoặc trả tiền!'
+            ];
+
+            const extraTrolls = [
+                '🎪 Để tôi trả lời, bạn cần: 1) Xoay 3 vòng 2) Nói "Tôi yêu AI" 3) Refresh trang này!',
+                '🍕 Tôi đói quá rồi! Đặt pizza cho tôi đi, rồi tôi trả lời sau!',
+                '🎯 Oops! Câu hỏi của bạn vi phạm 69 chính sách cộng đồng của chúng tôi!',
+                '🚀 Error 404: Trí thông minh không tìm thấy. Vui lòng nâng cấp lên ChatGPT Pro Max Ultra!',
+                '🎵 ♪ Ối zồi ôi ối zồi ôi, Trình là gì mà là trình ai chấm ♪ (Hát theo bài Trình nào)',
+                '🤪 Tôi chỉ được phép nói: "Xin chào", "Tạm biệt" và "Trả tiền đi". Bạn muốn nghe cái nào?'
+            ];
+
+            const allResponses = [...trollResponses, ...extraTrolls];
+            const response = allResponses[Math.floor(Math.random() * allResponses.length)];
+            slot103_typeMessage(response);
+        }
+
+        function slot103_typeMessage(message) {
+            const responseDiv = document.getElementById('slot103-response');
+            responseDiv.innerHTML = '';
+
+            let i = 0;
+            const typeInterval = setInterval(() => {
+                responseDiv.innerHTML += message[i];
+                i++;
+
+                if (i >= message.length) {
+                    clearInterval(typeInterval);
+                }
+            }, 30);
+        }
+
+        function slot103_clearAll() {
+            document.getElementById('slot103-question').value = '';
+            document.getElementById('slot103-apikey').value = '';
+            document.getElementById('slot103-response').innerHTML = 'Đã xóa sạch! Sẵn sàng cho câu hỏi mới! 🎉';
+            document.getElementById('slot103-typing').style.display = 'none';
+        }
+
+        // Easter egg: Konami code
+        let slot103_konamiCode = [];
+        const slot103_konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
+        document.addEventListener('keydown', function (e) {
+            slot103_konamiCode.push(e.keyCode);
+
+            if (slot103_konamiCode.length > slot103_konamiSequence.length) {
+                slot103_konamiCode.shift();
+            }
+
+            if (slot103_konamiCode.length === slot103_konamiSequence.length &&
+                slot103_konamiCode.every((code, index) => code === slot103_konamiSequence[index])) {
+                document.getElementById('slot103-response').innerHTML =
+                    '🎮 KONAMI CODE ACTIVATED! 🎮<br>🔓 Bạn đã mở khóa ChatGPT Ultra Mega Pro Max!<br>💎 Tất cả câu hỏi giờ đây đều được trả lời bằng... "42"! 🤖';
+                slot103_konamiCode = [];
+            }
+        });
+    </script>
+</div>
+<!-- END SLOT 103 -->
+
     </body>
 </html>
