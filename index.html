@@ -10,13 +10,27 @@
         />
     </head>
     <body>
-        <h1>Welcome to OpenChaosWeb</h1>
-        <!--
-            Each element should have its own <style> tag right ?
-        -->
+        <div class="neon-container">
+            <h1 class="neon-text">Welcome to OpenChaosWeb</h1>
+        </div>
         <style>
             h1 {
                 font-family: "Nunito", sans-serif;
+            }
+            .neon-text {
+                font-size: 4rem;
+                color: #fff;
+                text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e, 0 0 40px #ff005e, 0 0 80px #ff005e;
+                animation: glow 1.5s infinite alternate;
+            }
+
+            @keyframes glow {
+                0% {
+                    text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e, 0 0 40px #ff005e, 0 0 80px #ff005e;
+                }
+                100% {
+                    text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 40px #00d4ff, 0 0 80px #00d4ff, 0 0 160px #00d4ff;
+                }
             }
         </style>
         <h3>The world’s most unpredictable homepage</h3>
