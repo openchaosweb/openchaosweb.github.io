@@ -5474,70 +5474,149 @@
 
         <!-- == SLOT 88 == -->
         <div id="slot-88">
-
-            <h3>Bitcoin sập buồn quá để giá cho anh em theo dõi</h3>
             <style>
                 #slot-88 {
-                background: #222;
-                color: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                text-align: center;
-                font-family: "Nunito", sans-serif;
-                border: 1px solid #f7931a; /* Bitcoin Orange */
-                box-shadow: 0 4px 15px rgba(247, 147, 26, 0.2);
+                    background: #0d0d0d;
+                    color: #00ff41;
+                    padding: 2rem;
+                    border-radius: 15px;
+                    font-family: 'Courier New', monospace;
+                    text-align: center;
+                    border: 2px solid #333;
+                    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2), inset 0 0 15px rgba(0, 255, 65, 0.1);
+                    position: relative;
+                    overflow: hidden;
+                }
+                #slot-88::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: repeating-linear-gradient(0deg, rgba(0, 255, 65, 0.05) 0, rgba(0, 255, 65, 0.05) 1px, transparent 1px, transparent 4px);
+                    animation: slot88-scanline 8s linear infinite;
+                    pointer-events: none;
+                }
+                #slot-88::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: radial-gradient(circle, rgba(0, 255, 65, 0.15) 0%, transparent 70%);
+                    opacity: 0.5;
+                    animation: slot88-glow-pulse 5s ease-in-out infinite;
+                    pointer-events: none;
+                }
+                @keyframes slot88-scanline {
+                    from { background-position: 0 0; }
+                    to { background-position: 0 -200px; }
+                }
+                @keyframes slot88-glow-pulse {
+                    0%, 100% { opacity: 0.4; transform: scale(1); }
+                    50% { opacity: 0.7; transform: scale(1.1); }
                 }
                 #slot-88 h3 {
-                font-weight: 400;
-                font-size: 2rem;
-                color: #ccc;
-                margin-bottom: 20px;
+                    font-weight: 700;
+                    font-size: 1.5rem;
+                    color: #fff;
+                    text-shadow: 0 0 8px #00ff41;
+                    margin-bottom: 2rem;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    position: relative;
+                    z-index: 1;
                 }
-                #slot-88 .btc-price {
-                font-weight: bold;
-                font-size: 3em;
-                margin: 1em auto;
-                display: inline-block; /* Required for transform to work */
-                animation: slot88-zoom 2.5s ease-in-out infinite;
+                #slot-88 .slot88-prices {
+                    display: flex;
+                    justify-content: center;
+                    gap: 2rem;
+                    flex-wrap: wrap;
+                    position: relative;
+                    z-index: 1;
                 }
-
-                @keyframes slot88-zoom {
-                from {
-                    transform: scale(1);
+                #slot-88 .slot88-price-card {
+                    background: rgba(0, 0, 0, 0.4);
+                    border: 1px solid #333;
+                    padding: 1.5rem;
+                    border-radius: 10px;
+                    min-width: 250px;
+                    transition: transform 0.3s, box-shadow 0.3s;
                 }
-                50% {
-                    transform: scale(1.1);
+                #slot-88 .slot88-price-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
                 }
-                to {
-                    transform: scale(1);
+                #slot-88 .slot88-coin-name {
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.75rem;
                 }
+                #slot-88 .slot88-price-value {
+                    font-size: 2.2rem;
+                    font-weight: 700;
+                    text-shadow: 0 0 10px currentColor;
+                    min-height: 40px;
                 }
+                #slot-88 .slot88-icon {
+                    font-size: 1.5rem;
+                    line-height: 1;
+                }
+                #slot-88 .slot88-btc { color: #f7931a; }
+                #slot-88 .slot88-pi { color: #c77dff; } /* Màu tím cho Pi */
+                #slot-88 .slot88-error { color: #ff4141; font-size: 1.2rem; }
             </style>
-            <script>
-                async function slot88ShowBTC() {
-                const slot = document.getElementById("slot-88");
-                let priceText = slot.querySelector(".btc-price");
-                if (!priceText) {
-                    priceText = document.createElement("div");
-                    priceText.className = "btc-price";
-                    priceText.style.color = "#f7931a";
-                    slot.appendChild(priceText);
-                }
-                priceText.textContent = "Đang lấy giá BTC...";
-                try {
-                    const r = await fetch(
-                    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
-                    );
-                    const j = await r.json();
-                    priceText.textContent =
-                    "Giá Bitcoin hiện tại: $" + j.bitcoin.usd.toLocaleString();
-                } catch (e) {
-                    priceText.textContent = "Bớ ngừ ta, lỗi rồi!.";
-                }
-                }
 
-                // Fetch price on load
-                slot88ShowBTC();
+            <h3>-- Bảng Giá Crypto --</h3>
+            <div class="slot88-prices">
+                <div class="slot88-price-card">
+                    <div class="slot88-coin-name slot88-btc">
+                        <span class="slot88-icon">₿</span>
+                        <span>Bitcoin</span>
+                    </div>
+                    <div class="slot88-price-value slot88-btc" id="slot88-btc-price">Đang tải...</div>
+                </div>
+                <div class="slot88-price-card">
+                    <div class="slot88-coin-name slot88-pi">
+                        <span class="slot88-icon">π</span>
+                        <span>Pi</span>
+                    </div>
+                    <div class="slot88-price-value slot88-pi" id="slot88-pi-price">Đang tải...</div>
+                </div>
+            </div>
+
+            <script>
+                (function() {
+                    const btcPriceEl = document.getElementById("slot88-btc-price");
+                    const piPriceEl = document.getElementById("slot88-pi-price");
+
+                    async function slot88GetPrices() {
+                        try {
+                            const response = await fetch(
+                                "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,pi-network&vs_currencies=usd"
+                            );
+                            if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                            const data = await response.json();
+
+                            btcPriceEl.textContent = data.bitcoin ? `$${data.bitcoin.usd.toLocaleString()}` : "N/A";
+                            piPriceEl.textContent = data['pi-network'] ? `$${data['pi-network'].usd.toLocaleString()}` : "N/A";
+
+                        } catch (e) {
+                            console.error("[slot-88] Lỗi khi lấy giá:", e);
+                            btcPriceEl.innerHTML = '<span class="slot88-error">Lỗi</span>';
+                            piPriceEl.innerHTML = '<span class="slot88-error">Lỗi</span>';
+                        }
+                    }
+
+                    slot88GetPrices(); // Lấy giá ngay khi tải
+                    setInterval(slot88GetPrices, 60000); // Cập nhật mỗi 60 giây
+                })();
             </script>
         </div>
 
