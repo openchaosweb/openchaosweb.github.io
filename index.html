@@ -4158,7 +4158,148 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
         <div id="slot-22"></div>
 
         <!-- == SLOT 23 == -->
-        <div id="slot-23"></div>
+        <div id="slot-23">
+            <style>
+                #slot-23 #slot-23-canvas {
+                    display: inline-block;
+                }
+
+                #slot-23 .slot-23-container {
+                    text-align: center;
+                    border: 1px solid #b6ae9f;
+                    background-color: #333;
+                    margin: 10px
+                }
+
+                #slot-23 .slot-23-btn {
+                    padding: 8px;
+                }
+            </style>
+
+            <div class="slot-23-container">
+                <div>
+                    <div id="slot-23-canvas"></div>
+                </div>
+                <button class="slot-23-btn zoom-out">-</button>
+                <button class="slot-23-btn zoom-in">+</button>
+            </div>
+
+            <script>
+                async function slot_23_run() {
+                    let gifCompressData;
+                    try {
+                        // load file data của ảnh, khó lớn nên tôi đã compress nó lại
+                        const response = await fetch('https://gist.githubusercontent.com/ndt-pro/5af3b848885a0ac1599dd746e6034105/raw/06757be3cf8392df1fc476955f52555b7f15c90f/evernightdance_data.json');
+                        if (response.ok) {
+                            gifCompressData = await response.json();
+                        }
+                    } catch (error) { }
+                    if (!gifCompressData) {
+                        return;
+                    }
+                    // hàm decomporess
+                    const decompress = (data) => {
+                        const result = [];
+                        for (let i = 0; i < data.length; i += 2) {
+                            const value = data[i];
+                            const count = data[i + 1];
+                            for (let j = 0; j < count; j++) {
+                                result.push(value);
+                            }
+                        }
+                        return result;
+                    }
+                    const characters = ['*', '+', 'o', '^', '#', '$'];
+                    const canvasWidth = 100,
+                        canvasHeight = 92,
+                        frameSize = 10;
+                    let canvasFontSize = 16, canvasLineHeight = canvasFontSize / 2;
+
+                    // giải nén mảng pixel và pick lại màu cho từng pixel
+                    const colors = gifCompressData.colors;
+                    const dataMapColor = decompress(gifCompressData.data).map((item) => colors[item]);
+
+                    const elementsPerInitialSplit = dataMapColor.length / frameSize;
+                    const finalResult = [];
+
+                    for (let i = 0; i < frameSize; i++) {
+                        const start = i * elementsPerInitialSplit;
+                        const end = start + elementsPerInitialSplit;
+                        const initialChunk = dataMapColor.slice(start, end);
+                        const subChunkedArray = [];
+                        let subIndex = 0;
+                        while (subIndex < initialChunk.length) {
+                            const finalChunk = initialChunk.slice(subIndex, subIndex + canvasWidth);
+                            subChunkedArray.push(finalChunk);
+                            subIndex += canvasWidth;
+                        }
+                        finalResult.push(subChunkedArray);
+                    }
+
+                    // vẽ đống điểm ảnh bằng kí tự
+                    const canvas = document.getElementById('slot-23-canvas');
+                    canvas.style.fontSize = `${canvasFontSize}px`;
+                    canvas.style.lineHeight = `${canvasLineHeight}px`;
+                    const pixels = [];
+                    const character = characters[Math.floor(Math.random() * characters.length)];
+                    for (let y = 0; y < canvasHeight; y++) {
+                        const row = document.createElement('div');
+                        pixels[y] = [];
+                        for (let x = 0; x < canvasWidth; x++) {
+                            const dot = document.createElement('span');
+                            dot.innerHTML = character;
+                            pixels[y][x] = dot;
+                            row.append(dot);
+                        }
+                        canvas.append(row);
+                    }
+
+                    let frameIndex = 0;
+                    const backgroundColors = ['#B6AE9F', '#FFA4A4', '#BADFDB', '#D97D55', '#6D94C5', '#F8FAB4', '#DA6C6C'];
+                    let backgroundColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+
+                    let lastTime = 0;
+                    const update = (timestamp = 0) => {
+                        if (timestamp >= lastTime + 100) {
+                            // duyệt qua mỗi frame và set màu cho từng pixel
+                            const frame = finalResult[frameIndex];
+                            for (let y = 0; y < canvasHeight; y++) {
+                                for (let x = 0; x < canvasWidth; x++) {
+                                    if (frame[y][x] === '#FFFFFF') {
+                                        pixels[y][x].style.color = backgroundColor;
+                                    } else {
+                                        pixels[y][x].style.color = frame[y][x];
+                                    }
+                                }
+                            }
+                            frameIndex++;
+                            frameIndex %= frameSize;
+                            if (frameIndex % 5 === 0) {
+                                backgroundColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+                            }
+                            lastTime = timestamp;
+                        }
+                        requestAnimationFrame(update);
+                    }
+                    update();
+
+                    // mấy cái nút
+                    const zoomInBtn = document.querySelector('.slot-23-btn.zoom-in');
+                    const zoomOutBtn = document.querySelector('.slot-23-btn.zoom-out');
+
+                    const zoom = (value) => {
+                        canvasFontSize += value;
+                        canvasLineHeight = canvasFontSize / 2;
+                        canvas.style.fontSize = `${canvasFontSize}px`;
+                        canvas.style.lineHeight = `${canvasLineHeight}px`;
+                    }
+                    zoomInBtn.addEventListener('click', () => zoom(3));
+                    zoomOutBtn.addEventListener('click', () => zoom(-3));
+                }
+
+                slot_23_run();
+            </script>
+        </div>
 
         <!-- == SLOT 24 == -->
         <div id="slot-24">
