@@ -783,8 +783,294 @@
 
     </script>
         </div>
-        </div>
+        <div id="slot4_doom">
+            <style>
+                #slot-4 #slot4_focushint {
+    font-size: 2rem;
+}
 
+#slot-4 .slot4_container {
+    display: flex;
+}
+
+#slot-4 .slot4_big-holder {
+    position: relative;
+    width: 68vw; /* Allow it to resize based on parent/container */
+    height: 41vw; /* Maintain 16:10 aspect ratio */
+}
+
+#slot-4 #slot4_screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.01; /* Hide the canvas */
+}
+
+#slot-4 #slot4_gradientScreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    pointer-events: none; /* Allow clicks to pass through */
+    background-size: 200% 200%; /* Scale the gradient to 640x400 */
+}
+
+/* Media query for screen width less than 700px */
+@media (max-width: 1024px) {
+    #slot-4 .slot4-big-holder {
+        width: 94vw; /* 90% of viewport width */
+        height: calc(94vw * 10 / 16); /* Maintain 16:10 aspect ratio */
+    }
+}
+
+
+            </style>
+        <h1>DooM</h1>
+    <p></p>
+    <p id="slot4_focushint"></p>
+    <p>
+      Use <button tabindex="-1" aria-label="enter" role="presentation">&#x23CE;</button> to start the game, arrow
+      keys <button tabindex="-1" aria-label="left" role="presentation">&#x2190;</button>
+      <button tabindex="-1" aria-label="up" role="presentation">&#x2191;</button>
+      <button tabindex="-1" aria-label="down" role="presentation">&#x2193;</button>
+      <button tabindex="-1" aria-label="right" role="presentation">&#x2192;</button> to move,
+      <button tabindex="-1" aria-label="ctrl" role="presentation">ctrl</button> to shoot, spacebar
+      <button tabindex="-1" aria-label="space" role="presentation">&nbsp;&nbsp;&nbsp;&nbsp;</button> to open gates,
+      <button tabindex="-1" aria-label="alt" role="presentation">alt</button> 
+    </p>
+<p><strong>If you see grey lines across the game window, please adjust the window width </strong></p>
+    <div class="slot4_container">
+      <div class="slot4_big-holder">
+        <div id="slot4_gradientScreen"></div>
+        <canvas id="slot4_screen" tabindex="0">This is where the DooM screen should render.</canvas>
+      </div>
+      <span>&nbsp;</span>
+    </div>
+    <script >
+var slot4_memory = new WebAssembly.Memory({ initial: 108 })
+
+/*stdout and stderr goes here*/
+const slot4_output = document.getElementById("slot4_output")
+
+function slot4_readWasmString(offset, length) {
+  const bytes = new Uint8Array(slot4_memory.buffer, offset, length)
+  return new TextDecoder("utf8").decode(bytes)
+}
+
+function slot4_consoleLogString(offset, length) {
+  const string = slot4_readWasmString(offset, length)
+  console.log('"' + string + '"')
+}
+
+function slot4_appendOutput(style) {
+  return function (offset, length) {}
+}
+
+function slot4_getMilliseconds() {
+  return performance.now()
+}
+
+/*doom is rendered here*/
+const canvas = document.getElementById("slot4_screen")
+const doom_screen_width = 320 * 2
+const doom_screen_height = 200 * 2
+
+function slot4_rgbaToHex(r, g, b) {
+  return (
+    "#" +
+    [r, g, b].map((x) => Math.round(x).toString(16).padStart(2, "0")).join("")
+  )
+}
+
+function slot4_averageBlockColour(data, startX, startY, width, blockSize) {
+  let r = 0, g = 0, b = 0;
+
+  for (let y = startY; y < startY + blockSize; y++) {
+    for (let x = startX; x < startX + blockSize; x++) {
+      const i = (y * width + x) * 4;
+      r += data[i];
+      g += data[i + 1];
+      b += data[i + 2];
+    }
+  }
+
+  const size = blockSize * blockSize;
+  return slot4_rgbaToHex(r / size, g / size, b / size);
+}
+
+function slot4_drawCanvas(ptr) {
+  const doom_screen = new Uint8ClampedArray(
+    slot4_memory.buffer,
+    ptr,
+    doom_screen_width * doom_screen_height * 4
+  )
+
+  const gradientDiv = document.getElementById("slot4_gradientScreen")
+
+  const blockSize = 2 // downsample 2x2 pixels 320x200
+  const scaledWidth = doom_screen_width / blockSize
+  const scaledHeight = doom_screen_height / blockSize
+
+  const layers = []
+  const positions = []
+  const sizes = []
+
+  const vwu = 100 / scaledWidth
+  const vhu = 100 / scaledHeight
+
+  for (let y = 0; y < doom_screen_height; y += blockSize) {
+    let stops = []
+    let prevColor = null
+    let segmentStart = 0
+
+    for (let x = 0; x < doom_screen_width; x += blockSize) {
+      const avgColor = slot4_averageBlockColour(
+        doom_screen,
+        x,
+        y,
+        doom_screen_width,
+        blockSize
+      )
+
+      if (prevColor === null) {
+        prevColor = avgColor
+        segmentStart = x / blockSize
+      } else if (avgColor !== prevColor) {
+        stops.push(
+          `${prevColor} ${segmentStart * vwu}%, ${prevColor} ${
+            (x * vwu) / blockSize
+          }%`
+        )
+        segmentStart = x / blockSize
+        prevColor = avgColor
+      }
+    }
+    stops.push(
+      `${prevColor} ${segmentStart * vwu}%, ${prevColor} ${scaledWidth * vwu}%`
+    )
+
+    layers.push(`linear-gradient(to right, ${stops.join(", ")})`)
+    positions.push(`0px ${(y * vhu * 0.99) / blockSize}%`)
+    sizes.push(`${scaledWidth * vwu}% ${vhu}%`)
+  }
+
+  // Apply layers as CSS background
+  gradientDiv.style.backgroundImage = layers.join(", ")
+  gradientDiv.style.backgroundPosition = positions.join(", ")
+  gradientDiv.style.backgroundSize = sizes.join(", ")
+  gradientDiv.style.backgroundRepeat = "no-repeat"
+}
+
+/*These functions will be available in WebAssembly. We also share the memory to share larger amounts of data with javascript, e.g. strings of the video output.*/
+var importObject = {
+  js: {
+    js_console_log: slot4_appendOutput("log"),
+    js_stdout: slot4_appendOutput("stdout"),
+    js_stderr: slot4_appendOutput("stderr"),
+    js_milliseconds_since_start: slot4_getMilliseconds,
+    js_draw_screen: slot4_drawCanvas,
+  },
+  env: {
+    memory: slot4_memory,
+  },
+}
+
+document.addEventListener("contextmenu", (e) => {
+  
+    e.preventDefault()
+
+})
+
+WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wasm"), importObject).then(
+  (obj) => {
+    obj.instance.exports.main();
+
+    /*input handling*/
+    let doomKeyCode = function (keyCode) {
+      // Doom seems to use mostly the same keycodes, except for the following (maybe I'm missing a few.)
+      switch (keyCode) {
+        case 8:
+          return 127 // KEY_BACKSPACE
+        case 17:
+          return 0x80 + 0x1d // KEY_RCTRL
+        case 18:
+          return 0x80 + 0x38 // KEY_RALT
+        case 37:
+          return 0xac // KEY_LEFTARROW
+        case 38:
+          return 0xad // KEY_UPARROW
+        case 39:
+          return 0xae // KEY_RIGHTARROW
+        case 40:
+          return 0xaf // KEY_DOWNARROW
+        default:
+          if (keyCode >= 65 /*A*/ && keyCode <= 90 /*Z*/) {
+            return keyCode + 32 // ASCII to lower case
+          }
+          if (keyCode >= 112 /*F1*/ && keyCode <= 123 /*F12*/) {
+            return keyCode + 75 // KEY_F1
+          }
+          return keyCode
+      }
+    }
+    let keyDown = function (keyCode) {
+      obj.instance.exports.add_browser_event(0 /*KeyDown*/, keyCode)
+    }
+    let keyUp = function (keyCode) {
+      obj.instance.exports.add_browser_event(1 /*KeyUp*/, keyCode)
+    }
+
+    /*keyboard input*/
+    canvas.addEventListener(
+      "keydown",
+      function (event) {
+        keyDown(doomKeyCode(event.keyCode))
+        event.preventDefault()
+      },
+      false
+    )
+    canvas.addEventListener(
+      "keyup",
+      function (event) {
+        keyUp(doomKeyCode(event.keyCode))
+        event.preventDefault()
+      },
+      false
+    )
+    /*hint that the canvas should have focus to capute keyboard events*/
+    const focushint = document.getElementById("slot4_focushint")
+    const slot4_printFocusInHint = function (e) {
+      focushint.innerText =
+        "Doom focused, if input stops working focus the game again"
+      focushint.style.fontWeight = "normal"
+    }
+    canvas.addEventListener("focusin", slot4_printFocusInHint, false)
+
+    canvas.addEventListener(
+      "focusout",
+      function (e) {
+        focushint.innerText =
+          "Click on the Doom game to capute input and start playing."
+        focushint.style.fontWeight = "bold"
+      },
+      false
+    )
+
+    canvas.focus()
+    slot4_printFocusInHint()
+
+    /*Main game loop*/
+    function slot4_step(timestamp) {
+      obj.instance.exports.doom_loop_step()
+      window.requestAnimationFrame(slot4_step)
+    }
+    window.requestAnimationFrame(slot4_step)
+  }
+).catch(err => {
+  console.error("Failed to load WebAssembly:", err);
+});</script>
+        </div>
+        </div>
         <!-- == SLOT 5 == -->
         <div id="slot-5">
             <h2>
@@ -2164,7 +2450,112 @@
         </div>
 
         <!-- == SLOT 8 == -->
-        <div id="slot-8"></div>
+        <div id="slot-8">
+            <style>
+                /* Scoped styles for Habit Tree banner inside slot-8 */
+                #slot-8 .banner-inner-area {
+                    padding: 270px 0 200px;
+                    position: relative;
+                    overflow: hidden;
+                    background: #DCFAE6;
+                }
+                #slot-8 .container {
+                    max-width: 1140px;
+                    margin: 0 auto;
+                    padding: 0 15px;
+                }
+                #slot-8 .row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                }
+                #slot-8 .banner-text-inner h1 {
+                    margin-bottom: 33px;
+                    font-size: 50px;
+                    line-height: 55px;
+                    font-weight: 600;
+                    color: #222;
+                }
+                #slot-8 .banner-text-inner p {
+                    margin-bottom: 43px;
+                    font-size: 16px;
+                    line-height: 30px;
+                    color: #404040;
+                }
+                #slot-8 .banner-text-inner a img {
+                    height: 40px;
+                    vertical-align: middle;
+                }
+                #slot-8 .banner-text-inner a + a img {
+                    margin-left: 10px;
+                }
+                #slot-8 .banner-image img {
+                    display: block;
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 24px;
+                }
+                /* Simple grid replacements for Bootstrap classes used */
+                #slot-8 [class^="col-"],
+                #slot-8 [class*=" col-"] {
+                    position: relative;
+                    width: 100%;
+                    padding-right: 15px;
+                    padding-left: 15px;
+                }
+                /* md breakpoint */
+                @media (min-width: 768px) {
+                    #slot-8 .col-md-8 { flex: 0 0 66.6667%; max-width: 66.6667%; }
+                    #slot-8 .col-md-4 { flex: 0 0 33.3333%; max-width: 33.3333%; }
+                }
+                /* lg breakpoint */
+                @media (min-width: 992px) {
+                    #slot-8 .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
+                    #slot-8 .col-lg-5 { flex: 0 0 41.6667%; max-width: 41.6667%; }
+                    #slot-8 .offset-lg-1 { margin-left: 8.3333%; }
+                    #slot-8 .banner-text-inner h1 { font-size: 40px; }
+                }
+                /* xl breakpoint */
+                @media (min-width: 1200px) {
+                    #slot-8 .col-xl-5 { flex: 0 0 41.6667%; max-width: 41.6667%; }
+                }
+                /* Small devices adjustments */
+                @media (max-width: 575.98px) {
+                    #slot-8 .banner-inner-area { padding: 150px 0 96px; }
+                    #slot-8 .banner-text-inner { padding-bottom: 80px; }
+                    #slot-8 .banner-text-inner h1 { font-size: 32px; line-height: 50px; }
+                }
+            </style>
+            <div class="banner-area-inner">
+                <div class="banner-inner-area banner-area1">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-8 col-lg-6 col-xl-5">
+                                <!-- banner text -->
+                                <div class="banner-text-inner">
+                                    <h1>Welcome to<br>Habit Tree app!</h1>
+                                    <p>🌱 Each habit is a tree, nurture it daily to watch your forest of success grow! 🌳🌳🌳</p>
+                                    <a href="https://apps.apple.com/app/id6740733412" target="_blank">
+                                        <img src="https://habittree.xyz/assets/img/download/app_store.webp" alt="App Store">
+                                    </a>
+                                    <a href="https://play.google.com/store/apps/details?id=com.areser.habittree" target="_blank">
+                                        <img src="https://habittree.xyz/assets/img/download/play_store.webp" alt="Google Play">
+                                    </a>
+                                </div>
+                                <!-- banner text -->
+                            </div>
+                            <div class="col-lg-5 offset-lg-1 col-md-4 offse-xl-2">
+                                <!-- banner image-->
+                                <div class="banner-image">
+                                    <img src="https://habittree.xyz/assets/img/screenshot/icon_no_bg.webp" alt="">
+                                </div>
+                                <!--End of banner image-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- == SLOT 9 == -->
         <div id="slot-9">
@@ -3761,16 +4152,3085 @@
 
 
         <!-- == SLOT 21 == -->
-        <div id="slot-21"></div>
+        <div id="slot-21">
+            <style>
+                #slot-21 {
+                    --plant-green: #a8e6cf;
+                    --light-green: #dcedc1;
+                    --mint-green: #88d8a3;
+                    --soft-yellow: #f7f3b7;
+                    --gentle-blue: #b8e6e8;
+                    --cream: #faf3e0;
+                    --soft-pink: #f8d7da;
+                    --white: #ffffff;
+        
+                    background: linear-gradient(135deg, var(--cream) 0%, var(--light-green) 50%, var(--gentle-blue) 100%);
+                    padding: 20px;
+                    font-family: 'Inter', 'Nunito', sans-serif;
+                    position: relative;
+                    overflow: hidden;
+                    min-height: 100vh;
+                }
+        
+                #slot-21::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background:
+                        radial-gradient(circle at 20% 80%, rgba(168, 230, 207, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(184, 230, 232, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(220, 237, 193, 0.2) 0%, transparent 50%);
+                    pointer-events: none;
+                }
+        
+                #slot-21 .plant-garden-container {
+                    position: relative;
+                    z-index: 1;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    display: grid;
+                    grid-template-areas:
+                        "header header header"
+                        "status plant controls"
+                        "info info info";
+                    grid-template-columns: 1fr 2fr 1fr;
+                    gap: 30px;
+                    align-items: start;
+                    min-height: 90vh;
+                }
+        
+                #slot-21 .plant-header {
+                    grid-area: header;
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+        
+                #slot-21 .plant-title {
+                    font-size: 2.5rem;
+                    font-weight: 800;
+                    color: var(--mint-green);
+                    margin: 0;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    letter-spacing: -0.5px;
+                }
+        
+                #slot-21 .plant-subtitle {
+                    font-size: 1.1rem;
+                    color: #6b7280;
+                    margin: 8px 0 0 0;
+                    font-weight: 500;
+                }
+        
+                #slot-21 .plant-status-panel {
+                    grid-area: status;
+                    background: rgba(255, 255, 255, 0.8);
+                    backdrop-filter: blur(10px);
+                    border-radius: 20px;
+                    padding: 25px;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                }
+        
+                #slot-21 .status-title {
+                    font-size: 1.3rem;
+                    font-weight: 700;
+                    color: var(--mint-green);
+                    margin-bottom: 20px;
+                    text-align: center;
+                }
+        
+                #slot-21 .status-bar {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 15px;
+                    gap: 12px;
+                }
+        
+                #slot-21 .status-icon {
+                    font-size: 1.5rem;
+                    width: 35px;
+                    text-align: center;
+                }
+        
+                #slot-21 .status-progress {
+                    flex: 1;
+                    height: 12px;
+                    background: rgba(0, 0, 0, 0.1);
+                    border-radius: 6px;
+                    overflow: hidden;
+                    position: relative;
+                }
+        
+                #slot-21 .status-fill {
+                    height: 100%;
+                    border-radius: 6px;
+                    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+                    position: relative;
+                    overflow: hidden;
+                }
+        
+                #slot-21 .status-fill::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+                    animation: slot21-shimmer 2s infinite;
+                }
+        
+                @keyframes slot21-shimmer {
+                    0% {
+                        left: -100%;
+                    }
+        
+                    100% {
+                        left: 100%;
+                    }
+                }
+        
+                #slot-21 .water-fill {
+                    background: linear-gradient(90deg, var(--gentle-blue), #5fbeaa);
+                }
+        
+                #slot-21 .sun-fill {
+                    background: linear-gradient(90deg, var(--soft-yellow), #ffd93d);
+                }
+        
+                #slot-21 .nutrition-fill {
+                    background: linear-gradient(90deg, var(--light-green), var(--mint-green));
+                }
+        
+                #slot-21 .status-value {
+                    font-weight: 600;
+                    color: #374151;
+                    min-width: 45px;
+                    text-align: right;
+                }
+        
+                #slot-21 .plant-main {
+                    grid-area: plant;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    background: rgba(255, 255, 255, 0.6);
+                    backdrop-filter: blur(10px);
+                    border-radius: 30px;
+                    padding: 40px;
+                    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    position: relative;
+                    min-height: 400px;
+                }
+        
+                #slot-21 .plant-sprite {
+                    font-size: 8rem;
+                    margin-bottom: 20px;
+                    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    transform-origin: bottom center;
+                    position: relative;
+                    z-index: 2;
+                }
+        
+                #slot-21 .plant-sprite.dancing {
+                    animation: slot21-plant-dance 1s ease-in-out;
+                }
+        
+                @keyframes slot21-plant-dance {
+        
+                    0%,
+                    100% {
+                        transform: rotate(0deg) scale(1);
+                    }
+        
+                    25% {
+                        transform: rotate(-5deg) scale(1.05);
+                    }
+        
+                    50% {
+                        transform: rotate(5deg) scale(1.1);
+                    }
+        
+                    75% {
+                        transform: rotate(-3deg) scale(1.05);
+                    }
+                }
+        
+                #slot-21 .plant-sprite.growing {
+                    animation: slot21-plant-grow 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
+        
+                @keyframes slot21-plant-grow {
+                    0% {
+                        transform: scale(0.8);
+                        opacity: 0.8;
+                    }
+        
+                    50% {
+                        transform: scale(1.15);
+                        opacity: 1;
+                    }
+        
+                    100% {
+                        transform: scale(1);
+                        opacity: 1;
+                    }
+                }
+        
+                #slot-21 .plant-mood {
+                    font-size: 2.5rem;
+                    margin-bottom: 15px;
+                    transition: all 0.3s ease;
+                }
+        
+                #slot-21 .plant-message {
+                    background: rgba(255, 255, 255, 0.9);
+                    padding: 12px 20px;
+                    border-radius: 20px;
+                    color: #374151;
+                    font-weight: 500;
+                    text-align: center;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    margin-top: 10px;
+                    border: 1px solid rgba(168, 230, 207, 0.3);
+                }
+        
+                #slot-21 .plant-controls {
+                    grid-area: controls;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+        
+                #slot-21 .care-button {
+                    background: rgba(255, 255, 255, 0.9);
+                    backdrop-filter: blur(10px);
+                    border: 2px solid transparent;
+                    border-radius: 16px;
+                    padding: 15px 20px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+                    position: relative;
+                    overflow: hidden;
+                }
+        
+                #slot-21 .care-button::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                    transition: left 0.5s ease;
+                }
+        
+                #slot-21 .care-button:hover::before {
+                    left: 100%;
+                }
+        
+                #slot-21 .care-button:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                    border-color: var(--plant-green);
+                }
+        
+                #slot-21 .care-button:active {
+                    transform: translateY(-1px);
+                }
+        
+                #slot-21 .care-button.water-btn:hover {
+                    background: linear-gradient(135deg, var(--gentle-blue), rgba(184, 230, 232, 0.8));
+                    color: #1f2937;
+                }
+        
+                #slot-21 .care-button.sun-btn:hover {
+                    background: linear-gradient(135deg, var(--soft-yellow), rgba(247, 243, 183, 0.8));
+                    color: #1f2937;
+                }
+        
+                #slot-21 .care-button.nutrition-btn:hover {
+                    background: linear-gradient(135deg, var(--light-green), rgba(220, 237, 193, 0.8));
+                    color: #1f2937;
+                }
+        
+                #slot-21 .care-button.music-btn:hover {
+                    background: linear-gradient(135deg, var(--soft-pink), rgba(248, 215, 218, 0.8));
+                    color: #1f2937;
+                }
+        
+                #slot-21 .care-button.reset-btn:hover {
+                    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+                    color: #1f2937;
+                }
+        
+                #slot-21 .button-icon {
+                    font-size: 1.3rem;
+                }
+        
+                #slot-21 .plant-info {
+                    grid-area: info;
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
+                    gap: 20px;
+                    margin-top: 20px;
+                }
+        
+                #slot-21 .info-card {
+                    background: rgba(255, 255, 255, 0.8);
+                    backdrop-filter: blur(10px);
+                    border-radius: 16px;
+                    padding: 20px;
+                    text-align: center;
+                    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                }
+        
+                #slot-21 .info-label {
+                    font-size: 0.9rem;
+                    color: #6b7280;
+                    margin-bottom: 8px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+        
+                #slot-21 .info-value {
+                    font-size: 1.8rem;
+                    font-weight: 800;
+                    color: var(--mint-green);
+                    margin: 0;
+                }
+        
+                #slot-21 .sound-toggle {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    background: rgba(255, 255, 255, 0.9);
+                    border: none;
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    z-index: 10;
+                }
+        
+                #slot-21 .sound-toggle:hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+                }
+        
+                #slot-21 .particle {
+                    position: absolute;
+                    pointer-events: none;
+                    z-index: 10;
+                }
+        
+                #slot-21 .water-particle {
+                    width: 8px;
+                    height: 8px;
+                    background: var(--gentle-blue);
+                    border-radius: 50%;
+                    animation: slot21-water-drop 1.5s ease-out forwards;
+                }
+        
+                @keyframes slot21-water-drop {
+                    0% {
+                        transform: translateY(-50px);
+                        opacity: 1;
+                    }
+        
+                    100% {
+                        transform: translateY(100px);
+                        opacity: 0;
+                    }
+                }
+        
+                #slot-21 .sparkle-particle {
+                    width: 6px;
+                    height: 6px;
+                    background: var(--soft-yellow);
+                    border-radius: 50%;
+                    animation: slot21-sparkle 1s ease-out forwards;
+                }
+        
+                @keyframes slot21-sparkle {
+                    0% {
+                        transform: scale(0) rotate(0deg);
+                        opacity: 1;
+                    }
+        
+                    50% {
+                        transform: scale(1.5) rotate(180deg);
+                        opacity: 0.8;
+                    }
+        
+                    100% {
+                        transform: scale(0) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+        
+                #slot-21 .plant-footer {
+                    text-align: center;
+                    margin-top: 20px;
+                    grid-column: 1 / -1;
+                }
+        
+                #slot-21 .plant-credit {
+                    color: #6b7280;
+                    font-size: 0.9rem;
+                    margin: 0;
+                }
+        
+                /* Responsive Design */
+                @media (max-width: 1024px) {
+                    #slot-21 .plant-garden-container {
+                        grid-template-areas:
+                            "header"
+                            "plant"
+                            "status"
+                            "controls"
+                            "info";
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+        
+                    #slot-21 .plant-controls {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 12px;
+                    }
+        
+                    #slot-21 .plant-info {
+                        grid-template-columns: 1fr;
+                        gap: 15px;
+                    }
+                }
+        
+                @media (max-width: 640px) {
+                    #slot-21 {
+                        padding: 15px;
+                    }
+        
+                    #slot-21 .plant-title {
+                        font-size: 2rem;
+                    }
+        
+                    #slot-21 .plant-sprite {
+                        font-size: 6rem;
+                    }
+        
+                    #slot-21 .plant-controls {
+                        grid-template-columns: 1fr;
+                    }
+        
+                    #slot-21 .care-button {
+                        padding: 12px 16px;
+                        font-size: 1rem;
+                    }
+                }
+            </style>
+        
+            <div class="plant-garden-container">
+                <div class="plant-header">
+                    <h1 class="plant-title">🌿 Nuôi em đi</h1>
+                    <p class="plant-subtitle">Chăm sóc em đang hoàng vào</p>
+                </div>
+        
+                <div class="plant-status-panel">
+                    <h3 class="status-title">Sức khỏe</h3>
+        
+                    <div class="status-bar">
+                        <span class="status-icon">💧</span>
+                        <div class="status-progress">
+                            <div class="status-fill water-fill" id="slot21-water-bar" style="width: 80%"></div>
+                        </div>
+                        <span class="status-value" id="slot21-water-value">80%</span>
+                    </div>
+        
+                    <div class="status-bar">
+                        <span class="status-icon">☀️</span>
+                        <div class="status-progress">
+                            <div class="status-fill sun-fill" id="slot21-sun-bar" style="width: 60%"></div>
+                        </div>
+                        <span class="status-value" id="slot21-sun-value">60%</span>
+                    </div>
+        
+                    <div class="status-bar">
+                        <span class="status-icon">🌰</span>
+                        <div class="status-progress">
+                            <div class="status-fill nutrition-fill" id="slot21-nutrition-bar" style="width: 40%"></div>
+                        </div>
+                        <span class="status-value" id="slot21-nutrition-value">40%</span>
+                    </div>
+                </div>
+        
+                <div class="plant-main">
+                    <div class="plant-sprite" id="slot21-plant-sprite">🌱</div>
+                    <div class="plant-mood" id="slot21-plant-mood">😊</div>
+                    <div class="plant-message" id="slot21-plant-message">Chào bạn! Hãy chăm sóc tôi nhé! 🌱</div>
+                </div>
+        
+                <div class="plant-controls">
+                    <button class="care-button water-btn" id="slot21-water-btn">
+                        <span class="button-icon">💧</span>
+                        Tưới nước
+                    </button>
+        
+                    <button class="care-button sun-btn" id="slot21-sun-btn">
+                        <span class="button-icon">☀️</span>
+                        Phơi nắng
+                    </button>
+        
+                    <button class="care-button nutrition-btn" id="slot21-nutrition-btn">
+                        <span class="button-icon">🌰</span>
+                        Bón phân
+                    </button>
+        
+                    <button class="care-button music-btn" id="slot21-music-btn">
+                        <span class="button-icon">🎵</span>
+                        Chơi nhạc
+                    </button>
+        
+                    <button class="care-button reset-btn" id="slot21-reset-btn">
+                        <span class="button-icon">✨</span>
+                        Cây mới
+                    </button>
+                </div>
+        
+                <div class="plant-info">
+                    <div class="info-card">
+                        <div class="info-label">Điểm chăm sóc</div>
+                        <div class="info-value" id="slot21-care-score">0</div>
+                    </div>
+        
+                    <div class="info-card">
+                        <div class="info-label">Tuổi cây</div>
+                        <div class="info-value" id="slot21-plant-age">1 ngày</div>
+                    </div>
+        
+                    <div class="info-card">
+                        <div class="info-label">Giai đoạn</div>
+                        <div class="info-value" id="slot21-plant-stage">Mầm non</div>
+                    </div>
+                </div>
+        
+                <div class="plant-footer">
+                    <p class="plant-credit">🌱 truongqv12 - Thợ code</p>
+                </div>
+        
+                <button class="sound-toggle" id="slot21-sound-toggle" title="Toggle Sound">🔊</button>
+        
+            </div>
+        
+            <script>
+                (function () {
+                    // Sử dụng in-memory storage thay vì localStorage
+                    let slot21PlantData = {
+                        stage: 0,
+                        waterLevel: 80,
+                        sunlightLevel: 60,
+                        nutritionLevel: 40,
+                        careScore: 0,
+                        age: 1,
+                        lastCareTime: Date.now(),
+                        soundEnabled: true
+                    };
+
+                    const slot21PlantStages = [
+                        { emoji: '🌰', name: 'Hạt giống', minScore: 0 },
+                        { emoji: '🌱', name: 'Mầm non', minScore: 100 },
+                        { emoji: '🌿', name: 'Cây con', minScore: 500 },
+                        { emoji: '🌳', name: 'Cây lớn', minScore: 1500 },
+                        { emoji: '🌸', name: 'Ra hoa', minScore: 3000 }
+                    ];
+
+                    const slot21Messages = {
+                        happy: [
+                            "Tôi cảm thấy rất khỏe mạnh! 🌟",
+                            "Cảm ơn bạn đã chăm sóc tôi! 💚",
+                            "Tôi đang phát triển tốt! ✨",
+                            "Cuộc sống thật tuyệt vời! 🌈"
+                        ],
+                        thirsty: [
+                            "Tôi hơi khát nước... 💧",
+                            "Có thể tưới cho tôi chút nước không? 🥺",
+                            "Đất khá khô rồi... 💦"
+                        ],
+                        needSun: [
+                            "Tôi cần thêm ánh sáng... ☀️",
+                            "Hơi tối quá... có thể phơi nắng không? 😴",
+                            "Ánh sáng giúp tôi quang hợp đấy! 🌤️"
+                        ],
+                        needNutrition: [
+                            "Em đói rồi... 🍽️",
+                            "Cần thêm chất dinh dưỡng nhé! 🌰",
+                            "Bón phân giúp em lớn nhanh hơn! 💪"
+                        ],
+                        dancing: [
+                            "Nhạc hay quá! Em muốn nhảy! 💃",
+                            "La la la~ 🎵",
+                            "Cảm ơn bạn đã chơi nhạc! 🎶"
+                        ]
+                    };
+
+                    // DOM Elements
+                    const slot21Elements = {
+                        plantSprite: document.getElementById('slot21-plant-sprite'),
+                        plantMood: document.getElementById('slot21-plant-mood'),
+                        plantMessage: document.getElementById('slot21-plant-message'),
+                        waterBar: document.getElementById('slot21-water-bar'),
+                        sunBar: document.getElementById('slot21-sun-bar'),
+                        nutritionBar: document.getElementById('slot21-nutrition-bar'),
+                        waterValue: document.getElementById('slot21-water-value'),
+                        sunValue: document.getElementById('slot21-sun-value'),
+                        nutritionValue: document.getElementById('slot21-nutrition-value'),
+                        careScore: document.getElementById('slot21-care-score'),
+                        plantAge: document.getElementById('slot21-plant-age'),
+                        plantStage: document.getElementById('slot21-plant-stage'),
+                        waterBtn: document.getElementById('slot21-water-btn'),
+                        sunBtn: document.getElementById('slot21-sun-btn'),
+                        nutritionBtn: document.getElementById('slot21-nutrition-btn'),
+                        musicBtn: document.getElementById('slot21-music-btn'),
+                        resetBtn: document.getElementById('slot21-reset-btn'),
+                        soundToggle: document.getElementById('slot21-sound-toggle')
+                    };
+
+                    // Audio Context for gentle sounds
+                    let slot21AudioContext;
+
+                    function slot21InitAudio() {
+                        try {
+                            slot21AudioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        } catch (e) {
+                            console.log('Audio not supported');
+                        }
+                    }
+
+                    function slot21PlayTone(frequency, duration, type = 'sine') {
+                        if (!slot21AudioContext || !slot21PlantData.soundEnabled) return;
+
+                        const oscillator = slot21AudioContext.createOscillator();
+                        const gainNode = slot21AudioContext.createGain();
+
+                        oscillator.connect(gainNode);
+                        gainNode.connect(slot21AudioContext.destination);
+
+                        oscillator.frequency.setValueAtTime(frequency, slot21AudioContext.currentTime);
+                        oscillator.type = type;
+
+                        gainNode.gain.setValueAtTime(0, slot21AudioContext.currentTime);
+                        gainNode.gain.linearRampToValueAtTime(0.1, slot21AudioContext.currentTime + 0.01);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, slot21AudioContext.currentTime + duration);
+
+                        oscillator.start(slot21AudioContext.currentTime);
+                        oscillator.stop(slot21AudioContext.currentTime + duration);
+                    }
+
+                    function slot21PlayWaterSound() {
+                        slot21PlayTone(400, 0.3);
+                        setTimeout(() => slot21PlayTone(350, 0.2), 100);
+                        setTimeout(() => slot21PlayTone(300, 0.2), 200);
+                    }
+
+                    function slot21PlaySunSound() {
+                        slot21PlayTone(600, 0.4);
+                        setTimeout(() => slot21PlayTone(800, 0.3), 100);
+                    }
+
+                    function slot21PlayNutritionSound() {
+                        slot21PlayTone(500, 0.2);
+                        setTimeout(() => slot21PlayTone(700, 0.2), 150);
+                        setTimeout(() => slot21PlayTone(900, 0.2), 300);
+                    }
+
+                    function slot21PlayMusicSound() {
+                        const melody = [523, 587, 659, 698, 784];
+                        melody.forEach((freq, i) => {
+                            setTimeout(() => slot21PlayTone(freq, 0.3), i * 200);
+                        });
+                    }
+
+                    // Update display
+                    function slot21UpdateDisplay() {
+                        // Update status bars
+                        slot21Elements.waterBar.style.width = slot21PlantData.waterLevel + '%';
+                        slot21Elements.sunBar.style.width = slot21PlantData.sunlightLevel + '%';
+                        slot21Elements.nutritionBar.style.width = slot21PlantData.nutritionLevel + '%';
+
+                        slot21Elements.waterValue.textContent = Math.round(slot21PlantData.waterLevel) + '%';
+                        slot21Elements.sunValue.textContent = Math.round(slot21PlantData.sunlightLevel) + '%';
+                        slot21Elements.nutritionValue.textContent = Math.round(slot21PlantData.nutritionLevel) + '%';
+
+                        // Update plant info
+                        slot21Elements.careScore.textContent = slot21PlantData.careScore.toLocaleString();
+                        slot21Elements.plantAge.textContent = slot21PlantData.age + ' ngày';
+
+                        // Update plant stage
+                        let newStage = slot21PlantData.stage;
+                        for (let i = slot21PlantStages.length - 1; i >= 0; i--) {
+                            if (slot21PlantData.careScore >= slot21PlantStages[i].minScore) {
+                                newStage = i;
+                                break;
+                            }
+                        }
+
+                        if (newStage !== slot21PlantData.stage) {
+                            slot21PlantData.stage = newStage;
+                            slot21Elements.plantSprite.classList.add('growing');
+                            setTimeout(() => {
+                                slot21Elements.plantSprite.classList.remove('growing');
+                            }, 1500);
+                        }
+
+                        slot21Elements.plantSprite.textContent = slot21PlantStages[slot21PlantData.stage].emoji;
+                        slot21Elements.plantStage.textContent = slot21PlantStages[slot21PlantData.stage].name;
+
+                        // Update mood and message
+                        slot21UpdateMoodAndMessage();
+
+                        // Update sound toggle
+                        slot21Elements.soundToggle.textContent = slot21PlantData.soundEnabled ? '🔊' : '🔇';
+                    }
+
+                    function slot21UpdateMoodAndMessage() {
+                        const avgHealth = (slot21PlantData.waterLevel + slot21PlantData.sunlightLevel + slot21PlantData.nutritionLevel) / 3;
+                        let mood, messageArray;
+
+                        if (avgHealth > 70) {
+                            mood = '😊';
+                            messageArray = slot21Messages.happy;
+                        } else if (slot21PlantData.waterLevel < 30) {
+                            mood = '🥺';
+                            messageArray = slot21Messages.thirsty;
+                        } else if (slot21PlantData.sunlightLevel < 30) {
+                            mood = '😴';
+                            messageArray = slot21Messages.needSun;
+                        } else if (slot21PlantData.nutritionLevel < 30) {
+                            mood = '😋';
+                            messageArray = slot21Messages.needNutrition;
+                        } else {
+                            mood = '🙂';
+                            messageArray = slot21Messages.happy;
+                        }
+
+                        slot21Elements.plantMood.textContent = mood;
+                        slot21Elements.plantMessage.textContent = messageArray[Math.floor(Math.random() * messageArray.length)];
+                    }
+
+                    // Create particle effect
+                    function slot21CreateParticles(type, count = 5) {
+                        const container = slot21Elements.plantSprite.parentElement;
+                        const rect = slot21Elements.plantSprite.getBoundingClientRect();
+                        const containerRect = container.getBoundingClientRect();
+
+                        for (let i = 0; i < count; i++) {
+                            const particle = document.createElement('div');
+                            particle.className = `particle ${type}-particle`;
+
+                            const x = rect.left - containerRect.left + (rect.width / 2) + (Math.random() - 0.5) * 60;
+                            const y = rect.top - containerRect.top + (rect.height / 2) + (Math.random() - 0.5) * 40;
+
+                            particle.style.left = x + 'px';
+                            particle.style.top = y + 'px';
+
+                            container.appendChild(particle);
+
+                            setTimeout(() => {
+                                if (particle.parentElement) {
+                                    particle.parentElement.removeChild(particle);
+                                }
+                            }, 1500);
+                        }
+                    }
+
+                    // Care actions
+                    function slot21WaterPlant() {
+                        if (slot21PlantData.waterLevel >= 100) {
+                            slot21Elements.plantMessage.textContent = "Tôi đã đủ nước rồi! 😅";
+                            return;
+                        }
+
+                        slot21PlantData.waterLevel = Math.min(100, slot21PlantData.waterLevel + 25);
+                        slot21PlantData.careScore += 10;
+
+                        slot21CreateParticles('water', 8);
+                        slot21PlayWaterSound();
+
+                        slot21Elements.plantMessage.textContent = "Ahh... sảng khoái quá! Cảm ơn bạn! 💧";
+                        slot21UpdateDisplay();
+                    }
+
+                    function slot21GiveSunlight() {
+                        if (slot21PlantData.sunlightLevel >= 100) {
+                            slot21Elements.plantMessage.textContent = "Đủ nắng rồi! Không muốn bị cháy lá! 😎";
+                            return;
+                        }
+
+                        slot21PlantData.sunlightLevel = Math.min(100, slot21PlantData.sunlightLevel + 20);
+                        slot21PlantData.careScore += 8;
+
+                        slot21CreateParticles('sparkle', 6);
+                        slot21PlaySunSound();
+
+                        slot21Elements.plantMessage.textContent = "Ánh sáng ấm áp làm tôi tràn đầy năng lượng! ☀️";
+                        slot21UpdateDisplay();
+                    }
+
+                    function slot21AddNutrition() {
+                        if (slot21PlantData.nutritionLevel >= 100) {
+                            slot21Elements.plantMessage.textContent = "Tôi no rồi! Cảm ơn bạn! 😋";
+                            return;
+                        }
+
+                        slot21PlantData.nutritionLevel = Math.min(100, slot21PlantData.nutritionLevel + 30);
+                        slot21PlantData.careScore += 15;
+
+                        slot21CreateParticles('sparkle', 10);
+                        slot21PlayNutritionSound();
+
+                        slot21Elements.plantMessage.textContent = "Ngon quá! Tôi cảm thấy mạnh mẽ hơn! 🌰";
+                        slot21UpdateDisplay();
+                    }
+
+                    function slot21PlayMusic() {
+                        slot21Elements.plantSprite.classList.add('dancing');
+                        slot21PlayMusicSound();
+
+                        const randomMessage = slot21Messages.dancing[Math.floor(Math.random() * slot21Messages.dancing.length)];
+                        slot21Elements.plantMessage.textContent = randomMessage;
+                        slot21PlantData.careScore += 5;
+
+                        setTimeout(() => {
+                            slot21Elements.plantSprite.classList.remove('dancing');
+                            slot21UpdateDisplay();
+                        }, 1000);
+                    }
+
+                    function slot21ResetPlant() {
+                        if (confirm('Bạn có chắc muốn bắt đầu với cây mới? Tất cả tiến độ sẽ bị mất!')) {
+                            slot21PlantData = {
+                                stage: 0,
+                                waterLevel: 80,
+                                sunlightLevel: 60,
+                                nutritionLevel: 40,
+                                careScore: 0,
+                                age: 1,
+                                lastCareTime: Date.now(),
+                                soundEnabled: slot21PlantData.soundEnabled
+                            };
+
+                            slot21Elements.plantMessage.textContent = "Xin chào! Tôi là cây mới của bạn! 🌱";
+                            slot21UpdateDisplay();
+                        }
+                    }
+
+                    function slot21ToggleSound() {
+                        slot21PlantData.soundEnabled = !slot21PlantData.soundEnabled;
+                        slot21UpdateDisplay();
+                    }
+
+                    // Gentle decay over time
+                    function slot21StartDecayTimer() {
+                        setInterval(() => {
+                            // Very gentle decay - 1% every 30 seconds (2% per minute)
+                            slot21PlantData.waterLevel = Math.max(0, slot21PlantData.waterLevel - 1);
+                            slot21PlantData.sunlightLevel = Math.max(0, slot21PlantData.sunlightLevel - 0.8);
+                            slot21PlantData.nutritionLevel = Math.max(0, slot21PlantData.nutritionLevel - 0.6);
+
+                            slot21UpdateDisplay();
+                        }, 30000); // 30 seconds
+                    }
+
+                    // Age increment
+                    function slot21StartAgeTimer() {
+                        setInterval(() => {
+                            slot21PlantData.age++;
+                            slot21UpdateDisplay();
+                        }, 86400000); // 24 hours
+                    }
+
+                    // Event listeners
+                    slot21Elements.waterBtn.addEventListener('click', slot21WaterPlant);
+                    slot21Elements.sunBtn.addEventListener('click', slot21GiveSunlight);
+                    slot21Elements.nutritionBtn.addEventListener('click', slot21AddNutrition);
+                    slot21Elements.musicBtn.addEventListener('click', slot21PlayMusic);
+                    slot21Elements.resetBtn.addEventListener('click', slot21ResetPlant);
+                    slot21Elements.soundToggle.addEventListener('click', slot21ToggleSound);
+
+                    // Initialize
+                    function slot21Init() {
+                        slot21InitAudio();
+                        slot21UpdateDisplay();
+                        slot21StartDecayTimer();
+                        slot21StartAgeTimer();
+                    }
+
+                    // Start the game
+                    slot21Init();
+                })();
+            </script>
+        </div>
 
         <!-- == SLOT 22 == -->
         <div id="slot-22"></div>
 
         <!-- == SLOT 23 == -->
-        <div id="slot-23"></div>
+        <div id="slot-23">
+            <style>
+                #slot-23 #slot-23-canvas {
+                    display: inline-block;
+                }
+
+                #slot-23 .slot-23-container {
+                    text-align: center;
+                    border: 1px solid #b6ae9f;
+                    background-color: #333;
+                    margin: 10px
+                }
+
+                #slot-23 .slot-23-btn {
+                    padding: 8px;
+                }
+            </style>
+
+            <div class="slot-23-container">
+                <div>
+                    <div id="slot-23-canvas"></div>
+                </div>
+                <button class="slot-23-btn zoom-out">-</button>
+                <button class="slot-23-btn zoom-in">+</button>
+            </div>
+
+            <script>
+                async function slot_23_run() {
+                    let gifCompressData;
+                    try {
+                        // load file data của ảnh, khó lớn nên tôi đã compress nó lại
+                        const response = await fetch('https://gist.githubusercontent.com/ndt-pro/5af3b848885a0ac1599dd746e6034105/raw/06757be3cf8392df1fc476955f52555b7f15c90f/evernightdance_data.json');
+                        if (response.ok) {
+                            gifCompressData = await response.json();
+                        }
+                    } catch (error) { }
+                    if (!gifCompressData) {
+                        return;
+                    }
+                    // hàm decomporess
+                    const decompress = (data) => {
+                        const result = [];
+                        for (let i = 0; i < data.length; i += 2) {
+                            const value = data[i];
+                            const count = data[i + 1];
+                            for (let j = 0; j < count; j++) {
+                                result.push(value);
+                            }
+                        }
+                        return result;
+                    }
+                    const characters = ['*', '+', 'o', '^', '#', '$'];
+                    const canvasWidth = 100,
+                        canvasHeight = 92,
+                        frameSize = 10;
+                    let canvasFontSize = 16, canvasLineHeight = canvasFontSize / 2;
+
+                    // giải nén mảng pixel và pick lại màu cho từng pixel
+                    const colors = gifCompressData.colors;
+                    const dataMapColor = decompress(gifCompressData.data).map((item) => colors[item]);
+
+                    const elementsPerInitialSplit = dataMapColor.length / frameSize;
+                    const finalResult = [];
+
+                    for (let i = 0; i < frameSize; i++) {
+                        const start = i * elementsPerInitialSplit;
+                        const end = start + elementsPerInitialSplit;
+                        const initialChunk = dataMapColor.slice(start, end);
+                        const subChunkedArray = [];
+                        let subIndex = 0;
+                        while (subIndex < initialChunk.length) {
+                            const finalChunk = initialChunk.slice(subIndex, subIndex + canvasWidth);
+                            subChunkedArray.push(finalChunk);
+                            subIndex += canvasWidth;
+                        }
+                        finalResult.push(subChunkedArray);
+                    }
+
+                    // vẽ đống điểm ảnh bằng kí tự
+                    const canvas = document.getElementById('slot-23-canvas');
+                    canvas.style.fontSize = `${canvasFontSize}px`;
+                    canvas.style.lineHeight = `${canvasLineHeight}px`;
+                    const pixels = [];
+                    const character = characters[Math.floor(Math.random() * characters.length)];
+                    for (let y = 0; y < canvasHeight; y++) {
+                        const row = document.createElement('div');
+                        pixels[y] = [];
+                        for (let x = 0; x < canvasWidth; x++) {
+                            const dot = document.createElement('span');
+                            dot.innerHTML = character;
+                            pixels[y][x] = dot;
+                            row.append(dot);
+                        }
+                        canvas.append(row);
+                    }
+
+                    let frameIndex = 0;
+                    const backgroundColors = ['#B6AE9F', '#FFA4A4', '#BADFDB', '#D97D55', '#6D94C5', '#F8FAB4', '#DA6C6C'];
+                    let backgroundColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+
+                    let lastTime = 0;
+                    const update = (timestamp = 0) => {
+                        if (timestamp >= lastTime + 100) {
+                            // duyệt qua mỗi frame và set màu cho từng pixel
+                            const frame = finalResult[frameIndex];
+                            for (let y = 0; y < canvasHeight; y++) {
+                                for (let x = 0; x < canvasWidth; x++) {
+                                    if (frame[y][x] === '#FFFFFF') {
+                                        pixels[y][x].style.color = backgroundColor;
+                                    } else {
+                                        pixels[y][x].style.color = frame[y][x];
+                                    }
+                                }
+                            }
+                            frameIndex++;
+                            frameIndex %= frameSize;
+                            if (frameIndex % 5 === 0) {
+                                backgroundColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+                            }
+                            lastTime = timestamp;
+                        }
+                        requestAnimationFrame(update);
+                    }
+                    update();
+
+                    // mấy cái nút
+                    const zoomInBtn = document.querySelector('.slot-23-btn.zoom-in');
+                    const zoomOutBtn = document.querySelector('.slot-23-btn.zoom-out');
+
+                    const zoom = (value) => {
+                        canvasFontSize += value;
+                        canvasLineHeight = canvasFontSize / 2;
+                        canvas.style.fontSize = `${canvasFontSize}px`;
+                        canvas.style.lineHeight = `${canvasLineHeight}px`;
+                    }
+                    zoomInBtn.addEventListener('click', () => zoom(3));
+                    zoomOutBtn.addEventListener('click', () => zoom(-3));
+                }
+
+                slot_23_run();
+            </script>
+        </div>
 
         <!-- == SLOT 24 == -->
-        <div id="slot-24"></div>
+        <div id="slot-24">
+            <style>
+                #slot-24 {
+                    --primary: #ff4458;
+                    --secondary: #ff8177;
+                    --success: #4caf50;
+                    --danger: #f44336;
+                    --dark: #1a1a2e;
+                    --light: #f8f9fa;
+                    --card-bg: #ffffff;
+                    --shadow: rgba(0,0,0,0.1);
+                    
+                    min-height: 100vh;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    padding: 20px;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                }
+
+                #slot-24 * {
+                    box-sizing: border-box;
+                }
+
+                #slot-24 .dating-app {
+                    max-width: 500px;
+                    margin: 0 auto;
+                    background: white;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                    overflow: hidden;
+                }
+
+                #slot-24 .app-header {
+                    background: linear-gradient(135deg, var(--primary), var(--secondary));
+                    color: white;
+                    padding: 20px;
+                    text-align: center;
+                    position: relative;
+                }
+
+                #slot-24 .app-header h1 {
+                    margin: 0;
+                    font-size: 28px;
+                    font-weight: 700;
+                }
+
+                #slot-24 .app-header .online-status {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    background: rgba(255,255,255,0.2);
+                    padding: 5px 12px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                }
+
+                #slot-24 .app-header .online-status::before {
+                    content: '';
+                    width: 8px;
+                    height: 8px;
+                    background: #4caf50;
+                    border-radius: 50%;
+                    animation: slot24-pulse 2s infinite;
+                }
+
+                @keyframes slot24-pulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.5; }
+                }
+
+                #slot-24 .screen {
+                    display: none;
+                    padding: 30px;
+                    min-height: 500px;
+                }
+
+                #slot-24 .screen.active {
+                    display: block;
+                }
+
+                #slot-24 .form-group {
+                    margin-bottom: 20px;
+                }
+
+                #slot-24 .form-group label {
+                    display: block;
+                    margin-bottom: 8px;
+                    font-weight: 600;
+                    color: var(--dark);
+                    font-size: 14px;
+                }
+
+                #slot-24 .form-group input,
+                #slot-24 .form-group select,
+                #slot-24 .form-group textarea {
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 10px;
+                    font-size: 14px;
+                    transition: border-color 0.3s;
+                    font-family: inherit;
+                }
+
+                #slot-24 .form-group input:focus,
+                #slot-24 .form-group select:focus,
+                #slot-24 .form-group textarea:focus {
+                    outline: none;
+                    border-color: var(--primary);
+                }
+
+                #slot-24 .form-group textarea {
+                    resize: vertical;
+                    min-height: 80px;
+                }
+
+                #slot-24 .btn {
+                    width: 100%;
+                    padding: 14px;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    background: linear-gradient(135deg, var(--primary), var(--secondary));
+                    color: white;
+                }
+
+                #slot-24 .btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 20px rgba(255,68,88,0.4);
+                }
+
+                #slot-24 .btn:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+
+                #slot-24 .btn-secondary {
+                    background: #e0e0e0;
+                    color: var(--dark);
+                }
+
+                #slot-24 .btn-secondary:hover {
+                    background: #d0d0d0;
+                    box-shadow: none;
+                }
+
+                #slot-24 .link-btn {
+                    background: none;
+                    border: none;
+                    color: var(--primary);
+                    cursor: pointer;
+                    font-size: 14px;
+                    margin-top: 10px;
+                    text-decoration: underline;
+                }
+
+                #slot-24 .error-msg {
+                    background: #ffebee;
+                    color: #c62828;
+                    padding: 12px;
+                    border-radius: 8px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                }
+
+                #slot-24 .success-msg {
+                    background: #e8f5e9;
+                    color: #2e7d32;
+                    padding: 12px;
+                    border-radius: 8px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                }
+
+                /* Swipe Card Styles */
+                #slot-24 .swipe-container {
+                    position: relative;
+                    height: 500px;
+                }
+
+                #slot-24 .swipe-card {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    background: white;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 30px var(--shadow);
+                    overflow: hidden;
+                    transition: transform 0.3s, opacity 0.3s;
+                }
+
+                #slot-24 .swipe-card.swiping {
+                    transition: none;
+                }
+
+                #slot-24 .card-image {
+                    width: 100%;
+                    height: 70%;
+                    object-fit: cover;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 48px;
+                    position: relative;
+                }
+
+                #slot-24 .card-image img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                #slot-24 .online-badge {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    transition: all 0.3s ease;
+                    z-index: 10;
+                }
+
+                #slot-24 .online-badge.online {
+                    background: rgba(76, 175, 80, 0.95);
+                    color: white;
+                    animation: slot24-pulse-badge 2s infinite;
+                }
+
+                #slot-24 .online-badge.offline {
+                    background: rgba(97, 97, 97, 0.95);
+                    color: white;
+                }
+
+                @keyframes slot24-pulse-badge {
+                    0%, 100% { 
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 0 rgba(76, 175, 80, 0.7);
+                    }
+                    50% { 
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 8px rgba(76, 175, 80, 0);
+                    }
+                }
+
+                #slot-24 .card-info {
+                    padding: 20px;
+                    height: 30%;
+                    overflow: auto;
+                }
+
+                #slot-24 .card-info h2 {
+                    margin: 0 0 10px 0;
+                    font-size: 24px;
+                    color: var(--dark);
+                }
+
+                #slot-24 .card-info p {
+                    margin: 5px 0;
+                    color: #666;
+                    font-size: 14px;
+                }
+
+                #slot-24 .swipe-buttons {
+                    display: flex;
+                    justify-content: center;
+                    gap: 30px;
+                    padding: 20px;
+                }
+
+                #slot-24 .swipe-btn {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s;
+                    box-shadow: 0 5px 15px var(--shadow);
+                }
+
+                #slot-24 .swipe-btn:hover {
+                    transform: scale(1.1);
+                }
+
+                #slot-24 .swipe-btn.nope {
+                    background: #f44336;
+                    color: white;
+                }
+
+                #slot-24 .swipe-btn.like {
+                    background: #4caf50;
+                    color: white;
+                }
+
+                #slot-24 .no-users {
+                    text-align: center;
+                    padding: 50px 20px;
+                    color: #666;
+                }
+
+                #slot-24 .no-users h3 {
+                    font-size: 24px;
+                    margin-bottom: 10px;
+                }
+
+                /* Match Modal */
+                #slot-24 .match-modal {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.9);
+                    z-index: 10000;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                #slot-24 .match-modal.show {
+                    display: flex;
+                }
+
+                #slot-24 .match-content {
+                    text-align: center;
+                    color: white;
+                    animation: slot24-matchPop 0.5s;
+                }
+
+                @keyframes slot24-matchPop {
+                    0% { transform: scale(0); opacity: 0; }
+                    50% { transform: scale(1.1); }
+                    100% { transform: scale(1); opacity: 1; }
+                }
+
+                #slot-24 .match-content h2 {
+                    font-size: 48px;
+                    margin: 0;
+                    color: var(--primary);
+                }
+
+                #slot-24 .match-content p {
+                    font-size: 24px;
+                    margin: 20px 0;
+                }
+
+                /* Matches List */
+                #slot-24 .matches-list {
+                    max-height: 500px;
+                    overflow-y: auto;
+                }
+
+                #slot-24 .match-item {
+                    display: flex;
+                    align-items: center;
+                    padding: 15px;
+                    border-bottom: 1px solid #e0e0e0;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                }
+
+                #slot-24 .match-item:hover {
+                    background: #f5f5f5;
+                }
+
+                #slot-24 .match-avatar {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, var(--primary), var(--secondary));
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin-right: 15px;
+                    overflow: hidden;
+                }
+
+                #slot-24 .match-avatar img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                #slot-24 .match-info {
+                    flex: 1;
+                }
+
+                #slot-24 .match-info h4 {
+                    margin: 0 0 5px 0;
+                    font-size: 16px;
+                }
+
+                #slot-24 .match-info p {
+                    margin: 0;
+                    color: #666;
+                    font-size: 14px;
+                }
+
+                /* Chat Screen */
+                #slot-24 .chat-header {
+                    display: flex;
+                    align-items: center;
+                    padding: 15px;
+                    border-bottom: 1px solid #e0e0e0;
+                    background: white;
+                }
+
+                #slot-24 .chat-messages {
+                    height: 400px;
+                    overflow-y: auto;
+                    padding: 20px;
+                    background: #f5f5f5;
+                }
+
+                #slot-24 .message {
+                    margin-bottom: 15px;
+                    display: flex;
+                }
+
+                #slot-24 .message.sent {
+                    justify-content: flex-end;
+                }
+
+                #slot-24 .message-bubble {
+                    max-width: 70%;
+                    padding: 12px 16px;
+                    border-radius: 18px;
+                    word-wrap: break-word;
+                }
+
+                #slot-24 .message.sent .message-bubble {
+                    background: linear-gradient(135deg, var(--primary), var(--secondary));
+                    color: white;
+                }
+
+                #slot-24 .message.received .message-bubble {
+                    background: white;
+                    color: var(--dark);
+                }
+
+                #slot-24 .chat-input {
+                    display: flex;
+                    padding: 15px;
+                    background: white;
+                    border-top: 1px solid #e0e0e0;
+                }
+
+                #slot-24 .chat-input input {
+                    flex: 1;
+                    padding: 12px;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 25px;
+                    margin-right: 10px;
+                }
+
+                #slot-24 .chat-input button {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: none;
+                    background: linear-gradient(135deg, var(--primary), var(--secondary));
+                    color: white;
+                    cursor: pointer;
+                    font-size: 20px;
+                }
+
+                #slot-24 .video-controls {
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 10px;
+                }
+
+                #slot-24 .video-controls button {
+                    flex: 1;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 8px;
+                    background: var(--primary);
+                    color: white;
+                    cursor: pointer;
+                    font-size: 14px;
+                }
+
+                /* Photo Upload */
+                #slot-24 .photo-upload {
+                    border: 2px dashed #e0e0e0;
+                    border-radius: 10px;
+                    padding: 30px;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                }
+
+                #slot-24 .photo-upload:hover {
+                    border-color: var(--primary);
+                    background: #f5f5f5;
+                }
+
+                #slot-24 .photo-preview {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 10px;
+                    margin-top: 15px;
+                }
+
+                #slot-24 .photo-preview-item {
+                    position: relative;
+                    padding-top: 100%;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    background: #f5f5f5;
+                }
+
+                #slot-24 .photo-preview-item img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                #slot-24 .photo-preview-item .remove {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    background: rgba(0,0,0,0.7);
+                    color: white;
+                    border: none;
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+
+                /* Navigation */
+                #slot-24 .nav-tabs {
+                    display: flex;
+                    border-bottom: 2px solid #e0e0e0;
+                    margin-bottom: 20px;
+                }
+
+                #slot-24 .nav-tab {
+                    flex: 1;
+                    padding: 15px;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #666;
+                    transition: all 0.3s;
+                }
+
+                #slot-24 .nav-tab.active {
+                    color: var(--primary);
+                    border-bottom: 3px solid var(--primary);
+                }
+
+                /* Loading */
+                #slot-24 .loading {
+                    text-align: center;
+                    padding: 50px;
+                    color: #666;
+                }
+
+                #slot-24 .spinner {
+                    border: 3px solid #f3f3f3;
+                    border-top: 3px solid var(--primary);
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    animation: slot24-spin 1s linear infinite;
+                    margin: 0 auto 20px;
+                }
+
+                @keyframes slot24-spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+
+                /* Video Call */
+                #slot-24 .video-call-modal {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.95);
+                    z-index: 10000;
+                }
+
+                #slot-24 .video-call-modal.show {
+                    display: block;
+                }
+
+                #slot-24 .video-container {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                #slot-24 .remote-video {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+
+                #slot-24 .local-video {
+                    position: absolute;
+                    bottom: 20px;
+                    right: 20px;
+                    width: 150px;
+                    height: 200px;
+                    object-fit: cover;
+                    border-radius: 10px;
+                    border: 2px solid white;
+                }
+
+                #slot-24 .call-controls {
+                    position: absolute;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    gap: 20px;
+                }
+
+                #slot-24 .call-btn {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 24px;
+                    color: white;
+                    transition: all 0.3s;
+                }
+
+                #slot-24 .call-btn.hangup {
+                    background: #f44336;
+                }
+
+                #slot-24 .call-btn.mute {
+                    background: #666;
+                }
+
+                #slot-24 .call-btn.video {
+                    background: #2196f3;
+                }
+
+                /* Responsive */
+                @media (max-width: 600px) {
+                    #slot-24 {
+                        padding: 0;
+                    }
+
+                    #slot-24 .dating-app {
+                        border-radius: 0;
+                        max-width: 100%;
+                    }
+                }
+            </style>
+
+            <div class="dating-app">
+                <div class="app-header">
+                    <h1>💕 ChaosDating</h1>
+                    <div class="online-status">
+                        <span id="slot24-online-count">0</span> trực tuyến
+                    </div>
+                </div>
+
+                <!-- Login Screen -->
+                <div id="slot24-login-screen" class="screen active">
+                    <h2>Kết Nối Đàn Chim Việt</h2>
+                    <div id="slot24-login-error" class="error-msg" style="display:none;"></div>
+                    <form id="slot24-login-form">
+                        <div class="form-group">
+                            <label>Tên đăng nhập</label>
+                            <input type="text" id="slot24-login-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
+                            <input type="password" id="slot24-login-password" required>
+                        </div>
+                        <div class="form-group" style="display:flex;align-items:center;gap:8px;">
+                            <input type="checkbox" id="slot24-remember-me" style="width:auto;margin:0;">
+                            <label for="slot24-remember-me" style="margin:0;cursor:pointer;user-select:none;">
+                                Ghi nhớ đăng nhập (3 ngày)
+                            </label>
+                        </div>
+                        <button type="submit" class="btn">Đăng nhập</button>
+                        <button type="button" class="link-btn" onclick="slot24App.showRegister()">
+                            Chưa có tài khoản? Đăng ký ngay
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Register Screen -->
+                <div id="slot24-register-screen" class="screen">
+                    <h2>Tạo Tài Khoản</h2>
+                    <div id="slot24-register-error" class="error-msg" style="display:none;"></div>
+                    <form id="slot24-register-form">
+                        <div class="form-group">
+                            <label>Tên đăng nhập</label>
+                            <input type="text" id="slot24-register-username" required minlength="3" placeholder="Tối thiểu 3 ký tự">
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
+                            <input type="password" id="slot24-register-password" required minlength="6" placeholder="Tối thiểu 6 ký tự">
+                        </div>
+                        <div class="form-group">
+                            <label>Giới tính</label>
+                            <select id="slot24-register-gender" required>
+                                <option value="">Chọn giới tính...</option>
+                                <option value="male">Nam</option>
+                                <option value="female">Nữ</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quan tâm đến</label>
+                            <select id="slot24-register-interested" required>
+                                <option value="">Chọn...</option>
+                                <option value="male">Nam</option>
+                                <option value="female">Nữ</option>
+                                <option value="both">Cả hai</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tuổi</label>
+                            <input type="number" id="slot24-register-age" min="18" max="100" placeholder="Từ 18 tuổi trở lên">
+                        </div>
+                        <div class="form-group">
+                            <label>Giới thiệu bản thân</label>
+                            <textarea id="slot24-register-bio" placeholder="Hãy kể về bản thân bạn..."></textarea>
+                        </div>
+                        <button type="submit" class="btn">Đăng ký</button>
+                        <button type="button" class="link-btn" onclick="slot24App.showLogin()">
+                            Đã có tài khoản? Đăng nhập
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Profile Setup Screen -->
+                <div id="slot24-profile-screen" class="screen">
+                    <h2>Thiết Lập Hồ Sơ</h2>
+                    <div class="form-group">
+                        <label>Tải lên ảnh (tối đa 6 ảnh)</label>
+                        <div class="photo-upload" onclick="document.getElementById('slot24-photo-input').click()">
+                            <div>📸 Nhấn để tải ảnh lên</div>
+                            <small>JPG, PNG, tối đa 2MB mỗi ảnh</small>
+                        </div>
+                        <input type="file" id="slot24-photo-input" multiple accept="image/*" style="display:none;">
+                        <div id="slot24-photo-preview" class="photo-preview"></div>
+                    </div>
+                    <button class="btn" onclick="slot24App.saveProfile()">Lưu & Bắt Đầu Khám Phá</button>
+                </div>
+
+                <!-- Main App Screen -->
+                <div id="slot24-main-screen" class="screen">
+                    <div class="nav-tabs">
+                        <button class="nav-tab active" onclick="slot24App.showTab('swipe')">🔥 Khám Phá</button>
+                        <button class="nav-tab" onclick="slot24App.showTab('matches')">💬 Kết Nối</button>
+                        <button class="nav-tab" onclick="slot24App.showTab('profile')">👤 Hồ Sơ</button>
+                    </div>
+
+                    <!-- Swipe Tab -->
+                    <div id="slot24-swipe-tab" class="tab-content">
+                        <div id="slot24-swipe-container" class="swipe-container"></div>
+                        <div id="slot24-no-users" class="no-users" style="display:none;">
+                            <h3>😔 Không có ai trực tuyến</h3>
+                            <p>Hãy quay lại sau khi có nhiều người online hơn nhé!</p>
+                        </div>
+                        <div class="swipe-buttons">
+                            <button class="swipe-btn nope" onclick="slot24App.swipe('left')">✖</button>
+                            <button class="swipe-btn like" onclick="slot24App.swipe('right')">❤</button>
+                        </div>
+                    </div>
+
+                    <!-- Matches Tab -->
+                    <div id="slot24-matches-tab" class="tab-content" style="display:none;">
+                        <div id="slot24-matches-list" class="matches-list"></div>
+                    </div>
+
+                    <!-- Profile Tab -->
+                    <div id="slot24-profile-tab" class="tab-content" style="display:none;">
+                        <div id="slot24-profile-view">
+                            <!-- Profile display mode -->
+                            <div id="slot24-profile-display"></div>
+                            <button class="btn" onclick="slot24App.showEditProfile()" style="margin-top:20px;">Chỉnh Sửa Hồ Sơ</button>
+                            <button class="btn" onclick="slot24App.showChangePassword()" style="margin-top:10px;background:#ff9800;">🔐 Đổi Mật Khẩu</button>
+                            <button class="btn btn-secondary" onclick="slot24App.logout()" style="margin-top:10px;">Đăng xuất</button>
+                        </div>
+                        
+                        <div id="slot24-change-password" style="display:none;">
+                            <!-- Change password mode -->
+                            <h3 style="margin-bottom:20px;">🔐 Đổi Mật Khẩu</h3>
+                            <div id="slot24-password-error" class="error-msg" style="display:none;"></div>
+                            <div id="slot24-password-success" class="success-msg" style="display:none;"></div>
+                            
+                            <div class="form-group">
+                                <label>Mật khẩu hiện tại</label>
+                                <input type="password" id="slot24-current-password" placeholder="Nhập mật khẩu hiện tại">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Mật khẩu mới</label>
+                                <input type="password" id="slot24-new-password" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Xác nhận mật khẩu mới</label>
+                                <input type="password" id="slot24-confirm-password" placeholder="Nhập lại mật khẩu mới">
+                            </div>
+                            
+                            <div style="background:#fff3cd;padding:12px;border-radius:8px;margin:15px 0;font-size:13px;color:#856404;border:1px solid #ffeaa7;">
+                                <strong>⚠️ Lưu ý:</strong>
+                                <ul style="margin:8px 0 0 20px;padding:0;">
+                                    <li>Mật khẩu phải có ít nhất 6 ký tự</li>
+                                    <li>Nên dùng kết hợp chữ, số và ký tự đặc biệt</li>
+                                    <li>Không chia sẻ mật khẩu với người khác</li>
+                                </ul>
+                            </div>
+                            
+                            <button class="btn" onclick="slot24App.saveNewPassword()" style="background:#ff9800;">💾 Đổi Mật Khẩu</button>
+                            <button class="btn btn-secondary" onclick="slot24App.cancelChangePassword()" style="margin-top:10px;">Hủy</button>
+                        </div>
+                        
+                        <div id="slot24-profile-edit" style="display:none;">
+                            <!-- Profile edit mode -->
+                            <h3 style="margin-bottom:20px;">Chỉnh Sửa Hồ Sơ</h3>
+                            <div id="slot24-edit-error" class="error-msg" style="display:none;"></div>
+                            <div id="slot24-edit-success" class="success-msg" style="display:none;"></div>
+                            
+                            <div class="form-group">
+                                <label>Tên đăng nhập</label>
+                                <input type="text" id="slot24-edit-username" disabled style="background:#f5f5f5;cursor:not-allowed;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Giới tính</label>
+                                <select id="slot24-edit-gender">
+                                    <option value="male">Nam</option>
+                                    <option value="female">Nữ</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Quan tâm đến</label>
+                                <select id="slot24-edit-interested">
+                                    <option value="male">Nam</option>
+                                    <option value="female">Nữ</option>
+                                    <option value="both">Cả hai</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Tuổi</label>
+                                <input type="number" id="slot24-edit-age" min="18" max="100">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Giới thiệu bản thân</label>
+                                <textarea id="slot24-edit-bio" placeholder="Hãy kể về bản thân bạn..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Ảnh đại diện (tối đa 6 ảnh)</label>
+                                <div class="photo-upload" onclick="document.getElementById('slot24-edit-photo-input').click()">
+                                    <div>📸 Nhấn để thay đổi ảnh</div>
+                                    <small>JPG, PNG, tối đa 2MB mỗi ảnh</small>
+                                </div>
+                                <input type="file" id="slot24-edit-photo-input" multiple accept="image/*" style="display:none;">
+                                <div id="slot24-edit-photo-preview" class="photo-preview"></div>
+                            </div>
+                            
+                            <button class="btn" onclick="slot24App.saveProfileUpdate()">💾 Lưu Thay Đổi</button>
+                            <button class="btn btn-secondary" onclick="slot24App.cancelEditProfile()" style="margin-top:10px;">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Screen -->
+                <div id="slot24-chat-screen" class="screen">
+                    <div class="chat-header">
+                        <button class="btn-secondary" onclick="slot24App.closeChat()" style="width:auto;padding:8px 15px;margin-right:15px;">← Quay lại</button>
+                        <div class="match-avatar" id="slot24-chat-avatar"></div>
+                        <div class="match-info">
+                            <h4 id="slot24-chat-name"></h4>
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button onclick="slot24App.startVideoCall()">📹 Gọi Video</button>
+                        <button onclick="slot24App.startAudioCall()">📞 Gọi Thoại</button>
+                    </div>
+                    <div id="slot24-chat-messages" class="chat-messages"></div>
+                    <div class="chat-input">
+                        <input type="text" id="slot24-message-input" placeholder="Nhập tin nhắn...">
+                        <button onclick="slot24App.sendMessage()">➤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Match Modal -->
+            <div id="slot24-match-modal" class="match-modal">
+                <div class="match-content">
+                    <h2>💖 Kết Nối Thành Công!</h2>
+                    <p>Bạn và <span id="slot24-match-name"></span> đã thích nhau</p>
+                    <button class="btn" onclick="slot24App.closeMatchModal()" style="max-width:200px;margin:20px auto;">Tiếp Tục Khám Phá</button>
+                    <button class="btn btn-secondary" onclick="slot24App.openMatchChat()" style="max-width:200px;margin:10px auto;">Gửi Tin Nhắn</button>
+                </div>
+            </div>
+
+            <!-- Video Call Modal -->
+            <div id="slot24-video-call-modal" class="video-call-modal">
+                <div class="video-container">
+                    <video id="slot24-remote-video" class="remote-video" autoplay playsinline></video>
+                    <video id="slot24-local-video" class="local-video" autoplay muted playsinline></video>
+                    <div class="call-controls">
+                        <button class="call-btn mute" id="slot24-mute-btn" onclick="slot24App.toggleMute()">🎤</button>
+                        <button class="call-btn hangup" onclick="slot24App.endCall()">📞</button>
+                        <button class="call-btn video" id="slot24-video-btn" onclick="slot24App.toggleVideo()">📹</button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                const slot24App = {
+                    ws: null,
+                    currentUser: null,
+                    currentMatch: null,
+                    potentialMatches: [],
+                    currentMatchIndex: 0,
+                    userMatches: [],
+                    photos: [],
+                    peerConnection: null,
+                    localStream: null,
+                    isAudioMuted: false,
+                    isVideoOff: false,
+                    onlineUserIds: [],
+                    SERVER_URL: 'https://dating.van.moe',
+                    WS_URL: 'wss://dating.van.moe',
+
+                    // Cookie utilities for secure authentication
+                    setCookie(name, value, days) {
+                        const date = new Date();
+                        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                        const expires = `expires=${date.toUTCString()}`;
+                        // Secure cookie with SameSite and Secure flags
+                        document.cookie = `${name}=${value};${expires};path=/;SameSite=Strict;Secure`;
+                    },
+
+                    getCookie(name) {
+                        const nameEQ = name + "=";
+                        const ca = document.cookie.split(';');
+                        for(let i = 0; i < ca.length; i++) {
+                            let c = ca[i];
+                            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+                        }
+                        return null;
+                    },
+
+                    deleteCookie(name) {
+                        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+                    },
+
+                    // Encrypt/decrypt utilities for secure storage
+                    encryptData(data) {
+                        // Simple Base64 encoding with obfuscation
+                        const jsonStr = JSON.stringify(data);
+                        const encoded = btoa(encodeURIComponent(jsonStr));
+                        // Add random prefix for additional security
+                        const prefix = Math.random().toString(36).substring(7);
+                        return `${prefix}:${encoded}`;
+                    },
+
+                    decryptData(encrypted) {
+                        try {
+                            if (!encrypted || !encrypted.includes(':')) return null;
+                            const parts = encrypted.split(':');
+                            const encoded = parts[1];
+                            const jsonStr = decodeURIComponent(atob(encoded));
+                            return JSON.parse(jsonStr);
+                        } catch (e) {
+                            console.error('Decrypt error:', e);
+                            return null;
+                        }
+                    },
+
+                    async checkAutoLogin() {
+                        const authToken = this.getCookie('dating_auth_token');
+                        if (!authToken) return false;
+
+                        const userData = this.decryptData(authToken);
+                        if (!userData || !userData.userId || !userData.username) {
+                            this.deleteCookie('dating_auth_token');
+                            return false;
+                        }
+
+                        // Verify token with server
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/verify-token`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ 
+                                    userId: userData.userId,
+                                    username: userData.username
+                                })
+                            });
+
+                            const data = await response.json();
+                            
+                            if (data.success && data.user) {
+                                this.currentUser = data.user;
+                                this.connectWebSocket();
+                                this.showScreen('main');
+                                console.log('✅ Auto-login successful');
+                                return true;
+                            } else {
+                                this.deleteCookie('dating_auth_token');
+                                return false;
+                            }
+                        } catch (error) {
+                            console.error('Auto-login error:', error);
+                            this.deleteCookie('dating_auth_token');
+                            return false;
+                        }
+                    },
+
+                    saveAuthToken(userId, username, remember) {
+                        if (remember) {
+                            const tokenData = { userId, username, timestamp: Date.now() };
+                            const encrypted = this.encryptData(tokenData);
+                            this.setCookie('dating_auth_token', encrypted, 3); // 3 days
+                            console.log('🔐 Auth token saved (3 days)');
+                        } else {
+                            // Session only - delete when browser closes
+                            this.deleteCookie('dating_auth_token');
+                        }
+                    },
+
+                    init() {
+                        this.setupEventListeners();
+                        // Check for auto-login
+                        this.checkAutoLogin();
+                    },
+
+                    setupEventListeners() {
+                        // Login form
+                        document.getElementById('slot24-login-form').addEventListener('submit', (e) => {
+                            e.preventDefault();
+                            this.login();
+                        });
+
+                        // Register form
+                        document.getElementById('slot24-register-form').addEventListener('submit', (e) => {
+                            e.preventDefault();
+                            this.register();
+                        });
+
+                        // Photo upload
+                        document.getElementById('slot24-photo-input').addEventListener('change', (e) => {
+                            this.handlePhotoUpload(e);
+                        });
+
+                        // Message input
+                        document.getElementById('slot24-message-input').addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                this.sendMessage();
+                            }
+                        });
+                    },
+
+                    async login() {
+                        const username = document.getElementById('slot24-login-username').value;
+                        const password = document.getElementById('slot24-login-password').value;
+                        const rememberMe = document.getElementById('slot24-remember-me').checked;
+
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/login`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ username, password })
+                            });
+
+                            const data = await response.json();
+
+                            if (data.success) {
+                                this.currentUser = data.user;
+                                
+                                // Save auth token if remember me is checked
+                                this.saveAuthToken(data.user.id, data.user.username, rememberMe);
+                                
+                                this.connectWebSocket();
+                                this.showScreen('main');
+                                this.loadMatches();
+                                this.loadPotentialMatches();
+                            } else {
+                                this.showError('login', data.error);
+                            }
+                        } catch (error) {
+                            this.showError('login', 'Lỗi kết nối. Vui lòng kiểm tra server đã chạy chưa!');
+                        }
+                    },
+
+                    async register() {
+                        const username = document.getElementById('slot24-register-username').value;
+                        const password = document.getElementById('slot24-register-password').value;
+                        const gender = document.getElementById('slot24-register-gender').value;
+                        const interested_in = document.getElementById('slot24-register-interested').value;
+                        const age = document.getElementById('slot24-register-age').value;
+                        const bio = document.getElementById('slot24-register-bio').value;
+
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/register`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ username, password, gender, interested_in, age, bio })
+                            });
+
+                            const data = await response.json();
+
+                            if (data.success) {
+                                this.showScreen('profile');
+                                this.currentUser = { id: data.userId, username, gender, interested_in, age, bio };
+                            } else {
+                                this.showError('register', data.error);
+                            }
+                        } catch (error) {
+                            this.showError('register', 'Lỗi kết nối. Vui lòng kiểm tra server đã chạy chưa!');
+                        }
+                    },
+
+                    async saveProfile() {
+                        try {
+                            await fetch(`${this.SERVER_URL}/api/profile/update`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    userId: this.currentUser.id,
+                                    bio: this.currentUser.bio,
+                                    age: this.currentUser.age,
+                                    photos: this.photos
+                                })
+                            });
+
+                            this.connectWebSocket();
+                            this.showScreen('main');
+                            this.loadMatches();
+                            this.loadPotentialMatches();
+                        } catch (error) {
+                            console.error('Save profile error:', error);
+                        }
+                    },
+
+                    connectWebSocket() {
+                        if (!this.currentUser) {
+                            console.warn('Cannot connect WebSocket: no user logged in');
+                            return;
+                        }
+
+                        console.log(`🔌 Connecting to WebSocket: ${this.WS_URL}`);
+                        
+                        try {
+                            this.ws = new WebSocket(this.WS_URL);
+
+                            this.ws.onopen = () => {
+                                console.log('✅ WebSocket connected successfully');
+                                this.ws.send(JSON.stringify({
+                                    type: 'auth',
+                                    userId: this.currentUser.id
+                                }));
+                            };
+
+                            this.ws.onmessage = (event) => {
+                                const data = JSON.parse(event.data);
+                                this.handleWebSocketMessage(data);
+                            };
+
+                            this.ws.onerror = (error) => {
+                                console.error('❌ WebSocket error:', error);
+                                console.error('URL:', this.WS_URL);
+                                console.error('Hãy kiểm tra:');
+                                console.error('1. Server backend đã chạy chưa?');
+                                console.error('2. Cloudflare đã enable WebSocket chưa?');
+                                console.error('3. Port có được Cloudflare hỗ trợ không? (80, 443, 8080, 8880, 2052-2096)');
+                            };
+
+                            this.ws.onclose = (event) => {
+                                console.log(`🔌 WebSocket disconnected (code: ${event.code}, reason: ${event.reason})`);
+                                
+                                // Chỉ reconnect nếu user vẫn đăng nhập
+                                if (this.currentUser) {
+                                    console.log('🔄 Reconnecting in 3 seconds...');
+                                    setTimeout(() => this.connectWebSocket(), 3000);
+                                }
+                            };
+                        } catch (error) {
+                            console.error('❌ Failed to create WebSocket:', error);
+                        }
+                    },
+
+                    handleWebSocketMessage(data) {
+                        switch (data.type) {
+                            case 'auth_success':
+                                console.log('Authenticated');
+                                break;
+                            case 'online_users':
+                                document.getElementById('slot24-online-count').textContent = data.count;
+                                // Lưu danh sách user IDs đang online
+                                this.onlineUserIds = data.userIds || [];
+                                // Cập nhật trạng thái online/offline cho current match nếu đang hiển thị
+                                this.updateCurrentMatchOnlineStatus();
+                                break;
+                            case 'match':
+                                this.handleMatch(data);
+                                break;
+                            case 'chat_message':
+                                this.handleChatMessage(data);
+                                break;
+                            case 'webrtc_offer':
+                            case 'webrtc_answer':
+                            case 'webrtc_ice_candidate':
+                                this.handleWebRTCSignaling(data);
+                                break;
+                        }
+                    },
+
+                    updateCurrentMatchOnlineStatus() {
+                        // Cập nhật badge online/offline realtime
+                        const badge = document.querySelector('#slot-24 .swipe-card .online-badge');
+                        if (badge && this.currentMatchIndex < this.potentialMatches.length) {
+                            const match = this.potentialMatches[this.currentMatchIndex];
+                            const isOnline = this.onlineUserIds.includes(match.id);
+                            
+                            badge.className = isOnline ? 'online-badge online' : 'online-badge offline';
+                            badge.textContent = isOnline ? '🟢 Online' : '⚫ Offline';
+                        }
+                    },
+
+                    async loadPotentialMatches() {
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/matches/potential/${this.currentUser.id}`);
+                            const data = await response.json();
+
+                            if (data.success) {
+                                this.potentialMatches = data.matches;
+                                this.currentMatchIndex = 0;
+                                this.displayCurrentMatch();
+                            }
+                        } catch (error) {
+                            console.error('Load potential matches error:', error);
+                        }
+                    },
+
+                    displayCurrentMatch() {
+                        const container = document.getElementById('slot24-swipe-container');
+                        const noUsers = document.getElementById('slot24-no-users');
+
+                        if (this.currentMatchIndex >= this.potentialMatches.length) {
+                            container.innerHTML = '';
+                            noUsers.style.display = 'block';
+                            noUsers.innerHTML = '<h3>😔 Hết người để khám phá</h3><p>Hãy quay lại sau nhé!</p>';
+                            return;
+                        }
+
+                        noUsers.style.display = 'none';
+                        const match = this.potentialMatches[this.currentMatchIndex];
+                        
+                        const photos = match.photos || [];
+                        const photoUrl = photos.length > 0 ? photos[0] : null;
+                        
+                        // Check trạng thái online/offline
+                        const isOnline = this.onlineUserIds.includes(match.id) || match.isOnline;
+                        const onlineClass = isOnline ? 'online' : 'offline';
+                        const onlineText = isOnline ? '🟢 Online' : '⚫ Offline';
+
+                        container.innerHTML = `
+                            <div class="swipe-card">
+                                <div class="card-image">
+                                    ${photoUrl ? `<img src="${photoUrl}" alt="${match.username}">` : '👤'}
+                                    <div class="online-badge ${onlineClass}">${onlineText}</div>
+                                </div>
+                                <div class="card-info">
+                                    <h2>${match.username}, ${match.age || '?'}</h2>
+                                    <p>${match.bio || 'Chưa có giới thiệu'}</p>
+                                </div>
+                            </div>
+                        `;
+                    },
+
+                    async swipe(direction) {
+                        if (this.currentMatchIndex >= this.potentialMatches.length) return;
+
+                        const match = this.potentialMatches[this.currentMatchIndex];
+
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/swipe`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    swiperId: this.currentUser.id,
+                                    swipedId: match.id,
+                                    direction
+                                })
+                            });
+
+                            const data = await response.json();
+
+                            if (data.isMatch) {
+                                // Match will be handled by WebSocket
+                            }
+
+                            this.currentMatchIndex++;
+                            this.displayCurrentMatch();
+                        } catch (error) {
+                            console.error('Swipe error:', error);
+                        }
+                    },
+
+                    handleMatch(data) {
+                        const matchedUserId = data.matchedUserId;
+                        const matchedUser = this.potentialMatches.find(m => m.id === matchedUserId);
+                        
+                        if (matchedUser) {
+                            document.getElementById('slot24-match-name').textContent = matchedUser.username;
+                            document.getElementById('slot24-match-modal').classList.add('show');
+                            this.currentMatch = { ...data, user: matchedUser };
+                        }
+
+                        this.loadMatches();
+                    },
+
+                    closeMatchModal() {
+                        document.getElementById('slot24-match-modal').classList.remove('show');
+                    },
+
+                    openMatchChat() {
+                        this.closeMatchModal();
+                        if (this.currentMatch) {
+                            this.openChat(this.currentMatch.matchId, this.currentMatch.user);
+                        }
+                    },
+
+                    async loadMatches() {
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/matches/${this.currentUser.id}`);
+                            const data = await response.json();
+
+                            if (data.success) {
+                                this.userMatches = data.matches;
+                                this.displayMatches();
+                            }
+                        } catch (error) {
+                            console.error('Load matches error:', error);
+                        }
+                    },
+
+                    displayMatches() {
+                        const list = document.getElementById('slot24-matches-list');
+                        
+                        if (this.userMatches.length === 0) {
+                            list.innerHTML = '<div class="no-users"><h3>Chưa có kết nối nào</h3><p>Hãy bắt đầu quẹt để tìm người phù hợp!</p></div>';
+                            return;
+                        }
+
+                        list.innerHTML = this.userMatches.map(match => {
+                            const photos = match.matched_photos || [];
+                            const photoUrl = photos.length > 0 ? photos[0] : null;
+                            
+                            // Check trạng thái online/offline
+                            const isOnline = this.onlineUserIds.includes(match.matched_user_id);
+                            const onlineIndicator = isOnline ? '🟢' : '⚫';
+
+                            return `
+                                <div class="match-item" onclick="slot24App.openChat('${match.match_id}', ${JSON.stringify(match).replace(/"/g, '&quot;')})">
+                                    <div class="match-avatar">
+                                        ${photoUrl ? `<img src="${photoUrl}">` : match.matched_username.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div class="match-info">
+                                        <h4>${onlineIndicator} ${match.matched_username}</h4>
+                                        <p>${match.matched_bio || 'Chưa có giới thiệu'}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    },
+
+                    async openChat(matchId, matchUser) {
+                        // Chuẩn hóa cấu trúc data cho cả 2 trường hợp:
+                        // 1. Từ displayMatches: có matched_user_id, matched_username, matched_photos
+                        // 2. Từ handleMatch: có id, username, photos
+                        const userId = matchUser.matched_user_id || matchUser.id;
+                        const username = matchUser.matched_username || matchUser.username;
+                        const photos = matchUser.matched_photos || matchUser.photos || [];
+                        const bio = matchUser.matched_bio || matchUser.bio;
+                        
+                        this.currentMatch = { 
+                            matchId, 
+                            user: matchUser,
+                            recipientId: userId,  // Lưu rõ ràng recipientId
+                            recipientName: username
+                        };
+                        
+                        const photoUrl = photos.length > 0 ? photos[0] : null;
+
+                        document.getElementById('slot24-chat-name').textContent = username;
+                        document.getElementById('slot24-chat-avatar').innerHTML = photoUrl ? 
+                            `<img src="${photoUrl}">` : 
+                            username.charAt(0).toUpperCase();
+
+                        this.showScreen('chat');
+                        await this.loadChatHistory(matchId);
+                    },
+
+                    async loadChatHistory(matchId) {
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/chat/${matchId}`);
+                            const data = await response.json();
+
+                            if (data.success) {
+                                const container = document.getElementById('slot24-chat-messages');
+                                container.innerHTML = data.messages.map(msg => `
+                                    <div class="message ${msg.sender_id === this.currentUser.id ? 'sent' : 'received'}">
+                                        <div class="message-bubble">${msg.content}</div>
+                                    </div>
+                                `).join('');
+                                container.scrollTop = container.scrollHeight;
+                            }
+                        } catch (error) {
+                            console.error('Load chat history error:', error);
+                        }
+                    },
+
+                    sendMessage() {
+                        const input = document.getElementById('slot24-message-input');
+                        const content = input.value.trim();
+
+                        if (!content || !this.currentMatch) {
+                            console.warn('Cannot send message: no content or no match selected');
+                            return;
+                        }
+
+                        // Kiểm tra WebSocket đã kết nối chưa
+                        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+                            alert('❌ Mất kết nối. Đang kết nối lại...');
+                            this.connectWebSocket();
+                            return;
+                        }
+
+                        console.log('Sending message to:', this.currentMatch.recipientId);
+
+                        this.ws.send(JSON.stringify({
+                            type: 'chat_message',
+                            matchId: this.currentMatch.matchId,
+                            recipientId: this.currentMatch.recipientId,  // Sử dụng recipientId đã chuẩn hóa
+                            content
+                        }));
+
+                        // Add message to UI
+                        const container = document.getElementById('slot24-chat-messages');
+                        container.innerHTML += `
+                            <div class="message sent">
+                                <div class="message-bubble">${content}</div>
+                            </div>
+                        `;
+                        container.scrollTop = container.scrollHeight;
+
+                        input.value = '';
+                    },
+
+                    handleChatMessage(data) {
+                        if (this.currentMatch && data.matchId === this.currentMatch.matchId) {
+                            const container = document.getElementById('slot24-chat-messages');
+                            container.innerHTML += `
+                                <div class="message received">
+                                    <div class="message-bubble">${data.content}</div>
+                                </div>
+                            `;
+                            container.scrollTop = container.scrollHeight;
+                        }
+                    },
+
+                    async startVideoCall() {
+                        await this.initializeCall(true);
+                    },
+
+                    async startAudioCall() {
+                        await this.initializeCall(false);
+                    },
+
+                    async initializeCall(video) {
+                        try {
+                            this.localStream = await navigator.mediaDevices.getUserMedia({
+                                video: video,
+                                audio: true
+                            });
+
+                            document.getElementById('slot24-local-video').srcObject = this.localStream;
+                            document.getElementById('slot24-video-call-modal').classList.add('show');
+
+                            this.peerConnection = new RTCPeerConnection({
+                                iceServers: [
+                                    { urls: 'stun:stun.l.google.com:19302' }
+                                ]
+                            });
+
+                            this.localStream.getTracks().forEach(track => {
+                                this.peerConnection.addTrack(track, this.localStream);
+                            });
+
+                            this.peerConnection.ontrack = (event) => {
+                                document.getElementById('slot24-remote-video').srcObject = event.streams[0];
+                            };
+
+                            this.peerConnection.onicecandidate = (event) => {
+                                if (event.candidate) {
+                                    this.ws.send(JSON.stringify({
+                                        type: 'webrtc_ice_candidate',
+                                        targetUserId: this.currentMatch.recipientId,
+                                        candidate: event.candidate
+                                    }));
+                                }
+                            };
+
+                            const offer = await this.peerConnection.createOffer();
+                            await this.peerConnection.setLocalDescription(offer);
+
+                            this.ws.send(JSON.stringify({
+                                type: 'webrtc_offer',
+                                targetUserId: this.currentMatch.recipientId,
+                                offer: offer
+                            }));
+                        } catch (error) {
+                            console.error('Call initialization error:', error);
+                            this.showError('Không thể truy cập camera/microphone. Vui lòng cấp quyền!');
+                        }
+                    },
+
+                    async handleWebRTCSignaling(data) {
+                        if (!this.peerConnection) {
+                            // Incoming call
+                            await this.initializeCall(true);
+                        }
+
+                        if (data.type === 'webrtc_offer') {
+                            await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+                            const answer = await this.peerConnection.createAnswer();
+                            await this.peerConnection.setLocalDescription(answer);
+
+                            this.ws.send(JSON.stringify({
+                                type: 'webrtc_answer',
+                                targetUserId: data.fromUserId,
+                                answer: answer
+                            }));
+                        } else if (data.type === 'webrtc_answer') {
+                            await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+                        } else if (data.type === 'webrtc_ice_candidate') {
+                            await this.peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+                        }
+                    },
+
+                    endCall() {
+                        if (this.localStream) {
+                            this.localStream.getTracks().forEach(track => track.stop());
+                        }
+
+                        if (this.peerConnection) {
+                            this.peerConnection.close();
+                            this.peerConnection = null;
+                        }
+
+                        document.getElementById('slot24-video-call-modal').classList.remove('show');
+                    },
+
+                    toggleMute() {
+                        if (this.localStream) {
+                            const audioTrack = this.localStream.getAudioTracks()[0];
+                            audioTrack.enabled = !audioTrack.enabled;
+                            this.isAudioMuted = !audioTrack.enabled;
+                            document.getElementById('slot24-mute-btn').textContent = this.isAudioMuted ? '🔇' : '🎤';
+                        }
+                    },
+
+                    toggleVideo() {
+                        if (this.localStream) {
+                            const videoTrack = this.localStream.getVideoTracks()[0];
+                            if (videoTrack) {
+                                videoTrack.enabled = !videoTrack.enabled;
+                                this.isVideoOff = !videoTrack.enabled;
+                                document.getElementById('slot24-video-btn').textContent = this.isVideoOff ? '📹❌' : '📹';
+                            }
+                        }
+                    },
+
+                    handlePhotoUpload(event) {
+                        const files = Array.from(event.target.files);
+                        
+                        files.forEach(file => {
+                            if (this.photos.length >= 6) {
+                                this.showError('Tối đa 6 ảnh. Vui lòng xóa ảnh cũ để thêm ảnh mới!');
+                                return;
+                            }
+
+                            if (file.size > 2 * 1024 * 1024) {
+                                this.showError('File quá lớn. Tối đa 2MB mỗi ảnh!');
+                                return;
+                            }
+
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                this.photos.push(e.target.result);
+                                this.displayPhotos();
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    },
+
+                    displayPhotos() {
+                        const container = document.getElementById('slot24-photo-preview');
+                        container.innerHTML = this.photos.map((photo, index) => `
+                            <div class="photo-preview-item">
+                                <img src="${photo}">
+                                <button class="remove" onclick="slot24App.removePhoto(${index})">×</button>
+                            </div>
+                        `).join('');
+                    },
+
+                    removePhoto(index) {
+                        this.photos.splice(index, 1);
+                        this.displayPhotos();
+                    },
+
+                    showScreen(screen) {
+                        document.querySelectorAll('#slot-24 .screen').forEach(s => s.classList.remove('active'));
+                        document.getElementById(`slot24-${screen}-screen`).classList.add('active');
+                    },
+
+                    showTab(tab) {
+                        document.querySelectorAll('#slot-24 .nav-tab').forEach(t => t.classList.remove('active'));
+                        event.target.classList.add('active');
+
+                        document.querySelectorAll('#slot-24 .tab-content').forEach(t => t.style.display = 'none');
+                        document.getElementById(`slot24-${tab}-tab`).style.display = 'block';
+
+                        if (tab === 'matches') {
+                            this.loadMatches();
+                        } else if (tab === 'swipe') {
+                            this.loadPotentialMatches();
+                        } else if (tab === 'profile') {
+                            this.displayProfile();
+                        }
+                    },
+
+                    showRegister() {
+                        this.showScreen('register');
+                    },
+
+                    showLogin() {
+                        this.showScreen('login');
+                    },
+
+                    closeChat() {
+                        this.showScreen('main');
+                        this.currentMatch = null;
+                    },
+
+                    showError(screen, message) {
+                        const errorDiv = document.getElementById(`slot24-${screen}-error`);
+                        errorDiv.textContent = message;
+                        errorDiv.style.display = 'block';
+                        setTimeout(() => {
+                            errorDiv.style.display = 'none';
+                        }, 5000);
+                    },
+
+                    showEditProfile() {
+                        // Populate form with current user data
+                        document.getElementById('slot24-edit-username').value = this.currentUser.username;
+                        document.getElementById('slot24-edit-gender').value = this.currentUser.gender;
+                        document.getElementById('slot24-edit-interested').value = this.currentUser.interested_in;
+                        document.getElementById('slot24-edit-age').value = this.currentUser.age || '';
+                        document.getElementById('slot24-edit-bio').value = this.currentUser.bio || '';
+                        
+                        // Load current photos
+                        try {
+                            this.photos = JSON.parse(this.currentUser.photos || '[]');
+                        } catch (e) {
+                            this.photos = [];
+                        }
+                        this.displayEditPhotos();
+                        
+                        // Setup photo upload event
+                        const photoInput = document.getElementById('slot24-edit-photo-input');
+                        photoInput.removeEventListener('change', this.handleEditPhotoUpload);
+                        photoInput.addEventListener('change', (e) => this.handleEditPhotoUpload(e));
+                        
+                        // Show edit form
+                        document.getElementById('slot24-profile-view').style.display = 'none';
+                        document.getElementById('slot24-profile-edit').style.display = 'block';
+                    },
+
+                    cancelEditProfile() {
+                        document.getElementById('slot24-profile-view').style.display = 'block';
+                        document.getElementById('slot24-profile-edit').style.display = 'none';
+                        
+                        // Clear messages
+                        document.getElementById('slot24-edit-error').style.display = 'none';
+                        document.getElementById('slot24-edit-success').style.display = 'none';
+                    },
+
+                    async saveProfileUpdate() {
+                        const gender = document.getElementById('slot24-edit-gender').value;
+                        const interested_in = document.getElementById('slot24-edit-interested').value;
+                        const age = document.getElementById('slot24-edit-age').value;
+                        const bio = document.getElementById('slot24-edit-bio').value;
+
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/profile/update`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    userId: this.currentUser.id,
+                                    gender,
+                                    interested_in,
+                                    age: age ? parseInt(age) : null,
+                                    bio,
+                                    photos: this.photos
+                                })
+                            });
+
+                            const data = await response.json();
+
+                            if (data.success) {
+                                // Update current user data
+                                this.currentUser.gender = gender;
+                                this.currentUser.interested_in = interested_in;
+                                this.currentUser.age = age ? parseInt(age) : null;
+                                this.currentUser.bio = bio;
+                                this.currentUser.photos = JSON.stringify(this.photos);
+                                
+                                // Show success message
+                                const successDiv = document.getElementById('slot24-edit-success');
+                                successDiv.textContent = '✅ Đã cập nhật hồ sơ thành công!';
+                                successDiv.style.display = 'block';
+                                
+                                setTimeout(() => {
+                                    successDiv.style.display = 'none';
+                                    this.cancelEditProfile();
+                                    this.displayProfile();
+                                }, 2000);
+                            } else {
+                                this.showEditError(data.error || 'Có lỗi xảy ra');
+                            }
+                        } catch (error) {
+                            console.error('Profile update error:', error);
+                            this.showEditError('Lỗi kết nối. Vui lòng thử lại!');
+                        }
+                    },
+
+                    showEditError(message) {
+                        const errorDiv = document.getElementById('slot24-edit-error');
+                        errorDiv.textContent = message;
+                        errorDiv.style.display = 'block';
+                        setTimeout(() => {
+                            errorDiv.style.display = 'none';
+                        }, 5000);
+                    },
+
+                    handleEditPhotoUpload(event) {
+                        const files = Array.from(event.target.files);
+                        
+                        files.forEach(file => {
+                            if (this.photos.length >= 6) {
+                                alert('Tối đa 6 ảnh. Vui lòng xóa ảnh cũ để thêm ảnh mới!');
+                                return;
+                            }
+
+                            if (file.size > 2 * 1024 * 1024) {
+                                alert('File quá lớn. Tối đa 2MB mỗi ảnh!');
+                                return;
+                            }
+
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                this.photos.push(e.target.result);
+                                this.displayEditPhotos();
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    },
+
+                    displayEditPhotos() {
+                        const container = document.getElementById('slot24-edit-photo-preview');
+                        container.innerHTML = this.photos.map((photo, index) => `
+                            <div class="photo-preview-item">
+                                <img src="${photo}">
+                                <button class="remove" onclick="slot24App.removeEditPhoto(${index})">×</button>
+                            </div>
+                        `).join('');
+                    },
+
+                    removeEditPhoto(index) {
+                        this.photos.splice(index, 1);
+                        this.displayEditPhotos();
+                    },
+
+                    displayProfile() {
+                        const container = document.getElementById('slot24-profile-display');
+                        const photos = JSON.parse(this.currentUser.photos || '[]');
+                        const mainPhoto = photos.length > 0 ? photos[0] : null;
+
+                        const genderMap = { male: 'Nam', female: 'Nữ', other: 'Khác' };
+                        const interestedMap = { male: 'Nam', female: 'Nữ', both: 'Cả hai' };
+
+                        container.innerHTML = `
+                            <div style="text-align:center;">
+                                <div style="width:150px;height:150px;margin:0 auto 20px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;">
+                                    ${mainPhoto ? `<img src="${mainPhoto}" style="width:100%;height:100%;object-fit:cover;">` : `<span style="font-size:60px;color:white;">👤</span>`}
+                                </div>
+                                <h2 style="margin:10px 0;color:var(--dark);">${this.currentUser.username}</h2>
+                                <p style="color:#666;font-size:14px;margin:5px 0;">
+                                    ${this.currentUser.age ? this.currentUser.age + ' tuổi' : 'Chưa cập nhật tuổi'} • 
+                                    ${genderMap[this.currentUser.gender] || this.currentUser.gender}
+                                </p>
+                                <p style="color:#666;font-size:14px;margin:5px 0;">
+                                    Quan tâm: ${interestedMap[this.currentUser.interested_in] || this.currentUser.interested_in}
+                                </p>
+                                <div style="margin-top:20px;padding:15px;background:#f5f5f5;border-radius:10px;text-align:left;">
+                                    <strong style="color:var(--dark);">Giới thiệu:</strong>
+                                    <p style="margin:10px 0;color:#666;line-height:1.6;">
+                                        ${this.currentUser.bio || 'Chưa có giới thiệu'}
+                                    </p>
+                                </div>
+                                ${photos.length > 1 ? `
+                                    <div style="margin-top:20px;">
+                                        <strong style="color:var(--dark);display:block;margin-bottom:10px;">Ảnh của bạn (${photos.length})</strong>
+                                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+                                            ${photos.map(p => `<img src="${p}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;">`).join('')}
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    },
+
+                    showChangePassword() {
+                        // Clear all fields
+                        document.getElementById('slot24-current-password').value = '';
+                        document.getElementById('slot24-new-password').value = '';
+                        document.getElementById('slot24-confirm-password').value = '';
+                        
+                        // Clear messages
+                        document.getElementById('slot24-password-error').style.display = 'none';
+                        document.getElementById('slot24-password-success').style.display = 'none';
+                        
+                        // Show change password form
+                        document.getElementById('slot24-profile-view').style.display = 'none';
+                        document.getElementById('slot24-change-password').style.display = 'block';
+                    },
+
+                    cancelChangePassword() {
+                        document.getElementById('slot24-profile-view').style.display = 'block';
+                        document.getElementById('slot24-change-password').style.display = 'none';
+                        
+                        // Clear fields
+                        document.getElementById('slot24-current-password').value = '';
+                        document.getElementById('slot24-new-password').value = '';
+                        document.getElementById('slot24-confirm-password').value = '';
+                        
+                        // Clear messages
+                        document.getElementById('slot24-password-error').style.display = 'none';
+                        document.getElementById('slot24-password-success').style.display = 'none';
+                    },
+
+                    async saveNewPassword() {
+                        const currentPassword = document.getElementById('slot24-current-password').value;
+                        const newPassword = document.getElementById('slot24-new-password').value;
+                        const confirmPassword = document.getElementById('slot24-confirm-password').value;
+
+                        // Validation
+                        if (!currentPassword || !newPassword || !confirmPassword) {
+                            this.showPasswordError('Vui lòng điền đầy đủ thông tin!');
+                            return;
+                        }
+
+                        if (newPassword.length < 6) {
+                            this.showPasswordError('Mật khẩu mới phải có ít nhất 6 ký tự!');
+                            return;
+                        }
+
+                        if (newPassword !== confirmPassword) {
+                            this.showPasswordError('Mật khẩu mới không khớp!');
+                            return;
+                        }
+
+                        if (currentPassword === newPassword) {
+                            this.showPasswordError('Mật khẩu mới phải khác mật khẩu hiện tại!');
+                            return;
+                        }
+
+                        try {
+                            const response = await fetch(`${this.SERVER_URL}/api/password/change`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    userId: this.currentUser.id,
+                                    currentPassword,
+                                    newPassword
+                                })
+                            });
+
+                            const data = await response.json();
+
+                            if (data.success) {
+                                // Show success message
+                                const successDiv = document.getElementById('slot24-password-success');
+                                successDiv.textContent = '✅ Đổi mật khẩu thành công!';
+                                successDiv.style.display = 'block';
+                                
+                                // Clear error
+                                document.getElementById('slot24-password-error').style.display = 'none';
+                                
+                                // Clear fields
+                                document.getElementById('slot24-current-password').value = '';
+                                document.getElementById('slot24-new-password').value = '';
+                                document.getElementById('slot24-confirm-password').value = '';
+                                
+                                // Go back to view after 2 seconds
+                                setTimeout(() => {
+                                    this.cancelChangePassword();
+                                }, 2000);
+                            } else {
+                                this.showPasswordError(data.error || 'Có lỗi xảy ra');
+                            }
+                        } catch (error) {
+                            console.error('Password change error:', error);
+                            this.showPasswordError('Lỗi kết nối. Vui lòng thử lại!');
+                        }
+                    },
+
+                    showPasswordError(message) {
+                        const errorDiv = document.getElementById('slot24-password-error');
+                        errorDiv.textContent = message;
+                        errorDiv.style.display = 'block';
+                        
+                        // Hide success if showing
+                        document.getElementById('slot24-password-success').style.display = 'none';
+                        
+                        setTimeout(() => {
+                            errorDiv.style.display = 'none';
+                        }, 5000);
+                    },
+
+                    logout() {
+                        if (this.ws) {
+                            this.ws.close();
+                        }
+                        this.currentUser = null;
+                        
+                        // Delete auth token
+                        this.deleteCookie('dating_auth_token');
+                        console.log('🔓 Logged out and auth token deleted');
+                        
+                        this.showScreen('login');
+                    }
+                };
+
+                // Initialize app
+                slot24App.init();
+            </script>
+        </div>
 
         <!-- == SLOT 25 == -->
         <div id="slot-25"></div>
@@ -5760,7 +9220,93 @@
         </div>
 
         <!-- == SLOT 67 == -->
-        <div id="slot-67"></div>
+        <div id="slot-67">
+            <style>
+                .numbers-container {
+                    position: relative;
+                    width: 100%;
+                    height: 500px;
+                    overflow: hidden;
+                    background: #222;
+                    cursor: pointer;
+                }
+
+                .numbers-container span {
+                    position: absolute;
+                    font-family: Arial, sans-serif;
+                    font-weight: bold;
+                    color: hsl(var(--hue), 80%, 60%);
+                    font-size: var(--size);
+                    left: var(--x);
+                    top: var(--y);
+                    pointer-events: none;
+                    user-select: none;
+                    animation: floatRotate var(--duration) linear infinite;
+                }
+
+                @keyframes floatRotate {
+                    0% {
+                    transform: translate(0, 0) rotate(0deg);
+                    }
+                    50% {
+                    transform: translate(var(--tx), var(--ty)) rotate(180deg);
+                    }
+                    100% {
+                    transform: translate(0, 0) rotate(360deg);
+                    }
+                }
+
+                .overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: #000;
+                    opacity: 0;
+                    transition: opacity 0.2s ease-in;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 999;
+                }
+
+                .numbers-container:hover .overlay {
+                    opacity: 1;
+                }
+
+                .overlay iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                }
+            </style>
+
+            <div class="numbers-container" id="numbers">
+            <div class="overlay">
+                <div class="tenor-gif-embed" data-postid="3349401281762803381" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+                <a href="https://tenor.com/view/67-67-kid-edit-analog-horror-phonk-gif-3349401281762803381">67 67 Kid GIF</a>
+                from <a href="https://tenor.com/search/67-gifs">67 GIFs</a>
+                </div>
+            </div>
+            </div>
+
+            <script async src="https://tenor.com/embed.js"></script>
+
+            <script>
+            const cc = document.getElementById("numbers");
+
+            for (let i = 0; i < 67; i++) {
+                const span = document.createElement("span");
+                span.textContent = "67";
+                span.style.setProperty("--x", Math.random() * 90 + "%");
+                span.style.setProperty("--y", Math.random() * 90 + "%");
+                span.style.setProperty("--size", Math.random() * 5 + 1 + "rem");
+                span.style.setProperty("--hue", Math.floor(Math.random() * 360));
+                span.style.setProperty("--tx", (Math.random() * 40 - 20) + "px");
+                span.style.setProperty("--ty", (Math.random() * 40 - 20) + "px");
+                span.style.setProperty("--duration", (Math.random() * 5 + 5) + "s");
+                cc.appendChild(span);
+            }
+            </script>
+        </div>
 
         <!-- == SLOT 68 == -->
         <div id="slot-68"></div>
@@ -7721,6 +11267,153 @@
   </script>
 </div>
 <!-- END SLOT 102 -->
+    <!-- SLOT 103 -->
+    <div id="slot-103">
+        <style>
+            #slot-103 {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            text-align: center;
+            }
+            #slot-103 h2 {
+            color: #569cd6;
+            margin-bottom: 10px;
+            }
+            #slot-103 p {
+            font-size: 1.1em;
+            margin: 10px 0;
+            }
+            #slot-103 button {
+            background-color: #007acc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            }
+            #slot-103 button:hover {
+            background-color: #005f99;
+            }
+        </style>
+        <h2>Khu vực nguy hiểm</h2>
+        <p>Đừng chọt vào cục xanh xanh</p>
+        <button id="simulate-btn">Đừng chọt</button>
+        <p id="outputz"></p>
+        <style>
+            #ghost-modal {
+                position: fixed;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 240ms ease, visibility 240ms ease;
+                z-index: 99999;
+                pointer-events: none;
+            }
+            #ghost-modal.show {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+            }
+            #ghost-backdrop {
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,0.65);
+            }
+            .ghost-content {
+                position: relative;
+                z-index: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                padding: 18px;
+                background: transparent;
+                border-radius: 12px;
+                user-select: none;
+            }
+            .ghost-img {
+                font-size: 10rem;
+                line-height: 1;
+                transform: scale(0.6);
+                filter: drop-shadow(0 10px 30px rgba(0,0,0,0.6));
+                animation: ghost-pop 360ms cubic-bezier(.2,.9,.2,1) forwards;
+            }
+            @keyframes ghost-pop { to { transform: scale(1); } }
+            .ghost-caption {
+                color: #fff;
+                font-weight: 700;
+                text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+                font-family: sans-serif;
+            }
+            .ghost-close {
+                appearance: none;
+                border: none;
+                background: #ffffffee;
+                color: #111;
+                padding: 8px 12px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+        </style>
+        <div id="ghost-modal" aria-hidden="true">
+            <div id="ghost-backdrop" data-role="backdrop"></div>
+            <div class="ghost-content" role="dialog" aria-modal="true">
+                <div class="ghost-img" aria-hidden="true">👻</div>
+                <div class="ghost-caption">Oà! 👻</div>
+                <button id="ghost-close" class="ghost-close" aria-label="Close ghost">Close</button>
+            </div>
+        </div>
+        <script>
+            (function() {
+                const btn = document.getElementById('simulate-btn');
+                const outputz = document.getElementById('outputz');
+                const modal = document.getElementById('ghost-modal');
+                const backdrop = document.querySelector('#ghost-backdrop');
+                const closeBtn = document.getElementById('ghost-close');
+                let hideTimeout = null;
+
+                function showGhost(duration = 3000) {
+                    if (!modal) return;
+                    modal.classList.add('show');
+                    modal.setAttribute('aria-hidden', 'false');
+                    clearTimeout(hideTimeout);
+                    hideTimeout = setTimeout(hideGhost, duration);
+                }
+
+                function hideGhost() {
+                    if (!modal) return;
+                    modal.classList.remove('show');
+                    modal.setAttribute('aria-hidden', 'true');
+                    clearTimeout(hideTimeout);
+                }
+                btn.addEventListener('click', () => {
+                    setTimeout(() => {
+                        showGhost(3600);
+                    }, 600);
+                });
+                backdrop && backdrop.addEventListener('click', hideGhost);
+                closeBtn && closeBtn.addEventListener('click', hideGhost);
+                window.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') hideGhost();
+                });
+            })();
+        </script>
+    </div>
+    </div>
+    <!-- END SLOT 103 -->
+
+<!-- == SLOT 103 == -->
+<div id="slot-103" class="slot"><style>#slot-103{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);background-size:400% 400%;animation:slot103_gradient 15s ease infinite;color:#fff;padding:30px;text-align:center;border-radius:20px;font-family:'Courier New',monospace;user-select:none;box-shadow:0 8px 32px rgba(0,0,0,0.4);position:relative;overflow:hidden;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);min-height:500px}@keyframes slot103_gradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}#slot-103 h3{margin:0 0 20px 0;font-size:24px;text-transform:uppercase;letter-spacing:3px;color:#00f5ff;text-shadow:0 0 10px #00f5ff,0 0 20px #00f5ff,0 0 30px #00f5ff;animation:slot103_flicker 2s infinite alternate}@keyframes slot103_flicker{0%,18%,22%,25%,53%,57%,100%{text-shadow:0 0 10px #00f5ff,0 0 20px #00f5ff,0 0 30px #00f5ff,0 0 40px #00f5ff}20%,24%,55%{text-shadow:none}}#slot-103 .prize-notice{background:linear-gradient(45deg,#ffd700,#ffed4e);color:#000;padding:12px;border-radius:10px;margin-bottom:20px;font-weight:bold;font-size:16px;box-shadow:0 0 20px rgba(255,215,0,0.6);animation:slot103_glow 2s ease-in-out infinite}@keyframes slot103_glow{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.6)}50%{box-shadow:0 0 40px rgba(255,215,0,1)}}#slot-103 .score-display{display:flex;justify-content:center;gap:30px;margin:20px 0;font-size:20px;font-weight:bold}#slot-103 .score-item{background:rgba(255,255,255,0.1);padding:10px 20px;border-radius:10px;border:2px solid rgba(0,245,255,0.5)}#slot-103 .score-label{color:#00f5ff;font-size:14px;margin-bottom:5px}#slot-103 .score-value{color:#ff00ff;font-size:28px;text-shadow:0 0 10px #ff00ff}#slot-103 #chaosEnergy103{font-size:72px;margin:25px 0;font-weight:bold;color:#ff00ff;text-shadow:0 0 10px #ff00ff,0 0 20px #ff00ff,0 0 40px #ff00ff,0 0 80px #ff00ff;animation:slot103_pulse 1.5s ease-in-out infinite;letter-spacing:5px;min-height:90px;display:flex;align-items:center;justify-content:center}@keyframes slot103_pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}#slot-103 .spinning{animation:slot103_spin 0.03s linear infinite!important;color:#ffd700!important;text-shadow:0 0 20px #ffd700,0 0 40px #ffd700,0 0 60px #ffd700!important}@keyframes slot103_spin{0%{transform:scale(1) rotate(0deg)}25%{transform:scale(1.15) rotate(8deg)}50%{transform:scale(0.85) rotate(-8deg)}75%{transform:scale(1.15) rotate(8deg)}100%{transform:scale(1) rotate(0deg)}}#slot-103 .status-text{font-size:18px;color:#00f5ff;margin:15px 0;font-weight:bold;min-height:30px}#slot-103 .last-roll{font-size:16px;color:#51cf66;margin:10px 0;min-height:25px}#slot-103 button{background:linear-gradient(45deg,#ff00ff,#00f5ff);border:none;color:white;font-size:18px;font-weight:bold;padding:15px 30px;margin:8px;border-radius:50px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.3s ease;text-transform:uppercase;letter-spacing:2px;box-shadow:0 0 10px rgba(255,0,255,0.5),0 0 20px rgba(0,245,255,0.5)}#slot-103 button::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.3);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}#slot-103 button:hover{transform:translateY(-3px);box-shadow:0 0 20px rgba(255,0,255,0.8),0 0 40px rgba(0,245,255,0.8),0 0 60px rgba(255,0,255,0.6)}#slot-103 button:active::before{width:300px;height:300px}#slot-103 button:disabled{opacity:0.5;cursor:not-allowed}#slot-103 #slot103_btnReset{background:linear-gradient(45deg,#ff4500,#ff6347);box-shadow:0 0 10px rgba(255,69,0,0.5),0 0 20px rgba(255,99,71,0.5)}#slot-103 #slot103_btnReset:hover{box-shadow:0 0 20px rgba(255,69,0,0.8),0 0 40px rgba(255,99,71,0.8),0 0 60px rgba(255,69,0,0.6)}#slot-103 #slot103_btnClaim{position:absolute;background:linear-gradient(45deg,#ffd700,#ffed4e);color:#000;font-size:22px;padding:20px 40px;box-shadow:0 0 20px rgba(255,215,0,0.8),0 0 40px rgba(255,215,0,0.6);animation:slot103_claimGlow 1s ease-in-out infinite;transition:all 0.1s ease}@keyframes slot103_claimGlow{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.8)}50%{box-shadow:0 0 50px rgba(255,215,0,1)}}#slot-103 .fb-link{display:inline-block;margin-top:25px;padding:12px 30px;background:linear-gradient(45deg,#1877f2,#42b72a);color:white;text-decoration:none;border-radius:50px;font-weight:bold;font-size:16px;box-shadow:0 0 20px rgba(24,119,242,0.5);transition:all 0.3s ease;animation:slot103_fbGlow 2s ease-in-out infinite}#slot-103 .fb-link:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 0 40px rgba(24,119,242,0.8);color:white}@keyframes slot103_fbGlow{0%,100%{box-shadow:0 0 20px rgba(24,119,242,0.5)}50%{box-shadow:0 0 35px rgba(24,119,242,0.9)}}#slot-103 .fb-section{margin-top:25px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.2)}#slot-103 .fb-text{color:#00f5ff;font-size:14px;margin-bottom:10px}#slot-103 .particles{position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;z-index:0}#slot-103 .particle{position:absolute;width:4px;height:4px;background:#00f5ff;border-radius:50%;box-shadow:0 0 10px #00f5ff;animation:slot103_float 6s infinite;opacity:0.6}@keyframes slot103_float{0%{transform:translateY(100vh) translateX(0);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-100px) translateX(100px);opacity:0}}#slot-103 .particle:nth-child(1){left:10%;animation-delay:0s}#slot-103 .particle:nth-child(2){left:30%;animation-delay:1s}#slot-103 .particle:nth-child(3){left:50%;animation-delay:2s}#slot-103 .particle:nth-child(4){left:70%;animation-delay:3s}#slot-103 .particle:nth-child(5){left:90%;animation-delay:4s}#slot-103>*{position:relative;z-index:1}#slot-103 .winner-message{color:#ffd700;font-size:24px;margin-top:15px;font-weight:bold;text-shadow:0 0 20px #ffd700}#slot-103 .loser-message{color:#ff6b6b;font-size:20px;margin-top:15px}</style><div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div><div class="prize-notice">ĐẠT ĐÚNG 11 ĐIỂM SẼ NHẬN QUÀ ĐẶC BIỆT!</div><h3>Thử Vận May 11 Điểm</h3><div class="score-display"><div class="score-item"><div class="score-label">Điểm Hiện Tại</div><div class="score-value" id="slot103_currentScore">0</div></div><div class="score-item"><div class="score-label">Số Lần Quay</div><div class="score-value" id="slot103_rollCount">0</div></div></div><div class="status-text" id="slot103_status">Bấm để quay số may mắn!</div><div id="chaosEnergy103">?</div><div class="last-roll" id="slot103_lastRoll"></div><div id="slot103_result"></div><button id="slot103_btnAdd">Quay Số</button><button id="slot103_btnReset">Chơi Lại</button><button id="slot103_btnClaim" style="display:none">🎁 NHẬN QUÀ NGAY! 🎁</button><div class="fb-section"><p class="fb-text">Bạn muốn có quà luôn? Kết nối với mình:</p><a href="https://www.facebook.com/serayeuem" target="_blank" class="fb-link">📘 Follow Facebook</a></div><script>!function(){let t=0,e=!1,l=0;const o=document.getElementById("chaosEnergy103"),n=document.getElementById("slot103_btnAdd"),s=document.getElementById("slot103_btnReset"),i=document.getElementById("slot103_btnClaim"),a=document.getElementById("slot103_status"),d=document.getElementById("slot103_lastRoll"),c=document.getElementById("slot103_result"),r=document.getElementById("slot103_currentScore"),u=document.getElementById("slot103_rollCount"),m=["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","36","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","🍀","💎","⭐","🎯","🔥","💰","🎁","🌟","✨","🎪","🎲","🍒","🍋","🍊","🍇","🍉","🎰","💫","🌈","🦄","👑","💀","😱","👻","🎃","☠️","💩","🤡","👿","😈","🔱","🎮","🕹️","🎯","🏆","🎪","🎨","🎭","🎬","🎤","🎧","⚽","🏀","🎾","🏐","🏈","⚾","🎱","🏓","🏸","🏒","🌟","✨","💫","⭐","🌠","☄️","🔥","💥","⚡","🌸","🌺","🌻","🌼","🌷","🌹","🏵️","🌴","🌲","🎄"];function f(){const n=m[Math.floor(Math.random()*m.length)];return isNaN(n)?Math.floor(9*Math.random()):parseInt(n)}function p(){if(e||t>11)return;e=!0,n.disabled=!0,o.classList.add("spinning"),a.textContent="THINKING...",d.textContent="";let s=0;const i=setInterval(()=>{o.textContent=m[Math.floor(Math.random()*m.length)],s++,40===s&&(clearInterval(i),o.classList.remove("spinning"),function(n){l++,u.textContent=l,d.textContent=`Vừa quay: +${n} điểm`,d.style.color=n>0?"#51cf66":"#ff6b6b",t+=n,o.textContent=t,r.textContent=t,setTimeout(()=>{11===t?(c.innerHTML='<div class="winner-message">🎉 CHÚC MỪNG! BẠN TRÚNG 11 ĐIỂM! 🎉</div>',a.textContent="🏆 HÃY NHẬN QUÀ CỦA BẠN!",a.style.color="#ffd700",slot103_btnAdd.disabled=!0,slot103_btnClaim.style.display="block",slot103_btnClaim.style.left="50%",slot103_btnClaim.style.top="350px",slot103_btnClaim.style.transform="translateX(-50%)"):t>11?(c.innerHTML=`<div class="loser-message">Vượt quá! Tổng: ${t} điểm (Cần đúng 11)</div>`,a.textContent="Thất bại! Thử lại nhé!",a.style.color="#ff6b6b",slot103_btnAdd.disabled=!0):(a.textContent=`Còn thiếu ${11-t} điểm nữa!`,a.style.color="#00f5ff",slot103_btnAdd.disabled=!1),e=!1},300)}(f()))},50)}i.addEventListener("mouseover",function(){const t=document.getElementById("slot-103").getBoundingClientRect(),e=Math.random()*(t.width-200),l=Math.random()*(t.height-100)+100;i.style.left=e+"px",i.style.top=l+"px",i.style.transform="none"}),i.addEventListener("click",function(){alert("🎉 Chúc mừng! Bạn đã bắt được nút! (Nhưng không có quà đâu 😂)")}),n.addEventListener("click",p),s.addEventListener("click",()=>{t=0,l=0,o.textContent="?",r.textContent="0",u.textContent="0",a.textContent="Bấm để quay số may mắn!",a.style.color="#00f5ff",d.textContent="",c.innerHTML="",n.disabled=!1,i.style.display="none",e=!1})}()</script></div>
+<!-- END SLOT 103 -->
 
     </body>
 </html>
