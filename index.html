@@ -8182,6 +8182,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
 
         <!-- == SLOT 42 == -->
         <div id="slot-42">
+            <!-- @Gawasna -->
             <style>
                 #screensaver-container_42 {
                     width: 90%;
@@ -8195,7 +8196,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     overflow: hidden;
                     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
                 }
-
+        
                 #dvd-logo-wrapper_42 {
                     position: absolute;
                     top: 50px;
@@ -8203,13 +8204,13 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     cursor: pointer;
                     transition: transform 1.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
                 }
-
+        
                 #dvd-logo_42 {
                     width: 120px;
                     display: block;
                     fill: #ffffff;
                 }
-
+        
                 #dvd-message_42 {
                     position: absolute;
                     top: 50%;
@@ -8228,15 +8229,15 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     transition: opacity 0.3s ease;
                     font-family: 'Press Start 2P', cursive;
                 }
-
+        
                 #dvd-message_42.visible {
                     opacity: 1;
                 }
-
+        
                 #dvd-logo-wrapper_42.escaping {
                     transform: translate(150vw, -150vh) rotate(1080deg) scale(0);
                 }
-
+        
                 #final-message_42 {
                     display: none;
                     position: absolute;
@@ -8254,46 +8255,770 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     margin: 0 auto;
                     text-align: center;
                 }
-
+        
                 #final-message_42 h2 {
                     color: #ff4d4d;
                     font-size: 2.3em;
                     text-align: center;
                     line-height: 1.4;
-                    animation: fadeIn 1s ease-in;
+                    animation: fadeIn_42 1s ease-in;
                 }
-
-                @keyframes fadeIn {
+        
+                @keyframes fadeIn_42 {
                     from {
                         opacity: 0;
                         transform: scale(0.8);
                     }
+        
                     to {
                         opacity: 1;
                         transform: scale(1);
                     }
                 }
             </style>
+        
+            <!-- 3D Cat Styles - REFACTORED -->
+            <style>
+                #cat-container_42 {
+                    width: 90%;
+                    max-width: 90%;
+                    height: 60vh;
+                    min-height: 400px;
+                    background-color: #87ceeb;
+                    border: 3px solid #333;
+                    margin: 20px auto;
+                    position: relative;
+                    overflow: hidden;
+                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                }
+        
+                #cat-container_42.shake_42 {
+                    animation: bodyShake_42 0.2s infinite;
+                }
+        
+                @keyframes bodyShake_42 {
+        
+                    0%,
+                    100% {
+                        transform: translate(0, 0);
+                    }
+        
+                    25% {
+                        transform: translate(-3px, 3px);
+                    }
+        
+                    50% {
+                        transform: translate(3px, -3px);
+                    }
+        
+                    75% {
+                        transform: translate(-3px, -3px);
+                    }
+                }
+        
+                #cat-container_42 #loadingInfo_42 {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: rgba(0, 0, 0, 0.8);
+                    color: #fff;
+                    padding: 20px 40px;
+                    font-size: 24px;
+                    z-index: 100;
+                    border-radius: 10px;
+                    text-align: center;
+                }
+        
+                /* Credit section */
+                #cat-container_42 #credit_42 {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    color: #fff;
+                    padding: 8px 12px;
+                    font-size: 11px;
+                    z-index: 100;
+                    border-radius: 8px;
+                    line-height: 1.4;
+                }
+        
+                #cat-container_42 #credit_42 a {
+                    color: #4da6ff;
+                    text-decoration: none;
+                }
+        
+                #cat-container_42 #credit_42 a:hover {
+                    text-decoration: underline;
+                }
+        
+                #cat-container_42 #credit_42 p {
+                    margin: 5px 0 0 0;
+                    font-size: 10px;
+                    color: #ccc;
+                }
+        
+                /* SPIN Button - Responsive */
+                #cat-container_42 #spinButton_42 {
+                    position: absolute;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    border: none;
+                    padding: clamp(10px, 2vh, 15px) clamp(25px, 5vw, 40px);
+                    font-size: clamp(14px, 2.5vw, 18px);
+                    font-weight: bold;
+                    cursor: pointer;
+                    border-radius: 50px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    transition: all 0.3s ease;
+                    z-index: 100;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    white-space: nowrap;
+                }
+        
+                #cat-container_42 #spinButton_42:hover {
+                    transform: translateX(-50%) scale(1.1);
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+                }
+        
+                #cat-container_42 #spinButton_42:active {
+                    transform: translateX(-50%) scale(0.95);
+                }
+        
+                #cat-container_42 #spinButton_42.warning_42 {
+                    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+                    animation: buttonShake_42 0.3s infinite;
+                }
+        
+                #cat-container_42 #spinButton_42.danger_42 {
+                    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+                    animation: buttonPulse_42 0.3s infinite;
+                }
+        
+                @keyframes buttonShake_42 {
+        
+                    0%,
+                    100% {
+                        transform: translateX(-50%) rotate(0deg);
+                    }
+        
+                    25% {
+                        transform: translateX(-50%) rotate(-2deg);
+                    }
+        
+                    50% {
+                        transform: translateX(-50%) rotate(2deg);
+                    }
+        
+                    75% {
+                        transform: translateX(-50%) rotate(-2deg);
+                    }
+                }
+        
+                @keyframes buttonPulse_42 {
+        
+                    0%,
+                    100% {
+                        transform: translateX(-50%) scale(1);
+                        box-shadow: 0 10px 30px rgba(255, 107, 107, 0.5);
+                    }
+        
+                    50% {
+                        transform: translateX(-50%) scale(1.05);
+                        box-shadow: 0 15px 40px rgba(255, 107, 107, 0.8);
+                    }
+                }
+        
+                /* Speed Info - Responsive */
+                #cat-container_42 #speedInfo_42 {
+                    position: absolute;
+                    bottom: clamp(70px, 12vh, 90px);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background-color: rgba(0, 0, 0, 0.7);
+                    color: #fff;
+                    padding: clamp(6px, 1.5vh, 10px) clamp(15px, 3vw, 25px);
+                    font-size: clamp(13px, 2vw, 16px);
+                    z-index: 100;
+                    border-radius: 20px;
+                    transition: background-color 0.3s ease;
+                    white-space: nowrap;
+                }
+        
+                #cat-container_42 #speedInfo_42.warning_42 {
+                    background-color: rgba(255, 193, 7, 0.8);
+                    color: #000;
+                    font-weight: bold;
+                }
+        
+                #cat-container_42 #speedInfo_42.danger_42 {
+                    background-color: rgba(255, 0, 0, 0.8);
+                    animation: speedShake_42 0.3s infinite;
+                }
+        
+                @keyframes speedShake_42 {
+        
+                    0%,
+                    100% {
+                        transform: translateX(-50%) translateY(0);
+                    }
+        
+                    25% {
+                        transform: translateX(-50%) translateY(-5px);
+                    }
+        
+                    75% {
+                        transform: translateX(-50%) translateY(5px);
+                    }
+                }
+        
+                #cat-container_42 #explosion_42 {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 200;
+                    display: none;
+                    pointer-events: none;
+                }
+        
+                #cat-container_42 #explosion_42 img {
+                    width: clamp(250px, 50vw, 400px);
+                    height: clamp(250px, 50vw, 400px);
+                }
+        
+                #cat-container_42 #explosionModal_42 {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.95);
+                    z-index: 300;
+                    display: none;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    padding: 20px;
+                }
+        
+                #cat-container_42 #explosionModal_42.show_42 {
+                    display: flex;
+                    animation: fadeInModal_42 0.5s;
+                }
+        
+                @keyframes fadeInModal_42 {
+                    from {
+                        opacity: 0;
+                    }
+        
+                    to {
+                        opacity: 1;
+                    }
+                }
+        
+                #cat-container_42 #explosionMessage_42 {
+                    color: #ff6b6b;
+                    font-size: clamp(20px, 5vw, 36px);
+                    font-weight: bold;
+                    text-align: center;
+                    margin-bottom: 20px;
+                    text-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+                    animation: boom_42 1s ease-out;
+                    line-height: 1.3;
+                }
+        
+                @keyframes boom_42 {
+                    0% {
+                        transform: scale(0.5);
+                        opacity: 0;
+                    }
+        
+                    50% {
+                        transform: scale(1.2);
+                    }
+        
+                    100% {
+                        transform: scale(1);
+                        opacity: 1;
+                    }
+                }
+        
+                #cat-container_42 .button-container_42 {
+                    display: flex;
+                    gap: clamp(10px, 2vw, 20px);
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+        
+                #cat-container_42 #resetButton_42,
+                #cat-container_42 #closeButton_42 {
+                    color: white;
+                    border: none;
+                    padding: clamp(10px, 2vh, 15px) clamp(25px, 4vw, 40px);
+                    font-size: clamp(14px, 2.5vw, 18px);
+                    font-weight: bold;
+                    cursor: pointer;
+                    border-radius: 50px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    transition: all 0.3s ease;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    white-space: nowrap;
+                }
+        
+                #cat-container_42 #resetButton_42 {
+                    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                }
+        
+                #cat-container_42 #closeButton_42 {
+                    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+                }
+        
+                #cat-container_42 #resetButton_42:hover,
+                #cat-container_42 #closeButton_42:hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+                }
+        
+                #cat-container_42 #warningText_42 {
+                    color: #ffc107;
+                    font-size: clamp(14px, 2.5vw, 18px);
+                    margin-top: 15px;
+                    text-align: center;
+                    display: none;
+                }
+        
+                #cat-container_42 #warningText_42.show_42 {
+                    display: block;
+                    animation: blink_42 0.5s infinite;
+                }
+        
+                @keyframes blink_42 {
+        
+                    0%,
+                    100% {
+                        opacity: 1;
+                    }
+        
+                    50% {
+                        opacity: 0.3;
+                    }
+                }
+        
+                #cat-container_42 canvas {
+                    display: block;
+                    width: 100% !important;
+                    height: 100% !important;
+                }
+        
+                /* Mobile optimization */
+                @media (max-width: 768px) {
+                    #cat-container_42 #spinButton_42 {
+                        bottom: 15px;
+                        letter-spacing: 0.5px;
+                    }
+        
+                    #cat-container_42 #speedInfo_42 {
+                        bottom: 60px;
+                    }
+        
+                    #cat-container_42 #credit_42 {
+                        font-size: 9px;
+                        padding: 6px 10px;
+                    }
+        
+                    #cat-container_42 #credit_42 p {
+                        font-size: 8px;
+                    }
+                }
+        
+                @media (max-width: 480px) {
+                    #cat-container_42 #spinButton_42 {
+                        bottom: 10px;
+                        padding: 8px 20px;
+                    }
+        
+                    #cat-container_42 #speedInfo_42 {
+                        bottom: 50px;
+                    }
+                }
+            </style>
+        
+            <style>
+                #fpsCounter_42 {
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    color: #0f0;
+                    padding: 5px 10px;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    font-size: 16px;
+                    z-index: 9999;
+                }
+            </style>
+        
+            <div id="fpsCounter_42">FPS: 0</div>
+            <script>
+                (function () {
+                    const fpsDisplay = document.getElementById('fpsCounter_42');
+                    let lastTime = performance.now();
+                    let frameCount = 0;
+                    let fps = 0;
+
+                    function updateFPS(now) {
+                        frameCount++;
+                        const delta = now - lastTime;
+                        if (delta >= 1000) {
+                            fps = Math.round((frameCount / delta) * 1000);
+                            fpsDisplay.textContent = `FPS: ${fps}`;
+                            frameCount = 0;
+                            lastTime = now;
+                        }
+                        requestAnimationFrame(updateFPS);
+                    }
+
+                    requestAnimationFrame(updateFPS);
+                })();
+            </script>
+        
             <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        
+            <!-- DVD Screensaver Section -->
             <div id="screensaver-container_42">
                 <div id="dvd-logo-wrapper_42">
                     <p id="dvd-message_42"></p>
-                    <svg id="dvd-logo_42" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1058.4 465.84">
+                    <svg id="dvd-logo_42" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
+                        viewBox="0 0 1058.4 465.84">
                         <g>
                             <path
                                 d="m91.053 0-13.719 57.707 102.28 0.039063h24c65.747 0 105.91 26.44 94.746 73.4-12.147 51.133-69.613 73.4-130.67 73.4h-22.947l29.787-125.45h-102.27l-43.521 183.2h145.05c109.07 0 212.76-57.573 231.01-131.15 3.3467-13.507 2.8806-47.253-5.3594-67.359-0.21299-0.787-0.42594-1.4-1.1855-3-0.293-0.653-0.56012-3.6412 1.1465-4.2812 0.947-0.36 2.7069 1.4944 2.9336 2.041 0.853 2.24 1.5059 3.9062 1.5059 3.9062l92.293 260.6 234.97-265.21 99.535-0.089844h24c65.76 0 106.25 26.44 95.092 73.4-12.147 51.133-69.947 73.4-131 73.4h-22.959l29.799-125.47h-102.27l-43.533 183.21h145.07c109.05 0 213.48-57.4 231-131.15 17.52-73.75-59.107-131.15-168.69-131.15h-216.4s-57.319 67.88-67.959 80.693c-57.12 68.787-67.241 87.226-68.961 91.986 0.24-4.8-1.8138-23.412-26.174-92.959-6.48-18.52-27.359-79.721-27.359-79.721h-389.25zm408.77 324.16c-276.04 0-499.83 31.72-499.83 70.84s223.79 70.84 499.83 70.84c276.04 0 499.83-31.72 499.83-70.84s-223.79-70.84-499.83-70.84zm-18.094 48.627c63.04 0 114.13 10.573 114.13 23.613s-51.095 23.613-114.13 23.613c-63.027 0-114.13-10.573-114.13-23.613s51.106-23.613 114.13-23.613z" />
-                            <path
-                                d="m963.6 445.05-0.73242 5.1738h13.08l-5.1074 36.32h5.7207l5.1055-36.32h11.68l0.72071-5.1738h-30.467zm41.215 0-13.693 41.494h5.4785l10.215-31.76h0.1328l7.1718 31.76 16.668-31.453h0.1191v31.453h5.4805v-41.494h-5.4805l-14.906 28.107-6.4395-28.107h-4.746z"
-                                display="none" />
                         </g>
-                        <script xmlns="" />
                     </svg>
                 </div>
-            
                 <div id="final-message_42">
                     <h2>NICE TRY! Now the screen is saven't</h2>
                 </div>
             </div>
+        
+            <!-- 3D Cat Section -->
+            <div id="cat-container_42">
+                <div id="credit_42">
+                    <a href="https://sketchfab.com/Zhuier">
+                        Model by Zhuier
+                    </a><br>
+                    <a href="https://sketchfab.com/3d-models/oiiaioooooiai-cat-30d27bf7fb224849b76e208a6eccdb36">
+                        on Sketchfab
+                    </a>
+                    <p>Model License type: <strong>CC-BY-4.0</strong></p>
+                </div>
+                <div id="warningCat_42" style="
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        background-color: rgba(255, 0, 0, 0.8);
+                        color: #fff;
+                        padding: 8px 12px;
+                        font-size: 1.2rem;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        z-index: 100;
+                        ">
+                    Don't spin too fast!
+                </div>
+                <div id="loadingInfo_42">Loading Cat Model...</div>
+                <div id="speedInfo_42">Spin Speed: <span id="speedValue_42">0.00</span> RPM</div>
+                <button id="spinButton_42">🐱 MAKE IT SPIN! 🐱</button>
+        
+                <div id="explosion_42">
+                    <img src="https://i.giphy.com/pKWCBvHevLcMU.webp" alt="Explosion">
+                </div>
+        
+                <div id="explosionModal_42">
+                    <div id="explosionMessage_42">💥 CAT EXPLODED! 💥<br>RPM TOO HIGH!</div>
+                    <p id="warningText_42">⚠️ WARNING: Do not exceed 250 RPM! ⚠️</p>
+                    <div class="button-container_42">
+                        <button id="resetButton_42">🔄 RESET</button>
+                        <button id="closeButton_42">❌ CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        
+            <script type="importmap">
+                    {
+                      "imports": {
+                        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+                      }
+                    }
+                    </script>
+        
+            <script type="module">
+                (function () {
+                    const catContainer = document.getElementById('cat-container_42');
+                    const loadingInfo = document.getElementById('loadingInfo_42');
+                    let isModelLoaded = false;
+                    let observer = null;
+
+                    function initCatModel() {
+                        if (isModelLoaded) return;
+                        isModelLoaded = true;
+
+                        loadingInfo.textContent = 'Initializing...';
+
+                        import('three').then(THREE_MODULE => {
+                            const THREE = THREE_MODULE;
+
+                            return import('three/addons/loaders/GLTFLoader.js').then(({ GLTFLoader }) => {
+                                const spinButton = document.getElementById('spinButton_42');
+                                const speedValue = document.getElementById('speedValue_42');
+                                const speedInfo = document.getElementById('speedInfo_42');
+                                const explosion = document.getElementById('explosion_42');
+                                const explosionModal = document.getElementById('explosionModal_42');
+                                const resetButton = document.getElementById('resetButton_42');
+                                const closeButton = document.getElementById('closeButton_42');
+                                const warningText = document.getElementById('warningText_42');
+
+                                // Scene setup
+                                const scene_42 = new THREE.Scene();
+                                scene_42.background = new THREE.Color(0x87ceeb);
+
+                                // Camera setup
+                                const camera_42 = new THREE.PerspectiveCamera(
+                                    50,
+                                    catContainer.clientWidth / catContainer.clientHeight,
+                                    0.1,
+                                    1000
+                                );
+
+                                camera_42.position.set(0, 80, 150);
+                                camera_42.lookAt(0, 0, 0);
+
+                                // Renderer setup
+                                const renderer_42 = new THREE.WebGLRenderer({
+                                    antialias: true,
+                                    alpha: true
+                                });
+                                renderer_42.setSize(catContainer.clientWidth, catContainer.clientHeight);
+                                renderer_42.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                                renderer_42.shadowMap.enabled = true;
+                                renderer_42.shadowMap.type = THREE.PCFSoftShadowMap;
+                                catContainer.appendChild(renderer_42.domElement);
+
+                                // Lighting
+                                const ambientLight_42 = new THREE.AmbientLight(0xffffff, 0.8);
+                                scene_42.add(ambientLight_42);
+
+                                const directionalLight_42 = new THREE.DirectionalLight(0xffffff, 1);
+                                directionalLight_42.position.set(10, 20, 10);
+                                directionalLight_42.castShadow = true;
+                                scene_42.add(directionalLight_42);
+
+                                const directionalLight2_42 = new THREE.DirectionalLight(0xffffff, 0.5);
+                                directionalLight2_42.position.set(-10, 10, -10);
+                                scene_42.add(directionalLight2_42);
+
+                                // Ground plane
+                                const planeGeometry_42 = new THREE.PlaneGeometry(500, 500);
+                                const planeMaterial_42 = new THREE.MeshStandardMaterial({
+                                    color: 0x90ee90,
+                                    roughness: 0.8
+                                });
+                                const plane_42 = new THREE.Mesh(planeGeometry_42, planeMaterial_42);
+                                plane_42.rotation.x = -Math.PI / 2;
+                                plane_42.position.y = -50;
+                                plane_42.receiveShadow = true;
+                                scene_42.add(plane_42);
+
+                                // Grid helper
+                                const gridHelper_42 = new THREE.GridHelper(500, 50, 0x000000, 0x000000);
+                                gridHelper_42.position.y = -49;
+                                scene_42.add(gridHelper_42);
+
+                                // Model variables
+                                let catModel_42 = null;
+                                let spinSpeed_42 = 0;
+                                const spinIncrement_42 = 0.005;
+                                const maxRPM_42 = 250;
+                                let hasExploded_42 = false;
+
+                                // Load model
+                                const loader_42 = new GLTFLoader();
+                                const modelPath_42 = 'https://cdn.jsdelivr.net/gh/Gawasna/assets@main/oiiaioooooiai_cat/scene.gltf';
+
+                                loadingInfo.textContent = 'Loading Cat Model...';
+
+                                loader_42.load(
+                                    modelPath_42,
+                                    function (gltf) {
+                                        catModel_42 = gltf.scene;
+
+                                        const box_42 = new THREE.Box3().setFromObject(catModel_42);
+                                        const center_42 = box_42.getCenter(new THREE.Vector3());
+                                        const size_42 = box_42.getSize(new THREE.Vector3());
+
+                                        catModel_42.position.x = -center_42.x;
+                                        catModel_42.position.y = -center_42.y;
+                                        catModel_42.position.z = -center_42.z;
+
+                                        const maxDim_42 = Math.max(size_42.x, size_42.y, size_42.z);
+                                        const scale_42 = 150 / maxDim_42;
+                                        catModel_42.scale.setScalar(scale_42);
+
+                                        catModel_42.traverse(function (child) {
+                                            if (child.isMesh) {
+                                                child.castShadow = true;
+                                                child.receiveShadow = true;
+                                            }
+                                        });
+
+                                        scene_42.add(catModel_42);
+                                        loadingInfo.style.display = 'none';
+
+                                        console.log('✅ Cat model loaded successfully!');
+                                    },
+                                    function (xhr) {
+                                        const percentComplete = (xhr.loaded / xhr.total * 100).toFixed(0);
+                                        loadingInfo.textContent = `Loading: ${percentComplete}%`;
+                                    },
+                                    function (error) {
+                                        console.error('❌ Error loading model:', error);
+                                        loadingInfo.textContent = 'Error loading model!';
+                                        loadingInfo.style.color = '#f00';
+                                    }
+                                );
+
+                                spinButton.addEventListener('click', () => {
+                                    if (hasExploded_42) return;
+
+                                    spinSpeed_42 += spinIncrement_42;
+                                    updateSpeedDisplay_42();
+
+                                    spinButton.style.transform = 'translateX(-50%) scale(0.9)';
+                                    setTimeout(() => {
+                                        spinButton.style.transform = 'translateX(-50%) scale(1)';
+                                    }, 100);
+                                });
+
+                                function updateSpeedDisplay_42() {
+                                    const fps_42 = 60;
+                                    const rpm_42 = (spinSpeed_42 * fps_42 * 60) / (2 * Math.PI);
+                                    speedValue.textContent = rpm_42.toFixed(2);
+
+                                    speedInfo.classList.remove('warning_42', 'danger_42');
+                                    spinButton.classList.remove('warning_42', 'danger_42');
+                                    catContainer.classList.remove('shake_42');
+                                    warningText.classList.remove('show_42');
+
+                                    if (rpm_42 > 150 && rpm_42 <= 200) {
+                                        speedInfo.classList.add('warning_42');
+                                        spinButton.classList.add('warning_42');
+                                    } else if (rpm_42 > 200 && rpm_42 < maxRPM_42) {
+                                        speedInfo.classList.add('danger_42');
+                                        spinButton.classList.add('danger_42');
+                                        catContainer.classList.add('shake_42');
+                                        warningText.classList.add('show_42');
+                                    }
+
+                                    if (rpm_42 >= maxRPM_42 && !hasExploded_42) {
+                                        explodeCat_42();
+                                    }
+                                }
+
+                                function explodeCat_42() {
+                                    hasExploded_42 = true;
+                                    explosion.style.display = 'block';
+
+                                    if (catModel_42) {
+                                        catModel_42.visible = false;
+                                    }
+
+                                    spinSpeed_42 = 0;
+                                    scene_42.background = new THREE.Color(0x000000);
+                                    catContainer.classList.remove('shake_42');
+
+                                    setTimeout(() => {
+                                        explosion.style.display = 'none';
+                                        explosionModal.classList.add('show_42');
+                                    }, 2000);
+                                }
+
+                                resetButton.addEventListener('click', () => {
+                                    hasExploded_42 = false;
+                                    spinSpeed_42 = 0;
+
+                                    if (catModel_42) {
+                                        catModel_42.visible = true;
+                                        catModel_42.rotation.y = 0;
+                                    }
+
+                                    scene_42.background = new THREE.Color(0x87ceeb);
+                                    explosionModal.classList.remove('show_42');
+
+                                    speedInfo.classList.remove('warning_42', 'danger_42');
+                                    spinButton.classList.remove('warning_42', 'danger_42');
+                                    catContainer.classList.remove('shake_42');
+                                    warningText.classList.remove('show_42');
+                                    updateSpeedDisplay_42();
+                                });
+
+                                closeButton.addEventListener('click', () => {
+                                    explosionModal.classList.remove('show_42');
+                                });
+
+                                window.addEventListener('resize', () => {
+                                    camera_42.aspect = catContainer.clientWidth / catContainer.clientHeight;
+                                    camera_42.updateProjectionMatrix();
+                                    renderer_42.setSize(catContainer.clientWidth, catContainer.clientHeight);
+                                });
+
+                                function animate_42() {
+                                    requestAnimationFrame(animate_42);
+
+                                    if (catModel_42 && !hasExploded_42) {
+                                        catModel_42.rotation.y += spinSpeed_42;
+                                    }
+
+                                    if (!hasExploded_42 && spinSpeed_42 > 0) {
+                                        updateSpeedDisplay_42();
+                                    }
+
+                                    renderer_42.render(scene_42, camera_42);
+                                }
+                                animate_42();
+                            });
+                        });
+                    }
+
+                    // Intersection Observer for Lazy Loading
+                    if ('IntersectionObserver' in window) {
+                        observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    console.log('🐱 Cat container in view - Loading model...');
+                                    initCatModel();
+                                    observer.disconnect(); // Stop observing after load
+                                }
+                            });
+                        }, {
+                            root: null,
+                            rootMargin: '100px', // Load 100px before container visible
+                            threshold: 0.1
+                        });
+
+                        observer.observe(catContainer);
+                    } else {
+                        // Fallback for browsers without IntersectionObserver
+                        initCatModel();
+                    }
+                })();
+            </script>
+        
             <script>
                 const container_42 = document.getElementById('screensaver-container_42');
                 const logoWrapper_42 = document.getElementById('dvd-logo-wrapper_42');
@@ -8304,12 +9029,12 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                 let x_42 = Math.random() * 50;
                 let y_42 = Math.random() * 50;
                 let baseSpeed_42 = 0.7;
-                let boostTimeoutId = null;
+                let boostTimeoutId_42 = null;
                 let vx_42 = baseSpeed_42;
                 let vy_42 = baseSpeed_42;
                 let hue_42 = 0;
                 let clickCount_42 = 0;
-                let isEscaping = false;
+                let isEscaping_42 = false;
 
                 const messages_42 = [
                     "Oh... You see me?",
@@ -8333,7 +9058,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                 }
 
                 function animate_42() {
-                    if (isEscaping) return;
+                    if (isEscaping_42) return;
                     const containerWidth = container_42.clientWidth;
                     const containerHeight = container_42.clientHeight;
                     const logoWidth = logoWrapper_42.offsetWidth;
@@ -8368,22 +9093,22 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                 }
 
                 logoWrapper_42.addEventListener('click', () => {
-                    if (isEscaping) return;
+                    if (isEscaping_42) return;
                     clickCount_42++;
-                    if (boostTimeoutId) {
-                        clearTimeout(boostTimeoutId);
+                    if (boostTimeoutId_42) {
+                        clearTimeout(boostTimeoutId_42);
                     }
                     const speedIncrement_42 = 0.4;
-                    const boostFactor = 2.5;
-                    const boostDuration = 1200;
+                    const boostFactor_42 = 2.5;
+                    const boostDuration_42 = 1200;
                     baseSpeed_42 += speedIncrement_42;
-                    vx_42 = Math.sign(vx_42) * baseSpeed_42 * boostFactor;
-                    vy_42 = Math.sign(vy_42) * baseSpeed_42 * boostFactor;
-                    boostTimeoutId = setTimeout(() => {
+                    vx_42 = Math.sign(vx_42) * baseSpeed_42 * boostFactor_42;
+                    vy_42 = Math.sign(vy_42) * baseSpeed_42 * boostFactor_42;
+                    boostTimeoutId_42 = setTimeout(() => {
                         vx_42 = Math.sign(vx_42) * baseSpeed_42;
                         vy_42 = Math.sign(vy_42) * baseSpeed_42;
-                        boostTimeoutId = null;
-                    }, boostDuration);
+                        boostTimeoutId_42 = null;
+                    }, boostDuration_42);
 
                     if (clickCount_42 === 1) {
                         showmsg_42(messages_42[0]);
@@ -8394,18 +9119,17 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     } else if (clickCount_42 === 4) {
                         showmsg_42(messages_42[3]);
                     } else if (clickCount_42 === 5) {
-                        if (boostTimeoutId) {
-                            clearTimeout(boostTimeoutId);
+                        if (boostTimeoutId_42) {
+                            clearTimeout(boostTimeoutId_42);
                         }
-                        isEscaping = true;
+                        isEscaping_42 = true;
                         showmsg_42(messages_42[4]);
                         setTimeout(() => {
                             logoWrapper_42.classList.add('escaping');
                             setTimeout(() => {
                                 logoWrapper_42.style.display = 'none';
-                                finalMessage.style.display = 'flex';
+                                finalMessage_42.style.display = 'flex';
                             }, 1500);
-
                         }, 1500);
                     }
                 });
