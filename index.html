@@ -5446,12 +5446,47 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     justify-content: center;
                     color: white;
                     font-size: 48px;
+                    position: relative;
                 }
 
                 #slot-24 .card-image img {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
+                }
+
+                #slot-24 .online-badge {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    transition: all 0.3s ease;
+                    z-index: 10;
+                }
+
+                #slot-24 .online-badge.online {
+                    background: rgba(76, 175, 80, 0.95);
+                    color: white;
+                    animation: slot24-pulse-badge 2s infinite;
+                }
+
+                #slot-24 .online-badge.offline {
+                    background: rgba(97, 97, 97, 0.95);
+                    color: white;
+                }
+
+                @keyframes slot24-pulse-badge {
+                    0%, 100% { 
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 0 rgba(76, 175, 80, 0.7);
+                    }
+                    50% { 
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 8px rgba(76, 175, 80, 0);
+                    }
                 }
 
                 #slot-24 .card-info {
@@ -6162,6 +6197,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     localStream: null,
                     isAudioMuted: false,
                     isVideoOff: false,
+                    onlineUserIds: [],
                     SERVER_URL: 'https://dating.van.moe',
                     WS_URL: 'wss://dating.van.moe',
 
@@ -6379,28 +6415,50 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     },
 
                     connectWebSocket() {
-                        this.ws = new WebSocket(this.WS_URL);
+                        if (!this.currentUser) {
+                            console.warn('Cannot connect WebSocket: no user logged in');
+                            return;
+                        }
 
-                        this.ws.onopen = () => {
-                            this.ws.send(JSON.stringify({
-                                type: 'auth',
-                                userId: this.currentUser.id
-                            }));
-                        };
+                        console.log(`🔌 Connecting to WebSocket: ${this.WS_URL}`);
+                        
+                        try {
+                            this.ws = new WebSocket(this.WS_URL);
 
-                        this.ws.onmessage = (event) => {
-                            const data = JSON.parse(event.data);
-                            this.handleWebSocketMessage(data);
-                        };
+                            this.ws.onopen = () => {
+                                console.log('✅ WebSocket connected successfully');
+                                this.ws.send(JSON.stringify({
+                                    type: 'auth',
+                                    userId: this.currentUser.id
+                                }));
+                            };
 
-                        this.ws.onerror = (error) => {
-                            console.error('WebSocket error:', error);
-                        };
+                            this.ws.onmessage = (event) => {
+                                const data = JSON.parse(event.data);
+                                this.handleWebSocketMessage(data);
+                            };
 
-                        this.ws.onclose = () => {
-                            console.log('WebSocket disconnected');
-                            setTimeout(() => this.connectWebSocket(), 3000);
-                        };
+                            this.ws.onerror = (error) => {
+                                console.error('❌ WebSocket error:', error);
+                                console.error('URL:', this.WS_URL);
+                                console.error('Hãy kiểm tra:');
+                                console.error('1. Server backend đã chạy chưa?');
+                                console.error('2. Cloudflare đã enable WebSocket chưa?');
+                                console.error('3. Port có được Cloudflare hỗ trợ không? (80, 443, 8080, 8880, 2052-2096)');
+                            };
+
+                            this.ws.onclose = (event) => {
+                                console.log(`🔌 WebSocket disconnected (code: ${event.code}, reason: ${event.reason})`);
+                                
+                                // Chỉ reconnect nếu user vẫn đăng nhập
+                                if (this.currentUser) {
+                                    console.log('🔄 Reconnecting in 3 seconds...');
+                                    setTimeout(() => this.connectWebSocket(), 3000);
+                                }
+                            };
+                        } catch (error) {
+                            console.error('❌ Failed to create WebSocket:', error);
+                        }
                     },
 
                     handleWebSocketMessage(data) {
@@ -6410,6 +6468,10 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                                 break;
                             case 'online_users':
                                 document.getElementById('slot24-online-count').textContent = data.count;
+                                // Lưu danh sách user IDs đang online
+                                this.onlineUserIds = data.userIds || [];
+                                // Cập nhật trạng thái online/offline cho current match nếu đang hiển thị
+                                this.updateCurrentMatchOnlineStatus();
                                 break;
                             case 'match':
                                 this.handleMatch(data);
@@ -6422,6 +6484,18 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                             case 'webrtc_ice_candidate':
                                 this.handleWebRTCSignaling(data);
                                 break;
+                        }
+                    },
+
+                    updateCurrentMatchOnlineStatus() {
+                        // Cập nhật badge online/offline realtime
+                        const badge = document.querySelector('#slot-24 .swipe-card .online-badge');
+                        if (badge && this.currentMatchIndex < this.potentialMatches.length) {
+                            const match = this.potentialMatches[this.currentMatchIndex];
+                            const isOnline = this.onlineUserIds.includes(match.id);
+                            
+                            badge.className = isOnline ? 'online-badge online' : 'online-badge offline';
+                            badge.textContent = isOnline ? '🟢 Online' : '⚫ Offline';
                         }
                     },
 
@@ -6447,6 +6521,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                         if (this.currentMatchIndex >= this.potentialMatches.length) {
                             container.innerHTML = '';
                             noUsers.style.display = 'block';
+                            noUsers.innerHTML = '<h3>😔 Hết người để khám phá</h3><p>Hãy quay lại sau nhé!</p>';
                             return;
                         }
 
@@ -6455,11 +6530,17 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                         
                         const photos = match.photos || [];
                         const photoUrl = photos.length > 0 ? photos[0] : null;
+                        
+                        // Check trạng thái online/offline
+                        const isOnline = this.onlineUserIds.includes(match.id) || match.isOnline;
+                        const onlineClass = isOnline ? 'online' : 'offline';
+                        const onlineText = isOnline ? '🟢 Online' : '⚫ Offline';
 
                         container.innerHTML = `
                             <div class="swipe-card">
                                 <div class="card-image">
                                     ${photoUrl ? `<img src="${photoUrl}" alt="${match.username}">` : '👤'}
+                                    <div class="online-badge ${onlineClass}">${onlineText}</div>
                                 </div>
                                 <div class="card-info">
                                     <h2>${match.username}, ${match.age || '?'}</h2>
@@ -6547,6 +6628,10 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                         list.innerHTML = this.userMatches.map(match => {
                             const photos = match.matched_photos || [];
                             const photoUrl = photos.length > 0 ? photos[0] : null;
+                            
+                            // Check trạng thái online/offline
+                            const isOnline = this.onlineUserIds.includes(match.matched_user_id);
+                            const onlineIndicator = isOnline ? '🟢' : '⚫';
 
                             return `
                                 <div class="match-item" onclick="slot24App.openChat('${match.match_id}', ${JSON.stringify(match).replace(/"/g, '&quot;')})">
@@ -6554,7 +6639,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                                         ${photoUrl ? `<img src="${photoUrl}">` : match.matched_username.charAt(0).toUpperCase()}
                                     </div>
                                     <div class="match-info">
-                                        <h4>${match.matched_username}</h4>
+                                        <h4>${onlineIndicator} ${match.matched_username}</h4>
                                         <p>${match.matched_bio || 'Chưa có giới thiệu'}</p>
                                     </div>
                                 </div>
@@ -6563,15 +6648,27 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                     },
 
                     async openChat(matchId, matchUser) {
-                        this.currentMatch = { matchId, user: matchUser };
+                        // Chuẩn hóa cấu trúc data cho cả 2 trường hợp:
+                        // 1. Từ displayMatches: có matched_user_id, matched_username, matched_photos
+                        // 2. Từ handleMatch: có id, username, photos
+                        const userId = matchUser.matched_user_id || matchUser.id;
+                        const username = matchUser.matched_username || matchUser.username;
+                        const photos = matchUser.matched_photos || matchUser.photos || [];
+                        const bio = matchUser.matched_bio || matchUser.bio;
                         
-                        const photos = matchUser.matched_photos || [];
+                        this.currentMatch = { 
+                            matchId, 
+                            user: matchUser,
+                            recipientId: userId,  // Lưu rõ ràng recipientId
+                            recipientName: username
+                        };
+                        
                         const photoUrl = photos.length > 0 ? photos[0] : null;
 
-                        document.getElementById('slot24-chat-name').textContent = matchUser.matched_username;
+                        document.getElementById('slot24-chat-name').textContent = username;
                         document.getElementById('slot24-chat-avatar').innerHTML = photoUrl ? 
                             `<img src="${photoUrl}">` : 
-                            matchUser.matched_username.charAt(0).toUpperCase();
+                            username.charAt(0).toUpperCase();
 
                         this.showScreen('chat');
                         await this.loadChatHistory(matchId);
@@ -6600,12 +6697,24 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                         const input = document.getElementById('slot24-message-input');
                         const content = input.value.trim();
 
-                        if (!content || !this.currentMatch) return;
+                        if (!content || !this.currentMatch) {
+                            console.warn('Cannot send message: no content or no match selected');
+                            return;
+                        }
+
+                        // Kiểm tra WebSocket đã kết nối chưa
+                        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+                            alert('❌ Mất kết nối. Đang kết nối lại...');
+                            this.connectWebSocket();
+                            return;
+                        }
+
+                        console.log('Sending message to:', this.currentMatch.recipientId);
 
                         this.ws.send(JSON.stringify({
                             type: 'chat_message',
                             matchId: this.currentMatch.matchId,
-                            recipientId: this.currentMatch.user.matched_user_id,
+                            recipientId: this.currentMatch.recipientId,  // Sử dụng recipientId đã chuẩn hóa
                             content
                         }));
 
@@ -6669,7 +6778,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                                 if (event.candidate) {
                                     this.ws.send(JSON.stringify({
                                         type: 'webrtc_ice_candidate',
-                                        targetUserId: this.currentMatch.user.matched_user_id,
+                                        targetUserId: this.currentMatch.recipientId,
                                         candidate: event.candidate
                                     }));
                                 }
@@ -6680,7 +6789,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
 
                             this.ws.send(JSON.stringify({
                                 type: 'webrtc_offer',
-                                targetUserId: this.currentMatch.user.matched_user_id,
+                                targetUserId: this.currentMatch.recipientId,
                                 offer: offer
                             }));
                         } catch (error) {
