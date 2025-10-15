@@ -5300,227 +5300,262 @@
         
             <script type="module">
                 (function () {
-                    import('three').then(THREE_MODULE => {
-                        const THREE = THREE_MODULE;
+                    const catContainer = document.getElementById('cat-container_42');
+                    const loadingInfo = document.getElementById('loadingInfo_42');
+                    let isModelLoaded = false;
+                    let observer = null;
 
-                        return import('three/addons/loaders/GLTFLoader.js').then(({ GLTFLoader }) => {
-                            const catContainer = document.getElementById('cat-container_42');
-                            const loadingInfo = document.getElementById('loadingInfo_42');
-                            const spinButton = document.getElementById('spinButton_42');
-                            const speedValue = document.getElementById('speedValue_42');
-                            const speedInfo = document.getElementById('speedInfo_42');
-                            const explosion = document.getElementById('explosion_42');
-                            const explosionModal = document.getElementById('explosionModal_42');
-                            const resetButton = document.getElementById('resetButton_42');
-                            const closeButton = document.getElementById('closeButton_42');
-                            const warningText = document.getElementById('warningText_42');
+                    function initCatModel() {
+                        if (isModelLoaded) return;
+                        isModelLoaded = true;
 
-                            // Scene setup
-                            const scene_42 = new THREE.Scene();
-                            scene_42.background = new THREE.Color(0x87ceeb);
+                        loadingInfo.textContent = 'Initializing...';
 
-                            // Camera setup
-                            const camera_42 = new THREE.PerspectiveCamera(
-                                50,
-                                catContainer.clientWidth / catContainer.clientHeight,
-                                0.1,
-                                1000
-                            );
+                        import('three').then(THREE_MODULE => {
+                            const THREE = THREE_MODULE;
 
-                            camera_42.position.set(0, 80, 150);
-                            camera_42.lookAt(0, 0, 0);
+                            return import('three/addons/loaders/GLTFLoader.js').then(({ GLTFLoader }) => {
+                                const spinButton = document.getElementById('spinButton_42');
+                                const speedValue = document.getElementById('speedValue_42');
+                                const speedInfo = document.getElementById('speedInfo_42');
+                                const explosion = document.getElementById('explosion_42');
+                                const explosionModal = document.getElementById('explosionModal_42');
+                                const resetButton = document.getElementById('resetButton_42');
+                                const closeButton = document.getElementById('closeButton_42');
+                                const warningText = document.getElementById('warningText_42');
 
-                            // Renderer setup
-                            const renderer_42 = new THREE.WebGLRenderer({
-                                antialias: true,
-                                alpha: true
-                            });
-                            renderer_42.setSize(catContainer.clientWidth, catContainer.clientHeight);
-                            renderer_42.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                            renderer_42.shadowMap.enabled = true;
-                            renderer_42.shadowMap.type = THREE.PCFSoftShadowMap;
-                            catContainer.appendChild(renderer_42.domElement);
-
-                            // Lighting
-                            const ambientLight_42 = new THREE.AmbientLight(0xffffff, 0.8);
-                            scene_42.add(ambientLight_42);
-
-                            const directionalLight_42 = new THREE.DirectionalLight(0xffffff, 1);
-                            directionalLight_42.position.set(10, 20, 10);
-                            directionalLight_42.castShadow = true;
-                            scene_42.add(directionalLight_42);
-
-                            const directionalLight2_42 = new THREE.DirectionalLight(0xffffff, 0.5);
-                            directionalLight2_42.position.set(-10, 10, -10);
-                            scene_42.add(directionalLight2_42);
-
-                            // Ground plane
-                            const planeGeometry_42 = new THREE.PlaneGeometry(500, 500);
-                            const planeMaterial_42 = new THREE.MeshStandardMaterial({
-                                color: 0x90ee90,
-                                roughness: 0.8
-                            });
-                            const plane_42 = new THREE.Mesh(planeGeometry_42, planeMaterial_42);
-                            plane_42.rotation.x = -Math.PI / 2;
-                            plane_42.position.y = -50;
-                            plane_42.receiveShadow = true;
-                            scene_42.add(plane_42);
-
-                            // Grid helper
-                            const gridHelper_42 = new THREE.GridHelper(500, 50, 0x000000, 0x000000);
-                            gridHelper_42.position.y = -49;
-                            scene_42.add(gridHelper_42);
-
-                            // Model variables
-                            let catModel_42 = null;
-                            let spinSpeed_42 = 0;
-                            const spinIncrement_42 = 0.005;
-                            const maxRPM_42 = 250;
-                            let hasExploded_42 = false;
-
-                            // Load model
-                            const loader_42 = new GLTFLoader();
-                            const modelPath_42 = 'https://cdn.jsdelivr.net/gh/Gawasna/assets@main/oiiaioooooiai_cat/scene.gltf';
-
-                            loader_42.load(
-                                modelPath_42,
-                                function (gltf) {
-                                    catModel_42 = gltf.scene;
-
-                                    const box_42 = new THREE.Box3().setFromObject(catModel_42);
-                                    const center_42 = box_42.getCenter(new THREE.Vector3());
-                                    const size_42 = box_42.getSize(new THREE.Vector3());
-
-                                    catModel_42.position.x = -center_42.x;
-                                    catModel_42.position.y = -center_42.y;
-                                    catModel_42.position.z = -center_42.z;
-
-                                    const maxDim_42 = Math.max(size_42.x, size_42.y, size_42.z);
-                                    // Từ 100 -> 150 - To hơn 50%
-                                    const scale_42 = 150 / maxDim_42;
-                                    catModel_42.scale.setScalar(scale_42);
-
-                                    catModel_42.traverse(function (child) {
-                                        if (child.isMesh) {
-                                            child.castShadow = true;
-                                            child.receiveShadow = true;
-                                        }
-                                    });
-
-                                    scene_42.add(catModel_42);
-                                    loadingInfo.style.display = 'none';
-                                },
-                                function (xhr) {
-                                    const percentComplete = (xhr.loaded / xhr.total * 100).toFixed(0);
-                                    loadingInfo.textContent = `Loading: ${percentComplete}%`;
-                                },
-                                function (error) {
-                                    console.error('❌ Error loading model:', error);
-                                    loadingInfo.textContent = 'Error loading model!';
-                                    loadingInfo.style.color = '#f00';
-                                }
-                            );
-
-                            spinButton.addEventListener('click', () => {
-                                if (hasExploded_42) return;
-
-                                spinSpeed_42 += spinIncrement_42;
-                                updateSpeedDisplay_42();
-
-                                spinButton.style.transform = 'translateX(-50%) scale(0.9)';
-                                setTimeout(() => {
-                                    spinButton.style.transform = 'translateX(-50%) scale(1)';
-                                }, 100);
-                            });
-
-                            function updateSpeedDisplay_42() {
-                                const fps_42 = 60;
-                                const rpm_42 = (spinSpeed_42 * fps_42 * 60) / (2 * Math.PI);
-                                speedValue.textContent = rpm_42.toFixed(2);
-
-                                speedInfo.classList.remove('warning_42', 'danger_42');
-                                spinButton.classList.remove('warning_42', 'danger_42');
-                                catContainer.classList.remove('shake_42');
-                                warningText.classList.remove('show_42');
-
-                                if (rpm_42 > 150 && rpm_42 <= 200) {
-                                    speedInfo.classList.add('warning_42');
-                                    spinButton.classList.add('warning_42');
-                                } else if (rpm_42 > 200 && rpm_42 < maxRPM_42) {
-                                    speedInfo.classList.add('danger_42');
-                                    spinButton.classList.add('danger_42');
-                                    catContainer.classList.add('shake_42');
-                                    warningText.classList.add('show_42');
-                                }
-
-                                if (rpm_42 >= maxRPM_42 && !hasExploded_42) {
-                                    explodeCat_42();
-                                }
-                            }
-
-                            function explodeCat_42() {
-                                hasExploded_42 = true;
-                                explosion.style.display = 'block';
-
-                                if (catModel_42) {
-                                    catModel_42.visible = false;
-                                }
-
-                                spinSpeed_42 = 0;
-                                scene_42.background = new THREE.Color(0x000000);
-                                catContainer.classList.remove('shake_42');
-
-                                setTimeout(() => {
-                                    explosion.style.display = 'none';
-                                    explosionModal.classList.add('show_42');
-                                }, 2000);
-                            }
-
-                            resetButton.addEventListener('click', () => {
-                                hasExploded_42 = false;
-                                spinSpeed_42 = 0;
-
-                                if (catModel_42) {
-                                    catModel_42.visible = true;
-                                    catModel_42.rotation.y = 0;
-                                }
-
+                                // Scene setup
+                                const scene_42 = new THREE.Scene();
                                 scene_42.background = new THREE.Color(0x87ceeb);
-                                explosionModal.classList.remove('show_42');
 
-                                speedInfo.classList.remove('warning_42', 'danger_42');
-                                spinButton.classList.remove('warning_42', 'danger_42');
-                                catContainer.classList.remove('shake_42');
-                                warningText.classList.remove('show_42');
-                                updateSpeedDisplay_42();
-                            });
+                                // Camera setup
+                                const camera_42 = new THREE.PerspectiveCamera(
+                                    50,
+                                    catContainer.clientWidth / catContainer.clientHeight,
+                                    0.1,
+                                    1000
+                                );
 
-                            closeButton.addEventListener('click', () => {
-                                explosionModal.classList.remove('show_42');
-                            });
+                                camera_42.position.set(0, 80, 150);
+                                camera_42.lookAt(0, 0, 0);
 
-                            window.addEventListener('resize', () => {
-                                camera_42.aspect = catContainer.clientWidth / catContainer.clientHeight;
-                                camera_42.updateProjectionMatrix();
+                                // Renderer setup
+                                const renderer_42 = new THREE.WebGLRenderer({
+                                    antialias: true,
+                                    alpha: true
+                                });
                                 renderer_42.setSize(catContainer.clientWidth, catContainer.clientHeight);
-                            });
+                                renderer_42.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                                renderer_42.shadowMap.enabled = true;
+                                renderer_42.shadowMap.type = THREE.PCFSoftShadowMap;
+                                catContainer.appendChild(renderer_42.domElement);
 
-                            function animate_42() {
-                                requestAnimationFrame(animate_42);
+                                // Lighting
+                                const ambientLight_42 = new THREE.AmbientLight(0xffffff, 0.8);
+                                scene_42.add(ambientLight_42);
 
-                                if (catModel_42 && !hasExploded_42) {
-                                    catModel_42.rotation.y += spinSpeed_42;
-                                }
+                                const directionalLight_42 = new THREE.DirectionalLight(0xffffff, 1);
+                                directionalLight_42.position.set(10, 20, 10);
+                                directionalLight_42.castShadow = true;
+                                scene_42.add(directionalLight_42);
 
-                                if (!hasExploded_42 && spinSpeed_42 > 0) {
+                                const directionalLight2_42 = new THREE.DirectionalLight(0xffffff, 0.5);
+                                directionalLight2_42.position.set(-10, 10, -10);
+                                scene_42.add(directionalLight2_42);
+
+                                // Ground plane
+                                const planeGeometry_42 = new THREE.PlaneGeometry(500, 500);
+                                const planeMaterial_42 = new THREE.MeshStandardMaterial({
+                                    color: 0x90ee90,
+                                    roughness: 0.8
+                                });
+                                const plane_42 = new THREE.Mesh(planeGeometry_42, planeMaterial_42);
+                                plane_42.rotation.x = -Math.PI / 2;
+                                plane_42.position.y = -50;
+                                plane_42.receiveShadow = true;
+                                scene_42.add(plane_42);
+
+                                // Grid helper
+                                const gridHelper_42 = new THREE.GridHelper(500, 50, 0x000000, 0x000000);
+                                gridHelper_42.position.y = -49;
+                                scene_42.add(gridHelper_42);
+
+                                // Model variables
+                                let catModel_42 = null;
+                                let spinSpeed_42 = 0;
+                                const spinIncrement_42 = 0.005;
+                                const maxRPM_42 = 250;
+                                let hasExploded_42 = false;
+
+                                // Load model
+                                const loader_42 = new GLTFLoader();
+                                const modelPath_42 = 'https://cdn.jsdelivr.net/gh/Gawasna/assets@main/oiiaioooooiai_cat/scene.gltf';
+
+                                loadingInfo.textContent = 'Loading Cat Model...';
+
+                                loader_42.load(
+                                    modelPath_42,
+                                    function (gltf) {
+                                        catModel_42 = gltf.scene;
+
+                                        const box_42 = new THREE.Box3().setFromObject(catModel_42);
+                                        const center_42 = box_42.getCenter(new THREE.Vector3());
+                                        const size_42 = box_42.getSize(new THREE.Vector3());
+
+                                        catModel_42.position.x = -center_42.x;
+                                        catModel_42.position.y = -center_42.y;
+                                        catModel_42.position.z = -center_42.z;
+
+                                        const maxDim_42 = Math.max(size_42.x, size_42.y, size_42.z);
+                                        const scale_42 = 150 / maxDim_42;
+                                        catModel_42.scale.setScalar(scale_42);
+
+                                        catModel_42.traverse(function (child) {
+                                            if (child.isMesh) {
+                                                child.castShadow = true;
+                                                child.receiveShadow = true;
+                                            }
+                                        });
+
+                                        scene_42.add(catModel_42);
+                                        loadingInfo.style.display = 'none';
+
+                                        console.log('✅ Cat model loaded successfully!');
+                                    },
+                                    function (xhr) {
+                                        const percentComplete = (xhr.loaded / xhr.total * 100).toFixed(0);
+                                        loadingInfo.textContent = `Loading: ${percentComplete}%`;
+                                    },
+                                    function (error) {
+                                        console.error('❌ Error loading model:', error);
+                                        loadingInfo.textContent = 'Error loading model!';
+                                        loadingInfo.style.color = '#f00';
+                                    }
+                                );
+
+                                spinButton.addEventListener('click', () => {
+                                    if (hasExploded_42) return;
+
+                                    spinSpeed_42 += spinIncrement_42;
                                     updateSpeedDisplay_42();
+
+                                    spinButton.style.transform = 'translateX(-50%) scale(0.9)';
+                                    setTimeout(() => {
+                                        spinButton.style.transform = 'translateX(-50%) scale(1)';
+                                    }, 100);
+                                });
+
+                                function updateSpeedDisplay_42() {
+                                    const fps_42 = 60;
+                                    const rpm_42 = (spinSpeed_42 * fps_42 * 60) / (2 * Math.PI);
+                                    speedValue.textContent = rpm_42.toFixed(2);
+
+                                    speedInfo.classList.remove('warning_42', 'danger_42');
+                                    spinButton.classList.remove('warning_42', 'danger_42');
+                                    catContainer.classList.remove('shake_42');
+                                    warningText.classList.remove('show_42');
+
+                                    if (rpm_42 > 150 && rpm_42 <= 200) {
+                                        speedInfo.classList.add('warning_42');
+                                        spinButton.classList.add('warning_42');
+                                    } else if (rpm_42 > 200 && rpm_42 < maxRPM_42) {
+                                        speedInfo.classList.add('danger_42');
+                                        spinButton.classList.add('danger_42');
+                                        catContainer.classList.add('shake_42');
+                                        warningText.classList.add('show_42');
+                                    }
+
+                                    if (rpm_42 >= maxRPM_42 && !hasExploded_42) {
+                                        explodeCat_42();
+                                    }
                                 }
 
-                                renderer_42.render(scene_42, camera_42);
-                            }
-                            animate_42();
+                                function explodeCat_42() {
+                                    hasExploded_42 = true;
+                                    explosion.style.display = 'block';
+
+                                    if (catModel_42) {
+                                        catModel_42.visible = false;
+                                    }
+
+                                    spinSpeed_42 = 0;
+                                    scene_42.background = new THREE.Color(0x000000);
+                                    catContainer.classList.remove('shake_42');
+
+                                    setTimeout(() => {
+                                        explosion.style.display = 'none';
+                                        explosionModal.classList.add('show_42');
+                                    }, 2000);
+                                }
+
+                                resetButton.addEventListener('click', () => {
+                                    hasExploded_42 = false;
+                                    spinSpeed_42 = 0;
+
+                                    if (catModel_42) {
+                                        catModel_42.visible = true;
+                                        catModel_42.rotation.y = 0;
+                                    }
+
+                                    scene_42.background = new THREE.Color(0x87ceeb);
+                                    explosionModal.classList.remove('show_42');
+
+                                    speedInfo.classList.remove('warning_42', 'danger_42');
+                                    spinButton.classList.remove('warning_42', 'danger_42');
+                                    catContainer.classList.remove('shake_42');
+                                    warningText.classList.remove('show_42');
+                                    updateSpeedDisplay_42();
+                                });
+
+                                closeButton.addEventListener('click', () => {
+                                    explosionModal.classList.remove('show_42');
+                                });
+
+                                window.addEventListener('resize', () => {
+                                    camera_42.aspect = catContainer.clientWidth / catContainer.clientHeight;
+                                    camera_42.updateProjectionMatrix();
+                                    renderer_42.setSize(catContainer.clientWidth, catContainer.clientHeight);
+                                });
+
+                                function animate_42() {
+                                    requestAnimationFrame(animate_42);
+
+                                    if (catModel_42 && !hasExploded_42) {
+                                        catModel_42.rotation.y += spinSpeed_42;
+                                    }
+
+                                    if (!hasExploded_42 && spinSpeed_42 > 0) {
+                                        updateSpeedDisplay_42();
+                                    }
+
+                                    renderer_42.render(scene_42, camera_42);
+                                }
+                                animate_42();
+                            });
                         });
-                    });
+                    }
+
+                    // Intersection Observer for Lazy Loading
+                    if ('IntersectionObserver' in window) {
+                        observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    console.log('🐱 Cat container in view - Loading model...');
+                                    initCatModel();
+                                    observer.disconnect(); // Stop observing after load
+                                }
+                            });
+                        }, {
+                            root: null,
+                            rootMargin: '100px', // Load 100px before container visible
+                            threshold: 0.1
+                        });
+
+                        observer.observe(catContainer);
+                    } else {
+                        // Fallback for browsers without IntersectionObserver
+                        initCatModel();
+                    }
                 })();
             </script>
         
