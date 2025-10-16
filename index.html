@@ -141,223 +141,6 @@
                }
         </style>
 
-        <!-- == SLOT 1 == -->
-        <div id="slot-1">
-            <style>
-                #slot-1 {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 20px;
-                }
-
-                #slot-1 .slot1-flag-container {
-                    width: 100%;
-                    max-width: 500px;
-                    aspect-ratio: 3 / 2;
-                    background: #000;
-                    border-radius: 0px;
-                    overflow: hidden;
-                }
-
-                #slot-1 .slot1-canvas {
-                    width: 100%;
-                    height: 100%;
-                    display: block;
-                }
-            </style>
-
-            <div class="slot1-flag-container">
-                <canvas class="slot1-canvas" id="slot1-canvas"></canvas>
-            </div>
-
-            <script>
-                (function() {
-                    const slot1_container = document.getElementById('slot-1');
-                    const slot1_canvas = document.getElementById('slot1-canvas');
-                    const slot1_ctx = slot1_canvas.getContext('2d', { alpha: false });
-
-                    // Mobile detection
-                    const slot1_isMobile = window.matchMedia('(max-width: 768px)').matches;
-                    const slot1_cols = slot1_isMobile ? 100 : 200;
-                    const slot1_rows = slot1_isMobile ? 66 : 133;
-
-                    // Get actual display size
-                    const slot1_rect = slot1_canvas.getBoundingClientRect();
-                    const slot1_dpr = window.devicePixelRatio || 1;
-
-                    // Set canvas resolution to match display size with device pixel ratio
-                    slot1_canvas.width = slot1_rect.width * slot1_dpr;
-                    slot1_canvas.height = slot1_rect.height * slot1_dpr;
-
-                    // Calculate pixel size in canvas coordinates
-                    const slot1_pixelWidth = slot1_canvas.width / slot1_cols;
-                    const slot1_pixelHeight = slot1_canvas.height / slot1_rows;
-
-                    // Disable image smoothing for crisp pixels
-                    slot1_ctx.imageSmoothingEnabled = false;
-
-                    // Colors
-                    const slot1_red = '#DA251D';
-                    const slot1_yellow = '#FFCD00';
-
-                    // Lazy loading với Intersection Observer
-                    function slot1_init() {
-
-                    // Tính toán ngôi sao 5 cánh
-                    const slot1_centerX = slot1_cols / 2;
-                    const slot1_centerY = slot1_rows / 2;
-                    const slot1_outerRadius = (slot1_rows * 3) / 10;
-                    const slot1_innerRadius = slot1_outerRadius * 0.382;
-
-                    // Tạo 5 điểm ngoài và 5 điểm trong của ngôi sao
-                    function slot1_getStarPoints() {
-                        const points = [];
-                        for (let i = 0; i < 5; i++) {
-                            const outerAngle = (Math.PI / 2) + (i * 2 * Math.PI / 5);
-                            const innerAngle = outerAngle + (Math.PI / 5);
-
-                            points.push({
-                                x: slot1_centerX + slot1_outerRadius * Math.cos(outerAngle),
-                                y: slot1_centerY - slot1_outerRadius * Math.sin(outerAngle)
-                            });
-
-                            points.push({
-                                x: slot1_centerX + slot1_innerRadius * Math.cos(innerAngle),
-                                y: slot1_centerY - slot1_innerRadius * Math.sin(innerAngle)
-                            });
-                        }
-                        return points;
-                    }
-
-                    // Kiểm tra điểm có nằm trong polygon không (Ray casting algorithm)
-                    function slot1_isPointInPolygon(x, y, points) {
-                        let inside = false;
-                        for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
-                            const xi = points[i].x, yi = points[i].y;
-                            const xj = points[j].x, yj = points[j].y;
-
-                            const intersect = ((yi > y) !== (yj > y))
-                                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-                            if (intersect) inside = !inside;
-                        }
-                        return inside;
-                    }
-
-                    const slot1_starPoints = slot1_getStarPoints();
-
-                    // Pixel art cho chữ "VIETNAM" (5×7 mỗi chữ - căn giữa hoàn hảo)
-                    const slot1_vietnam = {
-                        'V': [
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [0,1,0,1,0],
-                            [0,0,1,0,0]
-                        ],
-                        'I': [
-                            [1,1,1,1,1],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [1,1,1,1,1]
-                        ],
-                        'E': [
-                            [1,1,1,1,1],
-                            [1,0,0,0,0],
-                            [1,0,0,0,0],
-                            [1,1,1,1,0],
-                            [1,0,0,0,0],
-                            [1,0,0,0,0],
-                            [1,1,1,1,1]
-                        ],
-                        'T': [
-                            [1,1,1,1,1],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0],
-                            [0,0,1,0,0]
-                        ],
-                        'N': [
-                            [1,0,0,0,1],
-                            [1,1,0,0,1],
-                            [1,1,0,0,1],
-                            [1,0,1,0,1],
-                            [1,0,0,1,1],
-                            [1,0,0,1,1],
-                            [1,0,0,0,1]
-                        ],
-                        'A': [
-                            [0,0,1,0,0],
-                            [0,1,0,1,0],
-                            [1,0,0,0,1],
-                            [1,1,1,1,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1]
-                        ],
-                        'M': [
-                            [1,0,0,0,1],
-                            [1,1,0,1,1],
-                            [1,0,1,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1],
-                            [1,0,0,0,1]
-                        ]
-                    };
-
-                    const slot1_text = 'VIETNAM';
-
-                    // Scale font size for mobile
-                    const slot1_margin = slot1_isMobile ? 4 : 8; // Smaller margin on mobile
-                    const slot1_charWidth = 5;
-                    const slot1_charSpacing = 1; // 1 pixel spacing between characters
-                    const slot1_textWidth = slot1_text.length * slot1_charWidth + (slot1_text.length - 1) * slot1_charSpacing;
-                    const slot1_startCol = slot1_cols - slot1_margin - slot1_textWidth;
-                    const slot1_startRow = slot1_margin;
-
-                    // Use Uint8Array for better performance (0 = red, 1 = yellow)
-                    const slot1_totalPixels = slot1_rows * slot1_cols;
-                    const slot1_pixels = new Uint8Array(slot1_totalPixels);
-
-                    // Tính toán chữ VIETNAM - dùng Set với index thay vì string
-                    const slot1_textPositions = new Set();
-                    let slot1_currentCol = slot1_startCol;
-
-                    for (let i = 0; i < slot1_text.length; i++) {
-                        const char = slot1_text[i];
-                        const matrix = slot1_vietnam[char];
-
-                        for (let r = 0; r < 7; r++) {
-                            for (let c = 0; c < 5; c++) {
-                                if (matrix[r][c] === 1) {
-                                    const row = slot1_startRow + r;
-                                    const col = slot1_currentCol + c;
-                                    slot1_textPositions.add(row * slot1_cols + col);
-                                }
-                            }
-                        }
-
-                        slot1_currentCol += slot1_charWidth + slot1_charSpacing;
-                    }
-
-                    // Fill pixels data - optimize: check text first (smaller set)
-                    for (let index = 0; index < slot1_totalPixels; index++) {
-                        if (slot1_textPositions.has(index)) {
-                            slot1_pixels[index] = 1; // Yellow
-                        } else {
-                            const col = index % slot1_cols;
-                            const row = (index / slot1_cols) | 0; // Faster than Math.floor
-                            const cellX = col + 0.5;
-                            const cellY = row + 0.5;
-
                             slot1_pixels[index] = slot1_isPointInPolygon(cellX, cellY, slot1_starPoints) ? 1 : 0;
                         }
                     }
@@ -2921,7 +2704,334 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
         <div id="slot-12"></div>
 
         <!-- == SLOT 13 == -->
-        <div id="slot-13"></div>
+        <div id="slot-13">
+            <style>
+                #slot-13 {
+                    background: linear-gradient(135deg, #ffeef4 0%, #ffe4e8 50%, #fff0f5 100%);
+                    border: 2px solid #ff69b4;
+                    border-radius: 20px;
+                    padding: 30px;
+                    margin: 20px auto;
+                    max-width: 800px;
+                    box-shadow: 0 8px 32px rgba(255, 105, 180, 0.2);
+                    font-family: "Nunito", sans-serif;
+                    position: relative;
+                    overflow: hidden;
+                    animation: slot13-gentle-pulse 4s ease-in-out infinite;
+                }
+
+                @keyframes slot13-gentle-pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.02); }
+                }
+
+                #slot-13::before {
+                    content: "🌸";
+                    position: absolute;
+                    top: 10px;
+                    right: 20px;
+                    font-size: 2rem;
+                    animation: slot13-rotate 6s linear infinite;
+                }
+
+                @keyframes slot13-rotate {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+
+                #slot-13 h2 {
+                    color: #d63384;
+                    text-align: center;
+                    font-size: 2rem;
+                    margin-bottom: 10px;
+                    text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.3);
+                }
+
+                #slot-13 .slot13-subtitle {
+                    text-align: center;
+                    color: #6f42c1;
+                    font-style: italic;
+                    margin-bottom: 30px;
+                    font-size: 1.1rem;
+                }
+
+                #slot-13 .slot13-quote-container {
+                    background: rgba(255, 255, 255, 0.8);
+                    border-radius: 15px;
+                    padding: 25px;
+                    margin: 20px 0;
+                    box-shadow: inset 0 2px 10px rgba(214, 51, 132, 0.1);
+                    position: relative;
+                    min-height: 120px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                #slot-13 .slot13-quote {
+                    font-size: 1.3rem;
+                    color: #495057;
+                    text-align: center;
+                    line-height: 1.6;
+                    opacity: 0;
+                    transition: opacity 0.8s ease-in-out;
+                    font-weight: 500;
+                }
+
+                #slot-13 .slot13-quote.slot13-visible {
+                    opacity: 1;
+                }
+
+                #slot-13 .slot13-quote::before {
+                    content: '"';
+                    font-size: 3rem;
+                    color: #ff69b4;
+                    position: absolute;
+                    left: 10px;
+                    top: 10px;
+                    opacity: 0.3;
+                }
+
+                #slot-13 .slot13-quote::after {
+                    content: '"';
+                    font-size: 3rem;
+                    color: #ff69b4;
+                    position: absolute;
+                    right: 10px;
+                    bottom: 10px;
+                    opacity: 0.3;
+                }
+
+                #slot-13 .slot13-author {
+                    text-align: right;
+                    color: #6f42c1;
+                    font-style: italic;
+                    margin-top: 15px;
+                    font-size: 1rem;
+                }
+
+                #slot-13 .slot13-controls {
+                    display: flex;
+                    justify-content: center;
+                    gap: 15px;
+                    margin-top: 25px;
+                    flex-wrap: wrap;
+                }
+
+                #slot-13 .slot13-btn {
+                    background: linear-gradient(135deg, #ff69b4, #d63384);
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+                }
+
+                #slot-13 .slot13-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+                }
+
+                #slot-13 .slot13-btn:active {
+                    transform: translateY(0);
+                }
+
+                #slot-13 .slot13-share-btn {
+                    background: linear-gradient(135deg, #6f42c1, #495057);
+                }
+
+                #slot-13 .slot13-counter {
+                    text-align: center;
+                    color: #6f42c1;
+                    margin-top: 15px;
+                    font-size: 0.9rem;
+                }
+
+                #slot-13 .slot13-toast {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #28a745;
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    z-index: 1000;
+                    opacity: 0;
+                    transform: translateX(100px);
+                    transition: all 0.3s ease;
+                }
+
+                #slot-13 .slot13-toast.slot13-show {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            </style>
+
+            <h2>Bộ sưu tập câu nói hay Việt Nam 🌸</h2>
+            <div class="slot13-subtitle">Tinh hoa văn hóa và triết lý sống của dân tộc</div>
+            
+            <div class="slot13-quote-container">
+                <div id="slot13-quote-text" class="slot13-quote slot13-visible"></div>
+            </div>
+            
+            <div id="slot13-author" class="slot13-author"></div>
+            
+            <div class="slot13-controls">
+                <button id="slot13-next-btn" class="slot13-btn">📚 Câu tiếp theo</button>
+                <button id="slot13-share-btn" class="slot13-btn slot13-share-btn">📋 Chia sẻ</button>
+            </div>
+            
+            <div class="slot13-counter">
+                Câu <span id="slot13-current">1</span> / <span id="slot13-total">15</span>
+            </div>
+            
+            <div id="slot13-toast" class="slot13-toast">Đã copy vào clipboard! 📋</div>
+
+            <script>
+                (function() {
+                    const slot13Quotes = [
+                        {
+                            text: "Có công mài sắt có ngày nên kim",
+                            author: "Tục ngữ Việt Nam"
+                        },
+                        {
+                            text: "Cây ngay lấy gốc, người ngay lấy gốc",
+                            author: "Tục ngữ Việt Nam"
+                        },
+                        {
+                            text: "Mưa dầm thấm đất, tình thương thấm lòng",
+                            author: "Ca dao dân gian"
+                        },
+                        {
+                            text: "Học, học nữa, học mãi",
+                            author: "Lời dạy Bác Hồ"
+                        },
+                        {
+                            text: "Chữ hiếu phải đi đôi với lòng thành",
+                            author: "Lời dạy của cha ông"
+                        },
+                        {
+                            text: "Trăm năm tu được đồng thuyền, nghìn năm tu được nằm đầu",
+                            author: "Ca dao Việt Nam"
+                        },
+                        {
+                            text: "Lá rụng về cội, nước chảy về nguồn",
+                            author: "Tục ngữ về tình yêu quê hương"
+                        },
+                        {
+                            text: "Đi một ngày đàng học một sàng khôn",
+                            author: "Tục ngữ về học tập"
+                        },
+                        {
+                            text: "Công cha như núi Thái Sơn, nghĩa mẹ như nước trong nguồn chảy ra",
+                            author: "Ca dao về cha mẹ"
+                        },
+                        {
+                            text: "Chim kêu tiếng mẹ, người nói tiếng cha",
+                            author: "Tục ngữ về quê hương"
+                        },
+                        {
+                            text: "Gần mực thì đen, gần đèn thì sáng",
+                            author: "Tục ngữ về giao tiếp"
+                        },
+                        {
+                            text: "Lời nói chẳng mất tiền mua, lựa lời mà nói cho vừa lòng nhau",
+                            author: "Ca dao về cách ứng xử"
+                        },
+                        {
+                            text: "Đất lành chim đậu, người tốt việc thành",
+                            author: "Tục ngữ về đạo đức"
+                        },
+                        {
+                            text: "Một giọt máu đào hơn ao nước lã",
+                            author: "Tục ngữ về tình ruột thịt"
+                        },
+                        {
+                            text: "Yêu nhau cùng nắng, giận nhau cùng mưa",
+                            author: "Ca dao về tình nghĩa"
+                        }
+                    ];
+
+                    let slot13CurrentIndex = 0;
+                    const slot13QuoteText = document.getElementById('slot13-quote-text');
+                    const slot13Author = document.getElementById('slot13-author');
+                    const slot13NextBtn = document.getElementById('slot13-next-btn');
+                    const slot13ShareBtn = document.getElementById('slot13-share-btn');
+                    const slot13Current = document.getElementById('slot13-current');
+                    const slot13Total = document.getElementById('slot13-total');
+                    const slot13Toast = document.getElementById('slot13-toast');
+
+                    function slot13UpdateQuote() {
+                        const quote = slot13Quotes[slot13CurrentIndex];
+                        
+                        slot13QuoteText.classList.remove('slot13-visible');
+                        
+                        setTimeout(() => {
+                            slot13QuoteText.textContent = quote.text;
+                            slot13Author.textContent = `— ${quote.author}`;
+                            slot13Current.textContent = slot13CurrentIndex + 1;
+                            slot13QuoteText.classList.add('slot13-visible');
+                        }, 400);
+                    }
+
+                    function slot13NextQuote() {
+                        slot13CurrentIndex = (slot13CurrentIndex + 1) % slot13Quotes.length;
+                        slot13UpdateQuote();
+                    }
+
+                    function slot13ShowToast() {
+                        slot13Toast.classList.add('slot13-show');
+                        setTimeout(() => {
+                            slot13Toast.classList.remove('slot13-show');
+                        }, 2000);
+                    }
+
+                    function slot13ShareQuote() {
+                        const quote = slot13Quotes[slot13CurrentIndex];
+                        const textToShare = `"${quote.text}" — ${quote.author}`;
+                        
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(textToShare).then(() => {
+                                slot13ShowToast();
+                            }).catch(() => {
+                                // Fallback for older browsers
+                                const textArea = document.createElement('textarea');
+                                textArea.value = textToShare;
+                                document.body.appendChild(textArea);
+                                textArea.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(textArea);
+                                slot13ShowToast();
+                            });
+                        } else {
+                            // Fallback for older browsers
+                            const textArea = document.createElement('textarea');
+                            textArea.value = textToShare;
+                            document.body.appendChild(textArea);
+                            textArea.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(textArea);
+                            slot13ShowToast();
+                        }
+                    }
+
+                    // Event listeners
+                    slot13NextBtn.addEventListener('click', slot13NextQuote);
+                    slot13ShareBtn.addEventListener('click', slot13ShareQuote);
+
+                    // Initialize
+                    slot13Total.textContent = slot13Quotes.length;
+                    slot13UpdateQuote();
+
+                    // Auto-rotate every 10 seconds
+                    setInterval(slot13NextQuote, 10000);
+                })();
+            </script>
+        </div>
 
         <!-- == SLOT 14 == -->
         <div id="slot-14"></div>
