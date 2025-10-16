@@ -11414,6 +11414,518 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
 <!-- == SLOT 103 == -->
 <div id="slot-103" class="slot"><style>#slot-103{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);background-size:400% 400%;animation:slot103_gradient 15s ease infinite;color:#fff;padding:30px;text-align:center;border-radius:20px;font-family:'Courier New',monospace;user-select:none;box-shadow:0 8px 32px rgba(0,0,0,0.4);position:relative;overflow:hidden;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);min-height:500px}@keyframes slot103_gradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}#slot-103 h3{margin:0 0 20px 0;font-size:24px;text-transform:uppercase;letter-spacing:3px;color:#00f5ff;text-shadow:0 0 10px #00f5ff,0 0 20px #00f5ff,0 0 30px #00f5ff;animation:slot103_flicker 2s infinite alternate}@keyframes slot103_flicker{0%,18%,22%,25%,53%,57%,100%{text-shadow:0 0 10px #00f5ff,0 0 20px #00f5ff,0 0 30px #00f5ff,0 0 40px #00f5ff}20%,24%,55%{text-shadow:none}}#slot-103 .prize-notice{background:linear-gradient(45deg,#ffd700,#ffed4e);color:#000;padding:12px;border-radius:10px;margin-bottom:20px;font-weight:bold;font-size:16px;box-shadow:0 0 20px rgba(255,215,0,0.6);animation:slot103_glow 2s ease-in-out infinite}@keyframes slot103_glow{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.6)}50%{box-shadow:0 0 40px rgba(255,215,0,1)}}#slot-103 .score-display{display:flex;justify-content:center;gap:30px;margin:20px 0;font-size:20px;font-weight:bold}#slot-103 .score-item{background:rgba(255,255,255,0.1);padding:10px 20px;border-radius:10px;border:2px solid rgba(0,245,255,0.5)}#slot-103 .score-label{color:#00f5ff;font-size:14px;margin-bottom:5px}#slot-103 .score-value{color:#ff00ff;font-size:28px;text-shadow:0 0 10px #ff00ff}#slot-103 #chaosEnergy103{font-size:72px;margin:25px 0;font-weight:bold;color:#ff00ff;text-shadow:0 0 10px #ff00ff,0 0 20px #ff00ff,0 0 40px #ff00ff,0 0 80px #ff00ff;animation:slot103_pulse 1.5s ease-in-out infinite;letter-spacing:5px;min-height:90px;display:flex;align-items:center;justify-content:center}@keyframes slot103_pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}#slot-103 .spinning{animation:slot103_spin 0.03s linear infinite!important;color:#ffd700!important;text-shadow:0 0 20px #ffd700,0 0 40px #ffd700,0 0 60px #ffd700!important}@keyframes slot103_spin{0%{transform:scale(1) rotate(0deg)}25%{transform:scale(1.15) rotate(8deg)}50%{transform:scale(0.85) rotate(-8deg)}75%{transform:scale(1.15) rotate(8deg)}100%{transform:scale(1) rotate(0deg)}}#slot-103 .status-text{font-size:18px;color:#00f5ff;margin:15px 0;font-weight:bold;min-height:30px}#slot-103 .last-roll{font-size:16px;color:#51cf66;margin:10px 0;min-height:25px}#slot-103 button{background:linear-gradient(45deg,#ff00ff,#00f5ff);border:none;color:white;font-size:18px;font-weight:bold;padding:15px 30px;margin:8px;border-radius:50px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.3s ease;text-transform:uppercase;letter-spacing:2px;box-shadow:0 0 10px rgba(255,0,255,0.5),0 0 20px rgba(0,245,255,0.5)}#slot-103 button::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.3);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}#slot-103 button:hover{transform:translateY(-3px);box-shadow:0 0 20px rgba(255,0,255,0.8),0 0 40px rgba(0,245,255,0.8),0 0 60px rgba(255,0,255,0.6)}#slot-103 button:active::before{width:300px;height:300px}#slot-103 button:disabled{opacity:0.5;cursor:not-allowed}#slot-103 #slot103_btnReset{background:linear-gradient(45deg,#ff4500,#ff6347);box-shadow:0 0 10px rgba(255,69,0,0.5),0 0 20px rgba(255,99,71,0.5)}#slot-103 #slot103_btnReset:hover{box-shadow:0 0 20px rgba(255,69,0,0.8),0 0 40px rgba(255,99,71,0.8),0 0 60px rgba(255,69,0,0.6)}#slot-103 #slot103_btnClaim{position:absolute;background:linear-gradient(45deg,#ffd700,#ffed4e);color:#000;font-size:22px;padding:20px 40px;box-shadow:0 0 20px rgba(255,215,0,0.8),0 0 40px rgba(255,215,0,0.6);animation:slot103_claimGlow 1s ease-in-out infinite;transition:all 0.1s ease}@keyframes slot103_claimGlow{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.8)}50%{box-shadow:0 0 50px rgba(255,215,0,1)}}#slot-103 .fb-link{display:inline-block;margin-top:25px;padding:12px 30px;background:linear-gradient(45deg,#1877f2,#42b72a);color:white;text-decoration:none;border-radius:50px;font-weight:bold;font-size:16px;box-shadow:0 0 20px rgba(24,119,242,0.5);transition:all 0.3s ease;animation:slot103_fbGlow 2s ease-in-out infinite}#slot-103 .fb-link:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 0 40px rgba(24,119,242,0.8);color:white}@keyframes slot103_fbGlow{0%,100%{box-shadow:0 0 20px rgba(24,119,242,0.5)}50%{box-shadow:0 0 35px rgba(24,119,242,0.9)}}#slot-103 .fb-section{margin-top:25px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.2)}#slot-103 .fb-text{color:#00f5ff;font-size:14px;margin-bottom:10px}#slot-103 .particles{position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;z-index:0}#slot-103 .particle{position:absolute;width:4px;height:4px;background:#00f5ff;border-radius:50%;box-shadow:0 0 10px #00f5ff;animation:slot103_float 6s infinite;opacity:0.6}@keyframes slot103_float{0%{transform:translateY(100vh) translateX(0);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-100px) translateX(100px);opacity:0}}#slot-103 .particle:nth-child(1){left:10%;animation-delay:0s}#slot-103 .particle:nth-child(2){left:30%;animation-delay:1s}#slot-103 .particle:nth-child(3){left:50%;animation-delay:2s}#slot-103 .particle:nth-child(4){left:70%;animation-delay:3s}#slot-103 .particle:nth-child(5){left:90%;animation-delay:4s}#slot-103>*{position:relative;z-index:1}#slot-103 .winner-message{color:#ffd700;font-size:24px;margin-top:15px;font-weight:bold;text-shadow:0 0 20px #ffd700}#slot-103 .loser-message{color:#ff6b6b;font-size:20px;margin-top:15px}</style><div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div><div class="prize-notice">ĐẠT ĐÚNG 11 ĐIỂM SẼ NHẬN QUÀ ĐẶC BIỆT!</div><h3>Thử Vận May 11 Điểm</h3><div class="score-display"><div class="score-item"><div class="score-label">Điểm Hiện Tại</div><div class="score-value" id="slot103_currentScore">0</div></div><div class="score-item"><div class="score-label">Số Lần Quay</div><div class="score-value" id="slot103_rollCount">0</div></div></div><div class="status-text" id="slot103_status">Bấm để quay số may mắn!</div><div id="chaosEnergy103">?</div><div class="last-roll" id="slot103_lastRoll"></div><div id="slot103_result"></div><button id="slot103_btnAdd">Quay Số</button><button id="slot103_btnReset">Chơi Lại</button><button id="slot103_btnClaim" style="display:none">🎁 NHẬN QUÀ NGAY! 🎁</button><div class="fb-section"><p class="fb-text">Bạn muốn có quà luôn? Kết nối với mình:</p><a href="https://www.facebook.com/serayeuem" target="_blank" class="fb-link">📘 Follow Facebook</a></div><script>!function(){let t=0,e=!1,l=0;const o=document.getElementById("chaosEnergy103"),n=document.getElementById("slot103_btnAdd"),s=document.getElementById("slot103_btnReset"),i=document.getElementById("slot103_btnClaim"),a=document.getElementById("slot103_status"),d=document.getElementById("slot103_lastRoll"),c=document.getElementById("slot103_result"),r=document.getElementById("slot103_currentScore"),u=document.getElementById("slot103_rollCount"),m=["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","36","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","🍀","💎","⭐","🎯","🔥","💰","🎁","🌟","✨","🎪","🎲","🍒","🍋","🍊","🍇","🍉","🎰","💫","🌈","🦄","👑","💀","😱","👻","🎃","☠️","💩","🤡","👿","😈","🔱","🎮","🕹️","🎯","🏆","🎪","🎨","🎭","🎬","🎤","🎧","⚽","🏀","🎾","🏐","🏈","⚾","🎱","🏓","🏸","🏒","🌟","✨","💫","⭐","🌠","☄️","🔥","💥","⚡","🌸","🌺","🌻","🌼","🌷","🌹","🏵️","🌴","🌲","🎄"];function f(){const n=m[Math.floor(Math.random()*m.length)];return isNaN(n)?Math.floor(9*Math.random()):parseInt(n)}function p(){if(e||t>11)return;e=!0,n.disabled=!0,o.classList.add("spinning"),a.textContent="THINKING...",d.textContent="";let s=0;const i=setInterval(()=>{o.textContent=m[Math.floor(Math.random()*m.length)],s++,40===s&&(clearInterval(i),o.classList.remove("spinning"),function(n){l++,u.textContent=l,d.textContent=`Vừa quay: +${n} điểm`,d.style.color=n>0?"#51cf66":"#ff6b6b",t+=n,o.textContent=t,r.textContent=t,setTimeout(()=>{11===t?(c.innerHTML='<div class="winner-message">🎉 CHÚC MỪNG! BẠN TRÚNG 11 ĐIỂM! 🎉</div>',a.textContent="🏆 HÃY NHẬN QUÀ CỦA BẠN!",a.style.color="#ffd700",slot103_btnAdd.disabled=!0,slot103_btnClaim.style.display="block",slot103_btnClaim.style.left="50%",slot103_btnClaim.style.top="350px",slot103_btnClaim.style.transform="translateX(-50%)"):t>11?(c.innerHTML=`<div class="loser-message">Vượt quá! Tổng: ${t} điểm (Cần đúng 11)</div>`,a.textContent="Thất bại! Thử lại nhé!",a.style.color="#ff6b6b",slot103_btnAdd.disabled=!0):(a.textContent=`Còn thiếu ${11-t} điểm nữa!`,a.style.color="#00f5ff",slot103_btnAdd.disabled=!1),e=!1},300)}(f()))},50)}i.addEventListener("mouseover",function(){const t=document.getElementById("slot-103").getBoundingClientRect(),e=Math.random()*(t.width-200),l=Math.random()*(t.height-100)+100;i.style.left=e+"px",i.style.top=l+"px",i.style.transform="none"}),i.addEventListener("click",function(){alert("🎉 Chúc mừng! Bạn đã bắt được nút! (Nhưng không có quà đâu 😂)")}),n.addEventListener("click",p),s.addEventListener("click",()=>{t=0,l=0,o.textContent="?",r.textContent="0",u.textContent="0",a.textContent="Bấm để quay số may mắn!",a.style.color="#00f5ff",d.textContent="",c.innerHTML="",n.disabled=!1,i.style.display="none",e=!1})}()</script></div>
 <!-- END SLOT 103 -->
+<!-- SLOT 104: DEV CHAT -->
+ <div id="slot-104">
+      <div class="chat-header">💬 Kênh Chat</div>
+      <div class="chat-messages" id="slot104ChatMessages">
+        <div class="empty-state">
+          Chưa có tin nhắn nào. Hãy gửi tin nhắn đầu tiên!
+        </div>
+      </div>
 
+      <div class="chat-input-area">
+        <div class="input-group">
+          <label for="userName"
+            >Tên của bạn <span style="color: red">*</span></label
+          >
+          <input
+            type="text"
+            id="userName"
+            placeholder="Nhập tên của bạn..."
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="userMessage">Tin nhắn</label>
+          <textarea id="userMessage" placeholder="Nhập tin nhắn..."></textarea>
+        </div>
+
+        <div class="input-group">
+          <label>Chọn hiệu ứng</label>
+          <div class="effect-buttons">
+            <button
+              class="effect-button"
+              onclick="selectEffect('flower')"
+              data-effect="flower"
+            >
+              🌸
+              <span>Hoa</span>
+            </button>
+            <button
+              class="effect-button"
+              onclick="selectEffect('rain')"
+              data-effect="rain"
+            >
+              💧
+              <span>Mưa</span>
+            </button>
+            <button
+              class="effect-button"
+              onclick="selectEffect('lightning')"
+              data-effect="lightning"
+            >
+              ⚡
+              <span>Sấm sét</span>
+            </button>
+            <button
+              class="effect-button"
+              onclick="selectEffect('heart')"
+              data-effect="heart"
+            >
+              ❤️
+              <span>Tim</span>
+            </button>
+          </div>
+        </div>
+
+        <button class="send-button" onclick="sendMessage()">
+          Gửi tin nhắn
+        </button>
+      </div>
+      <style>
+      #slot-104 {
+        max-width: 800px;
+        margin: 20px auto;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 90vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      #slot-104 .chat-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      #slot-104 .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      #slot-104 .message-item {
+        background: white;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        animation: slot-104-slideIn 0.3s ease-out;
+      }
+
+      @keyframes slot-104-slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #slot-104 .message-name {
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 4px;
+        font-size: 14px;
+      }
+
+      #slot-104 .message-text {
+        color: #333;
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      #slot-104 .message-time {
+        font-size: 11px;
+        color: #999;
+        margin-top: 4px;
+      }
+
+      #slot-104 .chat-input-area {
+        padding: 20px;
+        background: white;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      #slot-104 .input-group {
+        margin-bottom: 12px;
+      }
+
+      #slot-104 .input-group label {
+        display: block;
+        margin-bottom: 6px;
+        color: #555;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      #slot-104 .input-group input,
+      #slot-104 .input-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+      }
+
+      #slot-104 .input-group input:focus,
+      #slot-104 .input-group textarea:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      #slot-104 .input-group textarea {
+        resize: vertical;
+        min-height: 60px;
+      }
+
+      #slot-104 .send-button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      #slot-104 .send-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      #slot-104 .send-button:active {
+        transform: translateY(0);
+      }
+
+      #slot-104 .effect-buttons {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+
+      #slot-104 .effect-button {
+        flex: 1;
+        min-width: 60px;
+        padding: 10px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 8px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      #slot-104 .effect-button span {
+        font-size: 11px;
+        color: #666;
+      }
+
+      #slot-104 .effect-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      #slot-104 .effect-button.active {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        transform: scale(1.05);
+      }
+
+      #slot-104 .falling-icon {
+        position: fixed;
+        font-size: 30px;
+        pointer-events: none;
+        z-index: 9999;
+        animation: slot-104-fall linear forwards;
+      }
+
+      @keyframes slot-104-fall {
+        to {
+          transform: translateY(100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      #slot-104 .alert-sticky {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4caf50;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        animation: slot-104-slideInRight 0.4s ease-out;
+        max-width: 300px;
+      }
+
+      @keyframes slot-104-slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(100px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      #slot-104 .alert-sticky.fade-out {
+        animation: slot-104-fadeOut 0.4s ease-out forwards;
+      }
+
+      @keyframes slot-104-fadeOut {
+        to {
+          opacity: 0;
+          transform: translateX(100px);
+        }
+      }
+
+      #slot-104 .empty-state {
+        text-align: center;
+        color: #999;
+        padding: 40px 20px;
+        font-style: italic;
+      }
+
+      #slot-104 .chat-messages::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      #slot-104 .chat-messages::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      #slot-104 .chat-messages::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+      }
+
+      #slot-104 .chat-messages::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    </style>
+      <script>
+      let slot104MessagesDevChat = JSON.parse(localStorage.getItem("slot104ChatMessages")) || [];
+      let slot104SelectedEffect = null;
+      let slot104LastMessageCount = slot104MessagesDevChat.length;
+      let slot104LastAlertedMessageIndex = slot104MessagesDevChat.length - 1;
+
+      displayMessages();
+
+      function selectEffect(effect) {
+        document.querySelectorAll("#slot-104 .effect-button").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        if (slot104SelectedEffect === effect) {
+          slot104SelectedEffect = null;
+        } else {
+          slot104SelectedEffect = effect;
+          document
+            .querySelector(`#slot-104 [data-effect="${effect}"]`)
+            .classList.add("active");
+        }
+      }
+
+      function sendMessage() {
+        const userName = document.getElementById("userName").value.trim();
+        const userMessage = document.getElementById("userMessage").value.trim();
+
+        if (!userName) {
+          showAlert("⚠️ Vui lòng nhập tên của bạn!", "warning");
+          return;
+        }
+
+        if (!userMessage) {
+          showAlert("⚠️ Vui lòng nhập tin nhắn!", "warning");
+          return;
+        }
+
+        const message = {
+          name: userName,
+          text: userMessage,
+          timestamp: new Date().toLocaleString("vi-VN"),
+          effect: slot104SelectedEffect,
+        };
+
+        slot104MessagesDevChat.push(message);
+        localStorage.setItem("slot104ChatMessages", JSON.stringify(slot104MessagesDevChat));
+        displayMessages();
+        document.getElementById("userMessage").value = "";
+
+        if (slot104SelectedEffect) {
+          triggerEffect(slot104SelectedEffect);
+          slot104SelectedEffect = null;
+          document
+            .querySelectorAll("#slot-104 .effect-button")
+            .forEach((btn) => {
+              btn.classList.remove("active");
+            });
+        }
+
+        showAlert(
+          `Người dùng "${userName}" đã gửi lời nhắn: "${userMessage}"`,
+          "success"
+        );
+        slot104LastAlertedMessageIndex = slot104MessagesDevChat.length - 1;
+        scrollToBottom();
+      }
+
+      function triggerEffect(effect) {
+        const effectIcons = {
+          flower: ["🌸", "🌺", "🌼", "🌻", "🌷"],
+          rain: ["💧", "💦", "🌧️"],
+          lightning: ["⚡", "🌩️", "⚡"],
+          heart: ["❤️", "💕", "💖", "💗", "💝"],
+        };
+
+        const icons = effectIcons[effect];
+        const iconCount = 30;
+
+        for (let i = 0; i < iconCount; i++) {
+          setTimeout(() => {
+            createFallingIcon(icons[Math.floor(Math.random() * icons.length)]);
+          }, i * 100);
+        }
+      }
+
+      function createFallingIcon(icon) {
+        const fallingIcon = document.createElement("div");
+        fallingIcon.className = "falling-icon";
+        fallingIcon.textContent = icon;
+        fallingIcon.style.left = Math.random() * 100 + "%";
+        fallingIcon.style.top = "-50px";
+
+        const duration = 2 + Math.random() * 2;
+        fallingIcon.style.animationDuration = duration + "s";
+
+        document.querySelector("#slot-104").appendChild(fallingIcon);
+
+        setTimeout(() => {
+          fallingIcon.remove();
+        }, duration * 1000);
+      }
+
+      function displayMessages() {
+        const slot104ChatMessages = document.getElementById("slot104ChatMessages");
+
+        if (slot104MessagesDevChat.length === 0) {
+          slot104ChatMessages.innerHTML =
+            '<div class="empty-state">Chưa có tin nhắn nào. Hãy gửi tin nhắn đầu tiên!</div>';
+          return;
+        }
+
+        slot104ChatMessages.innerHTML = slot104MessagesDevChat
+          .map(
+            (msg) => `
+                <div class="message-item">
+                    <div class="message-name">${escapeHtml(msg.name)}</div>
+                    <div class="message-text">${escapeHtml(msg.text)}</div>
+                    <div class="message-time">${msg.timestamp}</div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function showAlert(message, type) {
+        const existingAlerts = document.querySelectorAll(
+          "#slot-104 .alert-sticky"
+        );
+        existingAlerts.forEach((alert) => alert.remove());
+
+        const alert = document.createElement("div");
+        alert.className = "alert-sticky";
+        alert.textContent = message;
+
+        if (type === "warning") {
+          alert.style.background = "#ff9800";
+        }
+
+        document.querySelector("#slot-104").appendChild(alert);
+
+        setTimeout(() => {
+          alert.classList.add("fade-out");
+          setTimeout(() => alert.remove(), 400);
+        }, 3000);
+      }
+
+      function scrollToBottom() {
+        const slot104ChatMessages = document.getElementById("slot104ChatMessages");
+        slot104ChatMessages.scrollTop = slot104ChatMessages.scrollHeight;
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      document
+        .getElementById("userMessage")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+          }
+        });
+
+      setInterval(() => {
+        const storedMessages =
+          JSON.parse(localStorage.getItem("slot104ChatMessages")) || [];
+
+        if (storedMessages.length > slot104LastMessageCount) {
+          const newMessages = storedMessages.slice(slot104LastMessageCount);
+
+          newMessages.forEach((msg, index) => {
+            const messageIndex = slot104LastMessageCount + index;
+
+            if (messageIndex > slot104LastAlertedMessageIndex) {
+              showAlert(
+                `Người dùng "${msg.name}" đã gửi lời nhắn: "${msg.text}"`,
+                "success"
+              );
+              slot104LastAlertedMessageIndex = messageIndex;
+            }
+
+            if (msg.effect) {
+              triggerEffect(msg.effect);
+            }
+          });
+
+          slot104LastMessageCount = storedMessages.length;
+          slot104MessagesDevChat = storedMessages;
+          displayMessages();
+          scrollToBottom();
+        }
+      }, 2000);
+    </script>
+    </div>
+<!-- END SLOT 104 -->
     </body>
 </html>
