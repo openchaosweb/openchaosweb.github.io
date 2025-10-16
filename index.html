@@ -9197,7 +9197,71 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
         <div id="slot-61"></div>
 
         <!-- == SLOT 62 == -->
-        <div id="slot-62"></div>
+        <div id="slot-62">
+            <style>
+                #slot-62 {
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 100vh;
+                    flex-direction: column;
+                    cursor: url(https://n2duc.github.io/TokudaFocus/hienho.png), pointer;
+                    overflow: hidden;
+                }
+                #slot-62 .tokuda {
+                    position: absolute;
+                    transform-origin: 50% 50%;
+                    will-change: transform;
+                    pointer-events: none;
+                }
+            </style>
+
+            <script>
+                const IMG_SRC = 'https://n2duc.github.io/TokudaFocus/tokuda.png';
+                const COUNT = 24;
+
+                const frag = document.createDocumentFragment();
+                for (let i = 0; i < COUNT; i++) {
+                    const img = document.createElement('img');
+                    img.src = IMG_SRC;
+                    img.className = 'tokuda';
+                    frag.appendChild(img);
+                }
+                const root = document.getElementById('slot-62');
+                root.appendChild(frag);
+
+                function randomSize() {
+                    const min = 40, max = 150;
+                    return Math.floor(Math.random() * (max - min)) + min;
+                }
+
+                const tokudas = root.querySelectorAll('.tokuda');
+                for (let i = 0; i < tokudas.length; i++) {
+                    tokudas[i].style.left = Math.floor(Math.random() * 99) + 'vw';
+                    tokudas[i].style.top  = Math.floor(Math.random() * 99) + 'vh';
+                    tokudas[i].style.width = randomSize() + 'px';
+                }
+
+                function rotateTokuda(e) {
+                    const mx = e.clientX;
+                    const my = e.clientY;
+
+                    tokudas.forEach(function(el) {
+                        const rect = el.getBoundingClientRect();
+                        const x = rect.left + rect.width  / 2;
+                        const y = rect.top  + rect.height / 2;
+
+                        const radian = Math.atan2(mx - x, my - y);
+                        const rot = (radian * (180 / Math.PI) * -1) + 270;
+
+                        el.style.transform = "rotate(" + rot + "deg)";
+                    });
+                }
+
+                root.addEventListener('mousemove', rotateTokuda);
+            </script>
+        </div>
 
         <!-- == SLOT 63 == -->
         <div id="slot-63"></div>
