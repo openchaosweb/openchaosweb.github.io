@@ -6225,6 +6225,28 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                         document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
                     },
 
+                    // XSS Protection - Escape HTML characters
+                    escapeHtml(text) {
+                        if (typeof text !== 'string') return text;
+                        const div = document.createElement('div');
+                        div.textContent = text;
+                        return div.innerHTML;
+                    },
+
+                    // Safe innerHTML setter
+                    safeSetInnerHTML(element, content) {
+                        if (element && content) {
+                            element.innerHTML = this.escapeHtml(content);
+                        }
+                    },
+
+                    // Safe textContent setter
+                    safeSetTextContent(element, content) {
+                        if (element && content) {
+                            element.textContent = content;
+                        }
+                    },
+
                     // Encrypt/decrypt utilities for secure storage
                     encryptData(data) {
                         // Simple Base64 encoding with obfuscation
@@ -6275,6 +6297,8 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                                 this.currentUser = data.user;
                                 this.connectWebSocket();
                                 this.showScreen('main');
+                                this.loadMatches();
+                                this.loadPotentialMatches();
                                 console.log('✅ Auto-login successful');
                                 return true;
                             } else {
@@ -6467,7 +6491,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                                 console.log('Authenticated');
                                 break;
                             case 'online_users':
-                                document.getElementById('slot24-online-count').textContent = data.count;
+                                this.safeSetTextContent(document.getElementById('slot24-online-count'), data.count);
                                 // Lưu danh sách user IDs đang online
                                 this.onlineUserIds = data.userIds || [];
                                 // Cập nhật trạng thái online/offline cho current match nếu đang hiển thị
@@ -6495,7 +6519,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                             const isOnline = this.onlineUserIds.includes(match.id);
                             
                             badge.className = isOnline ? 'online-badge online' : 'online-badge offline';
-                            badge.textContent = isOnline ? '🟢 Online' : '⚫ Offline';
+                            this.safeSetTextContent(badge, isOnline ? '🟢 Online' : '⚫ Offline');
                         }
                     },
 
@@ -6539,12 +6563,12 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                         container.innerHTML = `
                             <div class="swipe-card">
                                 <div class="card-image">
-                                    ${photoUrl ? `<img src="${photoUrl}" alt="${match.username}">` : '👤'}
-                                    <div class="online-badge ${onlineClass}">${onlineText}</div>
+                                    ${photoUrl ? `<img src="${this.escapeHtml(photoUrl)}" alt="${this.escapeHtml(match.username)}">` : '👤'}
+                                    <div class="online-badge ${onlineClass}">${this.escapeHtml(onlineText)}</div>
                                 </div>
                                 <div class="card-info">
-                                    <h2>${match.username}, ${match.age || '?'}</h2>
-                                    <p>${match.bio || 'Chưa có giới thiệu'}</p>
+                                    <h2>${this.escapeHtml(match.username)}, ${match.age || '?'}</h2>
+                                    <p>${this.escapeHtml(match.bio || 'Chưa có giới thiệu')}</p>
                                 </div>
                             </div>
                         `;
@@ -6584,7 +6608,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                         const matchedUser = this.potentialMatches.find(m => m.id === matchedUserId);
                         
                         if (matchedUser) {
-                            document.getElementById('slot24-match-name').textContent = matchedUser.username;
+                            this.safeSetTextContent(document.getElementById('slot24-match-name'), matchedUser.username);
                             document.getElementById('slot24-match-modal').classList.add('show');
                             this.currentMatch = { ...data, user: matchedUser };
                         }
@@ -6634,13 +6658,13 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                             const onlineIndicator = isOnline ? '🟢' : '⚫';
 
                             return `
-                                <div class="match-item" onclick="slot24App.openChat('${match.match_id}', ${JSON.stringify(match).replace(/"/g, '&quot;')})">
+                                <div class="match-item" onclick="slot24App.openChat('${this.escapeHtml(match.match_id)}', ${JSON.stringify(match).replace(/"/g, '&quot;')})">
                                     <div class="match-avatar">
-                                        ${photoUrl ? `<img src="${photoUrl}">` : match.matched_username.charAt(0).toUpperCase()}
+                                        ${photoUrl ? `<img src="${this.escapeHtml(photoUrl)}">` : this.escapeHtml(match.matched_username.charAt(0).toUpperCase())}
                                     </div>
                                     <div class="match-info">
-                                        <h4>${onlineIndicator} ${match.matched_username}</h4>
-                                        <p>${match.matched_bio || 'Chưa có giới thiệu'}</p>
+                                        <h4>${onlineIndicator} ${this.escapeHtml(match.matched_username)}</h4>
+                                        <p>${this.escapeHtml(match.matched_bio || 'Chưa có giới thiệu')}</p>
                                     </div>
                                 </div>
                             `;
@@ -6683,7 +6707,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                                 const container = document.getElementById('slot24-chat-messages');
                                 container.innerHTML = data.messages.map(msg => `
                                     <div class="message ${msg.sender_id === this.currentUser.id ? 'sent' : 'received'}">
-                                        <div class="message-bubble">${msg.content}</div>
+                                        <div class="message-bubble">${this.escapeHtml(msg.content)}</div>
                                     </div>
                                 `).join('');
                                 container.scrollTop = container.scrollHeight;
@@ -6722,7 +6746,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                         const container = document.getElementById('slot24-chat-messages');
                         container.innerHTML += `
                             <div class="message sent">
-                                <div class="message-bubble">${content}</div>
+                                <div class="message-bubble">${this.escapeHtml(content)}</div>
                             </div>
                         `;
                         container.scrollTop = container.scrollHeight;
@@ -6735,7 +6759,7 @@ WebAssembly.instantiateStreaming(fetch("https://grahamthe.dev/demos/doom/doom.wa
                             const container = document.getElementById('slot24-chat-messages');
                             container.innerHTML += `
                                 <div class="message received">
-                                    <div class="message-bubble">${data.content}</div>
+                                    <div class="message-bubble">${this.escapeHtml(data.content)}</div>
                                 </div>
                             `;
                             container.scrollTop = container.scrollHeight;
